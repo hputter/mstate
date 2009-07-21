@@ -1,0 +1,89 @@
+\name{probtrans}
+\alias{probtrans}
+\title{Compute subject-specific or overall transition probabilities with standard errors}
+\description{
+This function computes subject-specific or overall transition probabilities
+in multi-state models. If requested, also standard errors are calculated.}
+\usage{
+probtrans(object, trans, predt, direction=c("forward","backward"),
+          method=c("aalen","greenwood"), variance=TRUE, covariance=FALSE)
+}
+\arguments{
+  \item{object}{\link{msfit} object containing estimated cumulative hazards
+  for each of the transitions in the multi-state model and, if standard
+  errors are requested, (co)variances of these cumulative hazards for each
+  pair of transitions}
+  \item{trans}{Only required if \code{vartype}=\code{"greenwood"}.
+  Transition matrix describing the states and transitions in the multi-state
+  model, see the \code{trans} argument in \code{\link{msprep}}}
+  \item{predt}{A positive number indicating the prediction time. This is
+  either the time at which the prediction is made (if \code{direction}=
+  \code{"forward"}) or the time for which the prediction is to be made (if
+  \code{direction}=\code{"backward"})}
+  \item{direction}{One of \code{"forward"} (default) or \code{"backward"},
+  indicating whether prediction is forward or backward in time}
+  \item{method}{A character string specifying the type of variances
+  to be computed (so only needed if either \code{variance} or \code{covariance}
+  is \code{TRUE}). Possible values are \code{"aalen"} or \code{"greenwood"}}
+  \item{variance}{Logical value indicating whether standard errors are
+  to be calculated (default is \code{TRUE})}
+  \item{covariance}{Logical value indicating whether covariances of
+  transition probabilities for different states are to be calculated
+  (default is \code{FALSE})}
+}
+\details{
+For details refer to de Wreede, Fiocco & Putter (2009).
+}
+\value{A list containing S (if \code{covariance}=\code{FALSE}) or
+  S+1 items (if \code{covariance}=\code{TRUE}), S being the number of states
+  in the multi-state model. Item [[s]] contains a dataframe with
+  the estimated transition probabilities from state s.
+  If \code{covariance}=\code{TRUE}, item [[S+1]] contains an array
+  with all the covariances of the estimated transition probabilities.
+}
+\references{
+Andersen PK, Borgan O, Gill RD, Keiding N (1993). \emph{Statistical Models
+Based on Counting Processes}. Springer, New York.
+
+Putter H, Fiocco M, Geskus RB (2007). Tutorial in biostatistics:
+Competing risks and multi-state models. \emph{Statistics in Medicine}
+\bold{26}, 2389--2430.
+
+Therneau TM, Grambsch PM (2000). \emph{Modeling Survival Data:
+Extending the Cox Model}. Springer, New York.
+
+de Wreede L, Fiocco M, Putter H (2009). The mstate package for
+estimation and prediction in non- and semi-parametric multi-state
+models. Submitted. \url{www.msbi.nl/multistate}.
+}
+\author{Liesbeth de Wreede and Hein Putter \email{H.Putter@lumc.nl}}
+\examples{
+# transition matrix for illness-death model
+tmat <- trans.illdeath()
+# data in wide format, for transition 1 this is dataset E1 of
+# Therneau & Grambsch (2000)
+tg <- data.frame(illt=c(1,1,6,6,8,9),ills=c(1,0,1,1,0,1),
+        dt=c(5,1,9,7,8,12),ds=c(1,1,1,1,1,1),
+        x1=c(1,1,1,0,0,0),x2=c(6:1))
+# data in long format using msprep
+tglong <- msprep(time=c(NA,"illt","dt"),status=c(NA,"ills","ds"),
+		data=tg,keep=c("x1","x2"),trans=tmat)
+# events
+events(tglong,tmat)
+table(tglong$status,tglong$to,tglong$from)
+# expanded covariates
+tglong <- expand.covs(tglong,tmat,c("x1","x2"))
+# Cox model with different covariate
+cx <- coxph(Surv(Tstart,Tstop,status)~x1.1+x2.2+strata(trans),
+        data=tglong,method="breslow")
+summary(cx)
+# new data, to check whether results are the same for transition 1 as
+# those in appendix E.1 of Therneau & Grambsch (2000)
+newdata <- data.frame(trans=1:3,x1.1=c(0,0,0),x2.2=c(0,1,0),strata=1:3)
+HvH <- msfit(cx,newdata)
+# probtrans
+pt <- probtrans(HvH,tmat,predt=0)
+# predictions from state 1
+pt[[1]]
+}
+\keyword{univar}

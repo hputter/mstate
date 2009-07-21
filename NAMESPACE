@@ -1,0 +1,2 @@
+useDynLib(mstate)
+export(msprep,events,paths,expand.covs,msfit,mssample,msboot,probtrans,Cuminc,redrank,trans.comprisk,trans.illdeath)

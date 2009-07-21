@@ -1,0 +1,25 @@
+citHeader("To cite the mstate package in publications use:")
+
+citEntry(entry="Article",
+    title = "The mstate package for estimation and prediction in non- and semi-parametric multi-state and competing risks models",
+    author = personList(as.person("L. C. de Wreede"), as.person("M. Fiocco"), as.person("H. Putter")),
+    year = 2009,
+    note = "submitted",
+    textVersion =
+      paste("L. C. de Wreede, M. Fiocco, and H. Putter (2009)",
+        "The mstate package for estimation and prediction in non- and semi-parametric multi-state and competing risks models,",
+            "submitted")
+)
+
+citEntry(entry="Article",
+    title = "Tutorial in biostatistics: Competing risks and multi-state models",
+    author = personList(as.person("H. Putter"), as.person("R. B. Geskus"), as.person("M. Fiocco")),
+    journal = "Statistics in Medicine",
+    year = 2007,
+    number = 26,
+    pages = "2389-2430",
+    textVersion =
+      paste("H. Putter, M. Fiocco, and R. B. Geskus (2007)",
+        "Tutorial in biostatistics: Competing risks and multi-state models,",
+            "Statistics in Medicine, 26, 2389-2340.")
+)

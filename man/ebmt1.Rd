@@ -1,0 +1,38 @@
+\name{EBMT year of relapse data}
+
+\docType{data}
+
+\alias{ebmt1}
+
+\title{Data from the European Registry for Blood and Marrow Transplantation (EBMT)}
+
+\description{A data frame of 1977 patients transplanted for CML.
+The included variables are
+  \describe{
+  \item{patid}{Patient identification number}
+  \item{srv}{Time in days from transplantation to death or last follow-up}
+  \item{srvstat}{Survival status; 1 = death; 0 = censored}
+  \item{rel}{Time in days from transplantation to relapse or last follow-up}
+  \item{relstat}{Relapse status; 1 = relapsed; 0 = censored}
+  \item{yrel}{Calendar year of relapse; factor with levels "1993-1996","
+  1997-1999", "2000-"}
+  \item{age}{Patient age at transplant (years)}
+  \item{score}{Gratwohl score; factor with levels "Low risk", "Medium risk",
+  "High risk"}
+  }
+}
+
+\usage{data(ebmt1)}
+
+\format{A data frame, see \code{\link{data.frame}}.}
+
+\references{
+Fiocco M, Putter H, Iacobelli S, Heim D, de Witte T, Olavarria E, Guglielmi E,
+Gratwohl A, Brand R, on behalf of the Chronic Leukemia Working party of the 
+European Group for Blood and Marrow Transplantation EBMT (2009). Evaluation of
+the impact of relapse after allogeneic hematopoietic stem cell transplantation
+on death rate in patients with chronic myeloid leukemia: the need for a
+multi-state model. Submitted.
+}
+
+\keyword{datasets}
