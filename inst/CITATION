@@ -3,6 +3,7 @@ citHeader("To cite the mstate package in publications use:")
 citEntry(entry="Article",
     title = "The mstate package for estimation and prediction in non- and semi-parametric multi-state and competing risks models",
     author = personList(as.person("L. C. de Wreede"), as.person("M. Fiocco"), as.person("H. Putter")),
+    journal = "Computer Methods and Programs in Biomedicine",
     year = 2009,
     note = "submitted",
     textVersion =

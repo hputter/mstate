@@ -66,7 +66,7 @@ Competing risks and multi-state models. \emph{Statistics in Medicine}
 }
 \author{Marta Fiocco and Hein Putter \email{H.Putter@lumc.nl}}
 \examples{
-# This reproduces the results in Fiocco, Putter & van Houwelingen (2005)
+# Based on Fiocco, Putter & van Houwelingen (2005)
 data(ebmt2)
 # transition matrix for competing risks
 tmat <- trans.comprisk(6,names=c("Relapse","GvHD","Bacterial","Viral","Fungal","Other"))
@@ -83,17 +83,27 @@ ebmtlong <- msprep(time=c(NA,rep("time",6)),
             data=ebmt2,keep=covs,trans=tmat)
 # Get model matrix
 cx <- coxph(Surv(Tstart,Tstop,status) ~
-	dissub+match+tcd+year+age, data=ebmtlong, method="breslow")
+        dissub+match+tcd+year+age, data=ebmtlong, method="breslow")
 mm <- model.matrix(cx)[,-1] # without intercept
 mm <- data.frame(mm)
 ebmtlong <- cbind(ebmtlong,mm)
-covs <- c("dissubALL","dissubCML","matchGender.mismatch","tcdTCD",
-    "tcdUnknown","year1990.1994","year1995.1998","age20.40","age.40")
-# The reduced rank 3 solution
-rr3 <- redrank(data=ebmtlong, trans=tmat, covariates=covs, R=3)
-rr3$Alpha; rr3$Gamma; rr3$Beta; rr3$loglik
-# The full rank solution
-fullrank <- redrank(data=ebmtlong, trans=tmat, covariates=covs, R=6)
-fullrank$Beta; fullrank$loglik
+covs <- names(mm)
+
+# Actually run for a subset of the actual data
+ebmtlongsub <- ebmtlong[1:1200,] # first 200 patients
+# The reduced rank 2 solution
+rr2 <- redrank(data=ebmtlongsub, trans=tmat, covariates=covs, R=2, eps=0.001)
+rr2$Alpha; rr2$Gamma; rr2$Beta; rr2$loglik
+
+# This reproduces the results in Fiocco, Putter & van Houwelingen (2005)
+# Takes a while to run
+\dontrun{
+    # The reduced rank 3 solution
+    rr3 <- redrank(data=ebmtlong, trans=tmat, covariates=covs, R=3)
+    rr3$Alpha; rr3$Gamma; rr3$Beta; rr3$loglik
+    # The full rank solution
+    fullrank <- redrank(data=ebmtlong, trans=tmat, covariates=covs, R=6)
+    fullrank$Beta; fullrank$loglik
+}
 }
 \keyword{univar}

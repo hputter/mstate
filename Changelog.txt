@@ -1,3 +1,14 @@
+Version 0.2.2 (2009-09-15)
+- Changed a small error in the vignette on page 9, where the written text was
+  incompatible with the R output of c3
+- mstate had a call to "model.newframe" in msfit from the survival package,
+  which was removed in R version 2.9.2. In msfit,
+  survival:::model.newframe(Terms, newdata, response=FALSE) has been replaced by
+  model.frame(delete.response(Terms), newdata, xlev=object$xlevels)
+- Replaced the example in redrank by a much shorter one, the original is now
+  only mentioned in \dontrun{}
+
+
 Version 0.2.1 (2009-07-10)
 
 - Added vignette showing how to do the analyses of Putter H, Fiocco M,

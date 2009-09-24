@@ -196,7 +196,7 @@
             # Get the second, "new" data set
             offset2 <- 0   #offset variable for the new data set
             if (!missing(newdata)) {
-                m2 <- survival:::model.newframe(Terms, newdata, response=FALSE)
+                m2 <- model.frame(delete.response(Terms), newdata, xlev=object$xlevels)
                 if (!inherits(m2, 'data.frame'))  {
                     x2 <- as.matrix(m2)
                     if (ncol(x2) != nvar) stop ("Wrong no of variables in new data")

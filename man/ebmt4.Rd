@@ -1,4 +1,4 @@
-\name{EBMT cause of death data}
+\name{EBMT data}
 
 \docType{data}
 
