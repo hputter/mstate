@@ -71,11 +71,11 @@ M simulated paths through the multi-state model given by \code{trans} and
 ..., \code{pstateS} for S states when \code{output="state"}, or with columns
 \code{time}, \code{ppath1},..., \code{ppathP} for the P paths specified in
 \code{\link{paths}}(trans) when \code{output="path"}. When \code{output="data"},
-the sampled paths are stored in a data frame in long format such as that
-obtained by \code{\link{msprep}}. This may be useful for (semi-)parametric
-bootstrap procedures, in which case \code{cens} may be used as censoring
-distribution (assumed to be independent of all transition times and independent
-of any covariates).
+the sampled paths are stored in an \code{"msdata"} object, a data frame in long
+format such as that obtained by \code{\link{msprep}}. This may be useful for
+(semi-)parametric bootstrap procedures, in which case \code{cens} may be used
+as censoring distribution (assumed to be independent of all transition times
+and independent of any covariates).
 }
 \references{
 Fiocco M, Putter H, van Houwelingen HC (2008). Reduced-rank
@@ -95,13 +95,13 @@ tg <- data.frame(illt=c(1,1,6,6,8,9),ills=c(1,0,1,1,0,1),
 tglong <- msprep(time=c(NA,"illt","dt"),status=c(NA,"ills","ds"),
         data=tg,keep=c("x1","x2"),trans=tmat)
 # expanded covariates
-tglong <- expand.covs(tglong,tmat,c("x1","x2"))
+tglong <- expand.covs(tglong,c("x1","x2"))
 # Cox model with different covariate
 cx <- coxph(Surv(Tstart,Tstop,status)~x1.1+x2.2+strata(trans),
         data=tglong,method="breslow")
 # new data, to check whether results are the same for transition 1 as T&G
 newdata <- data.frame(trans=1:3,x1.1=c(0,0,0),x2.2=c(0,1,0),strata=1:3)
-fit <- msfit(cx,newdata)
+fit <- msfit(cx,newdata,trans=tmat)
 tv <- unique(fit$Haz$time)
 # mssample
 set.seed(1234)

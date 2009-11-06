@@ -15,7 +15,7 @@
         bootdata <- data[bidxs,]
         if (verbose>0) {
             print(date())
-            print(events(bootdata,trans))
+            print(events(bootdata))
             cat("applying theta ...")
         }
         thstar <- theta(bootdata,trans,...)

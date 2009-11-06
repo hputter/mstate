@@ -23,9 +23,8 @@ msfit(object, newdata, variance=TRUE, vartype=c("aalen","greenwood"), trans)
   \item{vartype}{A character string specifying the type of variances
   to be computed (so only needed if \code{variance}=\code{TRUE}).
   Possible values are \code{"aalen"} or \code{"greenwood"}}
-  \item{trans}{Only required if \code{vartype}=\code{"greenwood"}.
-  Transition matrix describing the states and transitions in the
-  multi-state model. See \code{trans} in \code{\link{msprep}} for
+  \item{trans}{Transition matrix describing the states and transitions
+  in the multi-state model. See \code{trans} in \code{\link{msprep}} for
   more detailed information}
 }
 \details{
@@ -36,7 +35,7 @@ For details refer to de Wreede, Fiocco & Putter (2009). So far, the
 results have been checked only for the \code{"breslow"} method of
 dealing with ties in \code{\link[survival:coxph]{coxph}}.
 }
-\value{A list containing
+\value{An object of class \code{"msfit"}, which is a list containing
   \item{Haz }{A data frame with \code{time}, \code{Haz},
   \code{trans}, containing the estimated subject-specific hazards for
   each of the transitions in the multi-state model}
@@ -46,6 +45,7 @@ dealing with ties in \code{\link[survival:coxph]{coxph}}.
   covariances (\code{trans1}<\code{trans2}) of the estimated
   hazards. This element is only returned when
   \code{variance}=\code{TRUE}}
+  \item{trans}{The transition matrix used}
 }
 \references{
 Putter H, Fiocco M, Geskus RB (2007). Tutorial in biostatistics:
@@ -60,6 +60,7 @@ estimation and prediction in non- and semi-parametric multi-state
 models. Submitted. \url{www.msbi.nl/multistate}.
 }
 \author{Hein Putter \email{H.Putter@lumc.nl}}
+\seealso{\code{\link{plot.msfit}}}
 \examples{
 # transition matrix for illness-death model
 tmat <- trans.illdeath()
@@ -72,10 +73,10 @@ tg <- data.frame(illt=c(1,1,6,6,8,9),ills=c(1,0,1,1,0,1),
 tglong <- msprep(time=c(NA,"illt","dt"),status=c(NA,"ills","ds"),
 		data=tg,keep=c("x1","x2"),trans=tmat)
 # events
-events(tglong,tmat)
+events(tglong)
 table(tglong$status,tglong$to,tglong$from)
 # expanded covariates
-tglong <- expand.covs(tglong,tmat,c("x1","x2"))
+tglong <- expand.covs(tglong,c("x1","x2"))
 # Cox model with different covariate
 cx <- coxph(Surv(Tstart,Tstop,status)~x1.1+x2.2+strata(trans),
 	data=tglong,method="breslow")
@@ -83,6 +84,6 @@ summary(cx)
 # new data, to check whether results are the same for transition 1 as
 # those in appendix E.1 of Therneau & Grambsch (2000)
 newdata <- data.frame(trans=1:3,x1.1=c(0,0,0),x2.2=c(0,1,0),strata=1:3)
-msfit(cx,newdata)
+msfit(cx,newdata,trans=tmat)
 }
-\keyword{univar}
+\keyword{survival}

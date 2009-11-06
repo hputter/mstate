@@ -1,4 +1,17 @@
+Version 0.2.3 (2009-11-076)
+
+- The results of calls to msfit and probtrans are now 'msfit' and 'probtrans'
+  S3 objects
+- Plot and summary methods for 'msfit' and 'probtrans' objects have been added
+- The result of call to msprep is now an 'msdata' S3 object
+- The first argument of expand.covs and the result of a call to expand.covs
+  is now an 'msdata' object
+- A print method for 'msdata' objects has been added
+- A convenient function, transMat, to define transition matrices, kindly
+  provided by Steven McKinney, has been added
+
 Version 0.2.2 (2009-09-15)
+
 - Changed a small error in the vignette on page 9, where the written text was
   incompatible with the R output of c3
 - mstate had a call to "model.newframe" in msfit from the survival package,

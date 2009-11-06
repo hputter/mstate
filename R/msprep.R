@@ -153,6 +153,8 @@ msprep <- function (time, status, data, trans, start, id, keep)
             msres <- cbind(msres, ddcovs)
         }
     }
+    attr(msres, "trans") <- trans
+    class(msres) <- c("msdata","data.frame")
     return(msres)
 }
 

@@ -1,8 +1,11 @@
-`probtrans` <- function(object,trans,predt,direction=c("forward","backward"),
+`probtrans` <- function(object,predt,direction=c("forward","backward"),
                 method=c("aalen","greenwood"),variance=TRUE,covariance=FALSE)
 {
+    if (!inherits(object, "msfit"))
+        stop("'object' must be a 'msfit' object")
     method <- match.arg(method)
     direction <- match.arg(direction)
+    trans <- object$trans
     transit <- to.trans2(trans)
     numtrans <- nrow(transit)
     stackhaz <- object$Haz
@@ -231,5 +234,7 @@
         else names(tmp) <- c("time",paste("pstate",1:S,sep=""))
         res2[[s]] <- tmp
     }
+    res2$trans <- trans
+    class(res2) <- "probtrans"
     return(res2)
 }

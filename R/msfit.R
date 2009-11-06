@@ -1,5 +1,5 @@
 `msfit` <-
-  function(object, newdata, variance=TRUE, vartype=c("aalen","greenwood"),trans)
+  function(object, newdata, variance=TRUE, vartype=c("aalen","greenwood"), trans)
 {
 ### Modeled after survfit.coxph from the survival library by Therneau;
 ### indeed much of the code is just copied. Survfit is also called
@@ -17,8 +17,7 @@
 ###         hazards is returned
 ###     vartype: aalen (default), greenwood is only supported in absence
 ###         of newdata
-###     trans: the transition matrix of the multi-state model (only needed)
-###         if vartype="greenwood"
+###     trans: the transition matrix of the multi-state model
     if(!is.null((object$call)$weights))
         stop("Msfit cannot (yet) compute the result for a weighted model")
     Terms <- terms(object)
@@ -270,6 +269,8 @@
             }
         }
     }
-    if (variance) return(list(Haz=Haz,varHaz=varHaz))
-    else return(list(Haz=Haz))
+    if (variance) res <- list(Haz=Haz,varHaz=varHaz,trans=trans)
+    else res <- list(Haz=Haz,trans=trans)
+    class(res) <- "msfit"
+    return(res)
 }

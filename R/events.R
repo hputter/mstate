@@ -1,5 +1,6 @@
-`events` <- function(msdata,trans)
+`events` <- function(msdata)
 {
+    trans <- attr(msdata, "trans")
     K <- nrow(trans)
     if (!is.null(dimnames(trans))) states <- dimnames(trans)[[1]]
     else states <- as.character(1:K)

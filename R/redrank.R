@@ -1,6 +1,9 @@
-`redrank.iter` <- function(data, trans, cols, colsR, fullcols, R,
+`redrank.iter` <- function(data, cols, colsR, fullcols, R,
                         clock, strata, Gamma.iter, print.level = 0)
 {
+    if (!inherits(data, "msdata"))
+        stop("'data' must be an 'msdata' object")
+    trans <- attr(data, "trans")
     data[,c(cols,colsR,fullcols)] <- unlist(data[,c(cols,colsR,fullcols)])
     nfull <- length(fullcols)
     covariates <- names(data)[cols]
@@ -42,7 +45,9 @@
     data <- cbind(data,as.matrix(data[, cols]) %*% Alpha)
     AlphaX.R <- paste("AlphaX",as.character(1:R),sep="")
     names(data)[((ncd+1):(ncd+R))] <- AlphaX.R
-    data <- expand.covs(data,trans,AlphaX.R)
+    attr(data, "trans") <- trans
+    class(data) <- c("msdata", "data.frame")
+    data <- expand.covs(data,AlphaX.R)
     AlphaX.RK <- names(data)[((ncd+R+1):(ncd+R+R*K))] 
     if (clock=="forward")
         expr2 <- paste("cox.itr2 <- coxph(Surv(Tstart,Tstop,status)~",
@@ -66,10 +71,13 @@
                 loglik = loglik, cox.itr1 = cox.itr1))
 }
 
-`redrank` <- function(data, trans, covariates, fullcovs = NULL, R,
+`redrank` <- function(data, covariates, fullcovs = NULL, R,
             clock = c("forward","reset"), strata = NULL, Gamma.start,
             eps = 1e-5, print.level = 1)
 {
+    if (!inherits(data, "msdata"))
+        stop("'data' must be an 'msdata' object")
+    trans <- attr(data, "trans")
     clock <- match.arg(clock)
     cols <- match(covariates, names(data))
     fullcols <- NULL
@@ -105,7 +113,9 @@
             flush.console()
         }
         iter <- iter + 1
-        ms.it <- redrank.iter(data = data, trans = trans, cols = cols, colsR = colsR,
+        attr(data, "trans") <- trans
+        class(data) <- c("msdata", "data.frame")
+        ms.it <- redrank.iter(data = data, cols = cols, colsR = colsR,
             fullcols = fullcols, R = R, clock = clock, strata = strata, Gamma.iter = Gamma.iter,
             print.level = print.level - 1)
         Gamma.iter <- ms.it$Gamma
@@ -138,7 +148,6 @@
     AlphaX <-  as.matrix(data[,cols]) %*% Alpha
     Gamma.final <- Gamma.final * matrix(norm.Alpha,R,K)
     dimnames(B) <- list(covariates,tnames)
-    cat("\n")
     return(list(Alpha = Alpha, Gamma = Gamma.final, Beta = B,
             Beta2 = ms.it$Beta2, cox.itr1 = ms.it$cox.itr1,
             AlphaX = AlphaX, niter = iter, df = R*(p+K-R), loglik = loglik))

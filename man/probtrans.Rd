@@ -5,7 +5,7 @@
 This function computes subject-specific or overall transition probabilities
 in multi-state models. If requested, also standard errors are calculated.}
 \usage{
-probtrans(object, trans, predt, direction=c("forward","backward"),
+probtrans(object, predt, direction=c("forward","backward"),
           method=c("aalen","greenwood"), variance=TRUE, covariance=FALSE)
 }
 \arguments{
@@ -13,9 +13,6 @@ probtrans(object, trans, predt, direction=c("forward","backward"),
   for each of the transitions in the multi-state model and, if standard
   errors are requested, (co)variances of these cumulative hazards for each
   pair of transitions}
-  \item{trans}{Only required if \code{vartype}=\code{"greenwood"}.
-  Transition matrix describing the states and transitions in the multi-state
-  model, see the \code{trans} argument in \code{\link{msprep}}}
   \item{predt}{A positive number indicating the prediction time. This is
   either the time at which the prediction is made (if \code{direction}=
   \code{"forward"}) or the time for which the prediction is to be made (if
@@ -69,10 +66,10 @@ tg <- data.frame(illt=c(1,1,6,6,8,9),ills=c(1,0,1,1,0,1),
 tglong <- msprep(time=c(NA,"illt","dt"),status=c(NA,"ills","ds"),
 		data=tg,keep=c("x1","x2"),trans=tmat)
 # events
-events(tglong,tmat)
+events(tglong)
 table(tglong$status,tglong$to,tglong$from)
 # expanded covariates
-tglong <- expand.covs(tglong,tmat,c("x1","x2"))
+tglong <- expand.covs(tglong,c("x1","x2"))
 # Cox model with different covariate
 cx <- coxph(Surv(Tstart,Tstop,status)~x1.1+x2.2+strata(trans),
         data=tglong,method="breslow")
@@ -80,10 +77,10 @@ summary(cx)
 # new data, to check whether results are the same for transition 1 as
 # those in appendix E.1 of Therneau & Grambsch (2000)
 newdata <- data.frame(trans=1:3,x1.1=c(0,0,0),x2.2=c(0,1,0),strata=1:3)
-HvH <- msfit(cx,newdata)
+HvH <- msfit(cx,newdata,trans=tmat)
 # probtrans
-pt <- probtrans(HvH,tmat,predt=0)
+pt <- probtrans(HvH,predt=0)
 # predictions from state 1
 pt[[1]]
 }
-\keyword{univar}
+\keyword{survival}

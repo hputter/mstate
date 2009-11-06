@@ -8,7 +8,7 @@
 
 \description{A data frame of 2279 patients transplanted at the EBMT
 between 1985 and 1998. These data were used in Fiocco, Putter & van Houwelingen (2008)
-and van Houwelingen & Putter (2009).
+and van Houwelingen & Putter (2008).
 The included variables are
   \describe{
   \item{id}{Patient identification number}

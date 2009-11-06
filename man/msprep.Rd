@@ -89,8 +89,9 @@ a higher transition time has \code{status}=1. Then this larger
 transition time and the corresponding transition is selected. No
 warning is issued for these data inconsistencies. 
 }
-\value{A data frame in long (counting process) format containing
-the subject id, the covariates (replicated per subject), and
+\value{An object of class \code{"msdata"}, which is a data frame in long
+(counting process) format containing the subject id, the covariates
+(replicated per subject), and
   \item{from}{the starting state}
   \item{to}{the receiving state}
   \item{trans}{the transition number}
@@ -98,6 +99,8 @@ the subject id, the covariates (replicated per subject), and
   \item{Tstop}{the stopping time of the transition}
   \item{status}{status variable, with 1 indicating an
   event (transition), 0 a censoring}
+  The \code{"msdata"} object has the transition matrix as \code{"trans"}
+  attribute.
   }
 \references{
 Putter H, Fiocco M, Geskus RB (2007). Tutorial in biostatistics:
@@ -126,6 +129,5 @@ msprep(time=c(NA,"illt","dt"),status=c(NA,"ills","ds"),data=tg,
 # Patient no 5, 6 now start in state 2 at time t=4 and t=10
 msprep(time=tt,status=st,trans=tmat,keep=keepmat,
         start=list(state=c(1,1,1,1,2,2),time=c(0,0,0,0,4,10)))
-# gives warning (CHECK!!!)
 }
 \keyword{datagen}

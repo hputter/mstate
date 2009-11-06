@@ -1,5 +1,8 @@
-`expand.covs` <- function(data,trans,covs,append=TRUE,longnames=TRUE)
+`expand.covs` <- function(data,covs,append=TRUE,longnames=TRUE)
 {
+    if (!inherits(data, "msdata"))
+        stop("'data' must be an 'msdata' object")
+    trans <- attr(data, "trans")
     trans2 <- to.trans2(trans)
     K <- nrow(trans2)
     if (is.character(covs)) form1 <- as.formula(paste("~ ",paste(covs,collapse=" + ")))
@@ -33,6 +36,9 @@
     else {
         if (!all(is.na(match(names(data),nms))))
             warning("One or more names of appended data already in data!")
-        return(cbind(data,mm4))
+        mm4 <- cbind(data,mm4)
     }
+    attr(mm4, "trans") <- trans
+    class(mm4) <- c("msdata", "data.frame")
+    return(mm4)
 }

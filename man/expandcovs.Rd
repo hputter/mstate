@@ -7,13 +7,10 @@ covariates, this function adds transition-specific covariates,
 expanding the original covariate(s), to the dataset. The original
 dataset with the transition-specific covariates appended is returned.
 }
-\usage{expand.covs(data,trans,covs,append=TRUE,longnames=TRUE)}
+\usage{expand.covs(data,covs,append=TRUE,longnames=TRUE)}
 \arguments{
-  \item{data}{Data frame in long format, such as output by
+  \item{data}{An object of class \code{"msdata"}, such as output by
   \code{\link{msprep}}}
-  \item{trans}{Transition matrix describing the states and
-  transitions in the multi-state model. See \code{trans} in
-  \code{\link{msprep}} for more detailed information}
   \item{covs}{A character vector containing the names of
   the covariates in \code{data} to be expanded}
   \item{append}{Logical value indicating whether or not the design
@@ -41,7 +38,7 @@ in the basic covariates are allowed and result in missing values
 in the expanded covariates.
 }
 \value{
-A data frame containing the design matrix for the transition-
+An object of class 'msdata', containing the design matrix for the transition-
 specific covariates, either on its own (\code{append}=\code{FALSE})
 or appended to the data (\code{append}=\code{TRUE}).
 }
@@ -69,8 +66,8 @@ tglong <- msprep(time=c(NA,"illt","dt"),
         status=c(NA,"ills","ds"),data=tg,
         keep=c("x1","x2"),trans=tmat)
 # expanded covariates
-expand.covs(tglong,tmat,c("x1","x2"),append=FALSE)
-expand.covs(tglong,tmat,"x1")
-expand.covs(tglong,tmat,"x1",longnames=FALSE)
+expand.covs(tglong,c("x1","x2"),append=FALSE)
+expand.covs(tglong,"x1")
+expand.covs(tglong,"x1",longnames=FALSE)
 }
 \keyword{datagen}

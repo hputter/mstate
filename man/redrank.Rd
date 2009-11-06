@@ -6,14 +6,12 @@ multi-state models}
 This function estimates regression coefficients in reduced rank
 proportional hazards models for competing risks and multi-state models.}
 \usage{
-redrank(data, trans, covariates, fullcovs = NULL, R,
+redrank(data, covariates, fullcovs = NULL, R,
             clock = c("forward","reset"), strata = NULL, Gamma.start,
             eps = 1e-5, print.level = 1)
 }
 \arguments{
-  \item{data}{Data in long format, such as produced by
-  \code{\link{msprep}}}
-  \item{trans}{Transition matrix describing the multi-state model, see
+  \item{data}{Object of class 'msdata', as prepared for instance by
   \code{\link{msprep}}}
   \item{covariates}{Character vector containing the column names of
   covariates for which a reduced rank estimate is to be found}
@@ -87,23 +85,26 @@ cx <- coxph(Surv(Tstart,Tstop,status) ~
 mm <- model.matrix(cx)[,-1] # without intercept
 mm <- data.frame(mm)
 ebmtlong <- cbind(ebmtlong,mm)
+# Somehow, cbind makes ebmtlong lose its "trans" attribute and "msdata" class
+attr(ebmtlong, "trans") <- tmat
+class(ebmtlong) <- c("msdata","data.frame")
 covs <- names(mm)
 
 # Actually run for a subset of the actual data
 ebmtlongsub <- ebmtlong[1:1200,] # first 200 patients
 # The reduced rank 2 solution
-rr2 <- redrank(data=ebmtlongsub, trans=tmat, covariates=covs, R=2, eps=0.001)
+rr2 <- redrank(data=ebmtlongsub, covariates=covs, R=2, eps=0.001)
 rr2$Alpha; rr2$Gamma; rr2$Beta; rr2$loglik
 
 # This reproduces the results in Fiocco, Putter & van Houwelingen (2005)
 # Takes a while to run
 \dontrun{
     # The reduced rank 3 solution
-    rr3 <- redrank(data=ebmtlong, trans=tmat, covariates=covs, R=3)
+    rr3 <- redrank(data=ebmtlong, covariates=covs, R=3)
     rr3$Alpha; rr3$Gamma; rr3$Beta; rr3$loglik
     # The full rank solution
-    fullrank <- redrank(data=ebmtlong, trans=tmat, covariates=covs, R=6)
+    fullrank <- redrank(data=ebmtlong, covariates=covs, R=6)
     fullrank$Beta; fullrank$loglik
 }
 }
-\keyword{univar}
+\keyword{survival}

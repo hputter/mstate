@@ -72,6 +72,8 @@
     else if (output=="data") {
         res <- data.frame(res)
         names(res) <- c("id","Tstart","Tstop","duration","from","to","status","trans")
+        attr(res, "trans") <- trans
+        class(res) <- "msdata"
     }
     return(res)  
 }

@@ -58,10 +58,10 @@
         c0 <- coxph(Surv(time,status)~strata(trans), data=msdata, method="breslow")
         msf0 <- msfit(c0,variance=variance,vartype="greenwood",trans=tmat)
         if (any(msf0$Haz$Haz[msf0$Haz$time==0]>0)) { # make sure that events at t=0 are correctly dealt with
-            ptg <- probtrans(msf0,tmat,predt=-0.0001,variance=variance,method="greenwood")[[1]]
+            ptg <- probtrans(msf0,predt=-0.0001,variance=variance,method="greenwood")[[1]]
             ptg$time[1] <- 0
         }
-        else ptg <- probtrans(msf0,tmat,predt=0,variance=variance,method="greenwood")[[1]]
+        else ptg <- probtrans(msf0,predt=0,variance=variance,method="greenwood")[[1]]
         names(ptg)[2:(K+2)] <- c("Surv",paste("CI",failcodes,sep="."))
         if (variance) names(ptg)[(K+3):(2*K+3)] <- paste("se",names(ptg)[2:(K+2)],sep="")
     }
@@ -121,10 +121,10 @@
                     c0 <- coxph(Surv(time,status)~strata(trans), data=msdatag, method="breslow")
                     msf0 <- msfit(c0,variance=variance,vartype="greenwood",trans=tmat)
                     if (any(msf0$Haz$Haz[msf0$Haz$time==0]>0)) {
-                        ptgg <- probtrans(msf0,tmat,predt=-0.0001,variance=variance,method="greenwood")[[1]]
+                        ptgg <- probtrans(msf0,predt=-0.0001,variance=variance,method="greenwood")[[1]]
                         ptgg$time[1] <- 0
                     }
-                    else ptgg <- probtrans(msf0,tmat,predt=0,variance=variance,method="greenwood")[[1]]
+                    else ptgg <- probtrans(msf0,predt=0,variance=variance,method="greenwood")[[1]]
                 }
                 if (nwh==1) { # only one cause of failure with events
                     tmp <- ptgg

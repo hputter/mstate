@@ -100,9 +100,9 @@
 
 \section{Introduction}\label{sec:intro}
 
-This is a companion file both for the \mstate package and for the Tutorial in Biostatistics: Competing risks and multi-state models~\citep{Tut}, simply referred to henceforth as the tutorial. Emphasis in this document will be on the use of \mstate, not on the theory of competing risks and multi-state models. The only exception is that I have added some theory about the Aalen-Johansen estimator that did not appear in \tut. For other theory on multi-state models, and for interpretation of the results of the analyses, we will repeatedly refer to \tut. I will occasionally give more detail and show more analyses than in \tut.  Also I sometimes give more details on the function in \mstate than strictly necessary for the analyses in \tut, but not all features will be shown either. This file and the \mstate package, which in turn contains all the data used in \tut, can be found at \url{http://www.msbi.nl/multistate}. This file is also a vignette of the \mstate package. Type \Rcode{(vignette("Tutorial")} after having installed and loaded \mstate to acces this document within R.
+This is a companion file both for the \mstate package and for the Tutorial in Biostatistics: Competing risks and multi-state models~\citep{Tut}, simply referred to henceforth as the tutorial. Emphasis in this document will be on the use of \mstate, not on the theory of competing risks and multi-state models. The only exception is that I have added some theory about the Aalen-Johansen estimator that is implemented in \mstate but did not appear in \tut. For other theory on multi-state models, and for interpretation of the results of the analyses, we will repeatedly refer to \tut. I will occasionally give more detail and show more analyses than in \tut.  Also I sometimes give more details on the function in \mstate than strictly necessary for the analyses in \tut, but not all features will be shown either. This file and the \mstate package, which in turn contains all the data used in \tut, can be found at \url{http://www.msbi.nl/multistate}. This file is also a vignette of the \mstate package. Type \Rcode{vignette("Tutorial")} after having installed and loaded \mstate to access this document within R.
 
-I do not follow the order of \tut. Rather, I will start with multi-state models, Section 4 of \tut, and finally switch back to the special case of \crs models. Sections~\ref{sec:prep}, \ref{sec:est} and \ref{sec:pred} will discuss data preparation, estimation and prediction, respectively in multi-state models. In Section~\ref{sec:comprisk} I illustrate some functions of \mstate designed especially for competing risks.
+I do not follow the order of \tut. Rather, I will start with multi-state models, Section 4 of \tut, and finally switch back to the special case of \crs models. Sections~\ref{sec:prep}, \ref{sec:est} and \ref{sec:pred} of this document will discuss data preparation, estimation and prediction, respectively in multi-state models. In Section~\ref{sec:comprisk} I illustrate some functions of \mstate designed especially for competing risks.
 
 After installation, the \mstate package is loaded in the usual way.
 <<label=mstate>>=
@@ -140,6 +140,11 @@ tmat[2,3] <- 3
 dimnames(tmat) <- list(from=c("Tx","PR","RelDeath"),to=c("Tx","PR","RelDeath"))
 tmat
 @
+Steven McKinney has kindly provided a convenient function \Rfunction{transMat} to define transition matrices. The same transition matrix may be constructed as follows.
+<<label=transMat>>=
+tmat <- transMat(x=list(c(2,3),c(3),c()), names=c("Tx","PR","RelDeath"))
+tmat
+@
 For common \msms, such as the illness-death model (and competing risks models, Section~\ref{sec:comprisk}) there is a built-in function to obtain these transition matrices more easily.
 <<label=tmat2>>=
 tmat <- trans.illdeath(names=c("Tx","PR","RelDeath"))
@@ -149,7 +154,7 @@ The function \paths can be used to give a list of all possible paths through the
 <<label=paths>>=
 paths(tmat)
 @
-Time is reported in days; before doing any analysis, we first convert this to years.
+Time in the \Robject{ebmt3} data is reported in days; before doing any analysis, we first convert this to years.
 <<label=times>>=
 ebmt3$prtime <- ebmt3$prtime/365.25
 ebmt3$rfstime <- ebmt3$rfstime/365.25
@@ -160,22 +165,25 @@ covs <- c("dissub", "age", "drmatch", "tcd", "prtime")
 msbmt <- msprep(time=c(NA,"prtime","rfstime"),
     status=c(NA,"prstat","rfsstat"), data=ebmt3, trans=tmat,
     keep=covs)
+@
+The result is an S3 object of class \Rclass{msdata} and \Rclass{data.frame}. An \Rclass{msdata} object is actually only a data frame with a \Ritem{trans} attribute holding the transition matrix used to define it. A \Rfunction{print} method has been defined for \Rclass{msdata} objects, which also prints the transition matrix if requested (set argument \Rfunarg{trans} to \TRUE, default is \FALSE).
+<<label=msbmt>>=
 head(msbmt)
 @
 In the above call of \msprep, the \Rfunarg{time} and \Rfunarg{status} arguments specify the column names in the data \Robject{ebmt3} corresponding to the three states in the multi-state model. Since all the patients start in state 1 at time 0, the \Rfunarg{time} and \Rfunarg{status} arguments corresponding to the first state do not really have a value. In such cases, the corresponding elements of \Rfunarg{time} and \Rfunarg{status} may be given the value \NA. An alternative way of specifying \Rfunarg{time} and \Rfunarg{status} (and \Rfunarg{keep} as well) is as matrices of dimension $n \times S$ with $S$ the number of states (and $n \times p$ with $p$ the number of covariates for \Rfunarg{keep}). The \Rfunarg{data} argument doesn't need to be specified then.
 
 The number of events in the data can be summarized with the function \events.
 <<label=events>>=
-events(msbmt,tmat)
+events(msbmt)
 @
 For regression purposes, we now add transition-specific covariates to the dataset. For more details on transition-specific covariates, refer to \tut. For a numerical covariate \Rcolumn{cov}, the names of the expanded (transition-specific) covariates are \Rcolumn{cov.1}, \Rcolumn{cov.2} etc. The extension \Rcolumn{.i} refers to transition number $i$. First, we define these transition-specific covariates as a separate dataset, by setting \Rfunarg{append} to \FALSE.
 <<label=expandcovs>>=
-expcovs <- expand.covs(msbmt,tmat,covs[2:3],append=FALSE)
+expcovs <- expand.covs(msbmt,covs[2:3],append=FALSE)
 head(expcovs)
 @
 We see that this expanded covariates dataset is quite large, and that the covariate names are quite long. For categorical covariates, the default names of the expanded covariates are a combination of the covariate name, the level (similar to the names of the regression coefficients that you see in regression output), followed by the transition number, in such a way that the combination is allowed as column name. If these names are too long, the user may set the value of \Rfunarg{longnames} (default=\TRUE) to \FALSE. In this case, the covariate name is followed by \Rcolumn{1}, \Rcolumn{2} etc, before the transition number. In case of a covariate with only two levels, the covariate name is just followed by the transition number. Confident that this will work out, we also set \Rfunarg{append} to \TRUE (default), which will append the expanded covariates to the dataset.
 <<label=expandcovs2>>=
-msbmt <- expand.covs(msbmt,tmat,covs,append=TRUE,longnames=FALSE)
+msbmt <- expand.covs(msbmt,covs,append=TRUE,longnames=FALSE)
 head(msbmt)
 @
 The names indeed are quite a bit shorter. The downside however is that we need to remember for ourselves to which category for instance the number \Rcolumn{1} in \Rcolumn{age1.2} corresponds (age 20-40 with $\leq 20$ as reference category).
@@ -210,7 +218,7 @@ For a discussion of the results we again refer to \tut. The hazard ratio of \pr 
 <<label=coxzph>>=
 cox.zph(c2)
 @
-There is no evidence of non-proportionality of the baseline transition intensities of transitions 2 ($p$=0.496 for \pr). There is also strong evidence that the \PH assumption for \Rcolumn{dissub2} (CML vs AML) is violated, at least for the transitions into relapse and death. This makes sense, clinically, since CML and AML are two diseases with completely different biological pathways. It would have been much better to  study separate \msms for the three disease subclassifications. However, since the purpose of this manuscript is to illustrate the use of \mstate, we will blatantly ignore the clear evidence of non-proportionality for the disease subclassifications.
+There is no evidence of non-proportionality of the baseline transition intensities of transitions 2 ($p$=0.496 for \pr). There is strong evidence that the \PH assumption for \Rcolumn{dissub2} (CML vs AML) is violated, at least for the transitions into relapse and death. This makes sense, clinically, since CML and AML are two diseases with completely different biological pathways. It would have been much better to  study separate \msms for the three disease subclassifications. However, since the purpose of this manuscript is to illustrate the use of \mstate, we will blatantly ignore the clear evidence of non-proportionality for the disease subclassifications.
 
 Building on the Markov PH model, we can investigate whether the time at which a patient arrived in state 2 (PR) influences the subsequent RFS rate, that is, the transition hazard of PR $\to$ RelDeath. Here the purpose of expanding \prtime becomes apparent. Since \prtime only makes sense for transition 3 (PR $\to$ RelDeath), we need the transition-specific covariate of \prtime for transition 3, which is \Rcolumn{prtime.3}. The corresponding model is termed the "state arrival extended Markov PH" model in \tut, and appears on the right of Table III.
 <<label=nonMarkovPH>>=
@@ -251,14 +259,16 @@ c6 <- coxph(Surv(time,status) ~ dissub1.1 + dissub2.1 + age1.1 + age2.1 + drmatc
 
 In order to obtain prediction probabilities in the context of the Markov \msms discussed in the previous section, basically two steps are involved. The first is to use the estimated parameters and baseline transition hazards and the covariate values of a patient of interest, to obtain patient-specific transition hazards for that patient, for each of the transitions in the \msm. This is what the function \msfit is designed to do. The second step is to use the resulting patient-specific transition hazards (and variances and covariances) as input for \probtrans to obtain (patient-specific) transition probabilities.
 
-I will first show how \msfit can be used to obtain the baseline hazards associated with the Markov stratified and PH models. The hazards of the Markov stratified models (and their variances and covariates) are obtained by first creating a new dataset containing the (expanded) covariates along with their values (in this case 0). This is very similar to the use of \survfit from the \survival package. The important difference is that for one patient, this \newdata data frame needs to have exactly one line for each transition. When transition-specific covariates have been used in the model, the easiest way to obtain such a data frame is to first create a data frame with the basic covariates and then using \expandcovs to obtain the transition-specific covariates. We also copy the levels of the categorical covariates before expanding, although this is not really necessary here.
+I will first show how \msfit can be used to obtain the baseline hazards associated with the Markov stratified and PH models. The hazards of the Markov stratified models (and their variances and covariates) are obtained by first creating a new dataset containing the (expanded) covariates along with their values (in this case 0). This is very similar to the use of \survfit from the \survival package. The important difference is that for one patient, this \newdata data frame needs to have exactly one line for each transition. When transition-specific covariates have been used in the model, the easiest way to obtain such a data frame is to first create a data frame with the basic covariates and then using \expandcovs to obtain the transition-specific covariates. Since \expandcovs expects an \Rclass{msdata} object, we set the class of the \newdata data to \Rclass{msdata} explicitly. We also copy the levels of the categorical covariates before expanding, although this is not really necessary here.
 <<label=newdata>>=
 newd <- data.frame(dissub=rep(0,3),age=rep(0,3),drmatch=rep(0,3),tcd=rep(0,3),trans=1:3)
 newd$dissub <- factor(newd$dissub,levels=0:2,labels=levels(ebmt3$dissub))
 newd$age <- factor(newd$age,levels=0:2,labels=levels(ebmt3$age))
 newd$drmatch <- factor(newd$drmatch,levels=0:1,labels=levels(ebmt3$drmatch))
 newd$tcd <- factor(newd$tcd,levels=0:1,labels=levels(ebmt3$tcd))
-newd <- expand.covs(newd,tmat,covs[1:4],longnames=FALSE)
+attr(newd, "trans") <- tmat
+class(newd) <- c("msdata","data.frame")
+newd <- expand.covs(newd,covs[1:4],longnames=FALSE)
 newd$strata=1:3
 newd
 @
@@ -266,82 +276,54 @@ The last command where the column \Rcolumn{strata} is added is important and poi
 
 To obtain an estimate of the baseline cumulative hazard for the "stratified hazards" model, \msfit can be called with the first Cox model, \Robject{c1}, as input model, and \Robject{newd} as \Rfunarg{newdata} argument.
 <<label=msfit>>=
-msf1 <- msfit(c1, newdata=newd)
+msf1 <- msfit(c1, newdata=newd, trans=tmat)
 @
-The result is a list with two items, \Haz and \varHaz. \Haz contains the estimated cumulative hazard for each of the transitions for the particular patient specified in \Robject{newd}, while \varHaz contains the estimated variances of these cumulative hazards, as well as the covariances for each combination of two transitions. All are evaluated at the time points for which any event in any transition occurs, possibly augmented with the largest (non-event) time point in the data.
-<<label=msfitresults>>=
-head(msf1$Haz)
-tail(msf1$Haz)
-head(msf1$varHaz)
-tail(msf1$varHaz)
+The result is an object of class \Rclass{msfit}, which is a list with three items, \Haz, \varHaz, and \Ritem{trans}. The item \Ritem{trans} records the transition matrix used when constructing the \Rclass{msfit} object. \Haz contains the estimated cumulative hazard for each of the transitions for the particular patient specified in \Robject{newd}, while \varHaz contains the estimated variances of these cumulative hazards, as well as the covariances for each combination of two transitions. All are evaluated at the time points for which any event in any transition occurs, possibly augmented with the largest (non-event) time point in the data. The \Rfunction{summary} method for \Rclass{msfit} objects is most conveniently used for a summary. If we also would like to have a look at the covariances, we could set the argument \Rfunarg{variance} equal to \TRUE.
+<<label=msfitsummary>>=
+summary(msf1)
 @
-Let us have a closer look at the covariances as well.
+Let us have a closer look at some of the variances and covariances as well.
 <<label=msf1cov>>=
 vH1 <- msf1$varHaz
+head(vH1[vH1$trans1==1 & vH1$trans2==1,])
+tail(vH1[vH1$trans1==1 & vH1$trans2==1,])
 tail(vH1[vH1$trans1==1 & vH1$trans2==2,])
 tail(vH1[vH1$trans1==1 & vH1$trans2==3,])
 tail(vH1[vH1$trans1==2 & vH1$trans2==3,])
 @
-Note that the covariances of the estimated cumulative hazards are practically (apart from rounding erros) 0. Theoretically, they should be 0, because with separate strata and separate covariate effects for the different transitions, the estimates of the three transitions could in fact have been estimated as three separate Cox models (this would give exactly the same results).
+Note that the covariances of the estimated cumulative hazards are practically (apart from rounding errors) 0. Theoretically, they should be 0, because with separate strata and separate covariate effects for the different transitions, the estimates of the three transitions could in fact have been estimated as three separate Cox models (this would give exactly the same results).
 
 The estimated baseline cumulative hazards for the Markov PH model are obtained in mostly the same way. The only exception is the specification of the \Rfunarg{strata} argument in \Robject{newd}. Instead of taking the values 1, 2, and 3, for the three transitions, they take values 1, 2, 2, to indicate that transition 1 corresponds to stratum 1, and both transitions 2 and 3 correspond to stratum 2 (the order of the strata as defined in the \Robject{coxph} object). Also the time-dependent covariate \pr needs to be included, taking the value 0 for transitions 1 and 2, and 1 for transition 3.
 <<label=msfit2>>=
 newd$strata=c(1,2,2)
 newd$pr <- c(0,0,1)
-msf2 <- msfit(c2, newdata=newd)
-head(msf2$Haz)
-tail(msf2$Haz)
-head(msf2$varHaz)
-tail(msf2$varHaz)
-@
-Note that the estimated cumulative hazards and variances for transition 1 are identical to those from \Robject{msf1}. We saw earlier that the estimated regression coefficients were also identical for the Markov stratified and the Markon PH models. Note also that the variance of the cumulative hazard of transition 3 (and 2, not shown) is smaller than with \Robject{msf1}.
-
-A closer look at the covariances:
-<<label=msf2cov>>=
+msf2 <- msfit(c2, newdata=newd, trans=tmat)
+summary(msf2)
 vH2 <- msf2$varHaz
 tail(vH2[vH2$trans1==1 & vH2$trans2==2,])
 tail(vH2[vH2$trans1==1 & vH2$trans2==3,])
 tail(vH2[vH2$trans1==2 & vH2$trans2==3,])
 @
-The cumulative hazard estimates of transitions 1 and 2 are still uncorrelated (and 1 and 3), but those of transitions 2 and 3 are positively correlated now, because they share a common baseline. 
+Note that the estimated cumulative hazards and variances for transition 1 are identical to those from \Robject{msf1}. We saw earlier that the estimated regression coefficients were also identical for the Markov stratified and the Markon PH models. Note also that the variance of the cumulative hazard of transition 3 (and 2, not shown) is smaller than with \Robject{msf1}. The cumulative hazard estimates of transitions 1 and 2 are still uncorrelated (and 1 and 3), but those of transitions 2 and 3 are correlated now, because they share a common baseline. 
 
-Let us compare the baseline hazards of the Markov stratified and PH models graphically. Figure~\ref{fig:fig14} corresponds to Figure~14 in \tut.
+Let us compare the baseline hazards of the Markov stratified and PH models graphically. For this we use the \Rfunction{plot} method for \Rclass{msfit} objects. Figure~\ref{fig:fig14} corresponds to Figure~14 in \tut.
 <<label=fig14a,eval=FALSE>>=
-H1 <- msf1$Haz
-tv <- c(0,H1$time[H1$trans==1])
-plot(tv,c(0,H1$Haz[H1$trans==1]),xlim=c(0,7.12),ylim=c(0,1),type="s",lwd=2,xlab="Years since transplant",ylab="Cumulative baseline hazard")
-lines(tv,c(0,H1$Haz[H1$trans==2]),type="s",lwd=2,lty=2)
-lines(tv,c(0,H1$Haz[H1$trans==3]),type="s",lwd=2,lty=3)
-legend(7.2,0.9,legend=c("1 -> 2  ","1 -> 3  ","2 -> 3  "),lty=1:3,lwd=2,xjust=1)
-title(main="Stratified baseline hazards")
-H2 <- msf2$Haz
-tv <- c(0,H2$time[H2$trans==1])
-plot(tv,c(0,H2$Haz[H2$trans==1]),xlim=c(0,7.12),ylim=c(0,1),type="s",lwd=2,xlab="Years since transplant",ylab="Cumulative baseline hazard")
-lines(tv,c(0,H2$Haz[H2$trans==2]),type="s",lwd=2,lty=2)
-lines(tv,c(0,H2$Haz[H2$trans==3]),type="s",lwd=2,lty=3)
-legend(7.2,0.9,legend=c("1 -> 2  ","1 -> 3  ","2 -> 3  "),lty=1:3,lwd=2,xjust=1)
-title(main="Proportional baseline hazards")
+par(mfrow=c(1,2))
+plot(msf1,cols=rep(1,3),lwd=2,lty=1:3,legend=c("1 -> 2  ","1 -> 3  ","2 -> 3  "),
+    xlab="Years since transplant",ylab="Stratified baseline hazards",legend.pos=c(2,0.9))
+plot(msf2,cols=rep(1,3),lwd=2,lty=1:3,legend=c("1 -> 2  ","1 -> 3  ","2 -> 3  "),
+    xlab="Years since transplant",ylab="Proportional baseline hazards",legend.pos=c(2,0.9))
+par(mfrow=c(1,1))
 @
-\setkeys{Gin}{width=0.45\textwidth}
 \begin{figure}[h!]
     \centering
 <<label=fig14b,echo=FALSE,fig=TRUE>>=
-H1 <- msf1$Haz
-tv <- c(0,H1$time[H1$trans==1])
-plot(tv,c(0,H1$Haz[H1$trans==1]),xlim=c(0,7.12),ylim=c(0,1),type="s",lwd=2,xlab="Years since transplant",ylab="Cumulative baseline hazard")
-lines(tv,c(0,H1$Haz[H1$trans==2]),type="s",lwd=2,lty=2)
-lines(tv,c(0,H1$Haz[H1$trans==3]),type="s",lwd=2,lty=3)
-legend(7.2,0.9,legend=c("1 -> 2  ","1 -> 3  ","2 -> 3  "),lty=1:3,lwd=2,xjust=1)
-title(main="Stratified baseline hazards")
-@
-<<label=fig14c,echo=FALSE,fig=TRUE>>=
-H2 <- msf2$Haz
-tv <- c(0,H2$time[H2$trans==1])
-plot(tv,c(0,H2$Haz[H2$trans==1]),xlim=c(0,7.12),ylim=c(0,1),type="s",lwd=2,xlab="Years since transplant",ylab="Cumulative baseline hazard")
-lines(tv,c(0,H2$Haz[H2$trans==2]),type="s",lwd=2,lty=2)
-lines(tv,c(0,H2$Haz[H2$trans==3]),type="s",lwd=2,lty=3)
-legend(7.2,0.9,legend=c("1 -> 2  ","1 -> 3  ","2 -> 3  "),lty=1:3,lwd=2,xjust=1)
-title(main="Proportional baseline hazards")
+par(mfrow=c(1,2))
+plot(msf1,cols=rep(1,3),lwd=2,lty=1:3,legend=c("1 -> 2  ","1 -> 3  ","2 -> 3  "),
+    xlab="Years since transplant",ylab="Stratified baseline hazards",legend.pos=c(2,0.9))
+plot(msf2,cols=rep(1,3),lwd=2,lty=1:3,legend=c("1 -> 2  ","1 -> 3  ","2 -> 3  "),
+    xlab="Years since transplant",ylab="Proportional baseline hazards",legend.pos=c(2,0.9))
+par(mfrow=c(1,1))
 @
     \caption{Baseline cumulative hazard curves for the EBMT illness-death model.
     On the left the Markov stratified hazards model, on the right the Markov PH model.}
@@ -365,141 +347,111 @@ as an estimate of the transition probabilities. This estimator is called the Aal
     \hat{\PP}(s,t+) = \hat{\PP}(s,t) \cdot
         \left( \II + d\hat{\LLambda}(t+) \right)\ .
 \]
-\citet{ABGK} and \citet{deW} also describe recursive formulas for the covariance matrix of $\hat{\PP}(s,t)$, with and without covariates, which are also implemented.
+\citet{ABGK} and \citet{deW} also describe recursive formulas for the covariance matrix of $\hat{\PP}(s,t)$, with and without covariates, which are implemented in \mstate.
 
-Let us see all this theory in action and let us recreate Figure~15 of \tut. For this we need to calculate transition probabilities for a baseline patient, based on the Markov PH model. We thus use \Robject{msf2} as input for \probtrans. By default, \probtrans uses forward prediction, which means that $s$ is kept fixed and $t>s$. The argument \Rfunarg{predt} specifies either $s$ or $t$. In this case (forward prediction) it specifies $s$.
+Let us see all this theory in action and let us recreate Figure~15 of \tut. For this we need to calculate transition probabilities for a baseline patient, based on the Markov PH model. We thus use \Robject{msf2} as input for \probtrans. By default, \probtrans uses forward prediction, which means that $s$ is kept fixed and $t>s$. The argument \Rfunarg{predt} specifies either $s$ or $t$. In this case (forward prediction) it specifies $s$. From version 0.2.3 on, \probtrans no longer needs a \Rfunarg{trans} argument, but takes that from the \Ritem{trans} item of the \Rclass{msfit} object.
 <<label=probtrans1>>=
-pt <- probtrans(msf2,tmat,predt=0)
+pt <- probtrans(msf2, predt=0)
 @
-The result of \probtrans is a list, where item \Ritem{[[i]]} contains predictions from state $i$. Each item of the list is a data frame with \Rcolumn{time} containing all event time points, and \Rcolumn{pstate1}, \Rcolumn{pstate2}, etc the probabilities of being in state 1, 2, etc, and finally \Rcolumn{se1}, \Rcolumn{se2} etc the standard errors of these estimated probabilities. The item \Ritem{[[3]]} contains predictions $\hat{P}_{3h}(0,t)$ (we chose $s=0$) starting from the RelDeath state, which is absorbing.
+The result of \probtrans is a \Rclass{probtrans} object, which is a list, where item \Ritem{[[i]]} contains predictions from state $i$. Each item of the list is a data frame with \Rcolumn{time} containing all event time points, and \Rcolumn{pstate1}, \Rcolumn{pstate2}, etc the probabilities of being in state 1, 2, etc, and finally \Rcolumn{se1}, \Rcolumn{se2} etc the standard errors of these estimated probabilities. The item \Ritem{[[3]]} contains predictions $\hat{P}_{3h}(0,t)$ (we chose $s=0$) starting from the RelDeath state, which is absorbing.
 <<label=pt13>>=
 head(pt[[3]])
 tail(pt[[3]])
 @
 We see that these prediction probabilities are not so interesting; the probabilities are all 0 or 1, and, since there is no randomness, all the SE's are 0. Item \Ritem{[[2]]} contains predictions $\hat{P}_{2h}(0,t)$ from state 2.
+
+It is easier to use the \Rfunction{summary} method for \Rclass{probtrans} objects. The user may specify a \Rfunarg{from} argument, specifying from which state the predictions are to be printed. The \Rfunction{summary} method prints a selection, the \Rfunction{head} and \Rfunction{tail} by default unless there are fewer than 12 time points. When \Rfunarg{complete} is set to \TRUE, predictions for all time points are printed. If the \Rfunarg{from} argument is missing in the function call, then predictions from all states are printed.
 <<label=pt12>>=
-head(pt[[2]])
-tail(pt[[2]])
+summary(pt, from=2)
 @
 From state 2 it is only possible to visit state 3 or to remain in state 2. The probability of going to state 1 is 0. The predictions $\hat{P}_{1h}(0,t)$ from state 1 in \Ritem{[[1]]} are perhaps of most interest here.
 <<label=pt11>>=
-head(pt[[1]])
-tail(pt[[1]])
+summary(pt, from=1)
 @
 But we see that we do not have enough information to create Figure 15 of \tut, since the probability of the relapse/death state (\Rcolumn{pstate3}) does not distinguish between relapse/death before or after \PR. The remedy is actually easy in this case. Consider a different \msm with two RelDeath states, the first one (state 3) after \PR, the second one (state 4) without \PR. The transition matrix of this \msm is defined as
 <<label=tmat2>>=
-tmat2 <- matrix(NA,4,4)
-tmat2[1,2] <- 1
-tmat2[1,4] <- 2
-tmat2[2,3] <- 3
+tmat2 <- transMat(x=list(c(2,4),c(3),c(),c()))
 tmat2
 @
-The \msm has four states and the same three transitions as before. If we apply \probtrans to this new \msm with the same estimated cumulative hazards and standard errors as before, we get exactly what we want. Thus, we just have to call \probtrans with the old \Robject{msf2} and the new \Robject{tmat2}. In the elements of the resulting lists, \Rcolumn{pstate3} will indicate the probability of relapse/death after \PR and \Rcolumn{pstate4} the probability of relapse/death without \PR.
+The \msm has four states and the same three transitions as before. If we apply \probtrans to this new \msm with the same estimated cumulative hazards and standard errors as before, we get exactly what we want. Thus, we just have to call \probtrans with the old \Robject{msf2} and the new \Robject{tmat2}. From version 0.2.3 on, since the transition matrix is in the \Rclass{msfit} object, we just need to replace the \Ritem{trans} item of \Robject{msf2} by \Robject{tmat2}. In the elements of the resulting lists, \Rcolumn{pstate3} will indicate the probability of relapse/death after \PR and \Rcolumn{pstate4} the probability of relapse/death without \PR.
 <<label=probtrans2>>=
-pt <- probtrans(msf2,tmat2,predt=0)
-pt1 <- pt[[1]]
-head(pt1)
-tail(pt1)
+msf2$trans <- tmat2
+pt <- probtrans(msf2, predt=0)
+summary(pt, from=1)
 @
 The reader may check that the \Rcolumn{pstate3} and \Rcolumn{pstate4} probabilities of this new Aalen-Johansen estimator sum up to the \Rcolumn{pstate3} probability of the result of the previous call to \probtrans, and that the \Rcolumn{pstate1} and \Rcolumn{pstate2} probabilities are unchanged.
 
-Figure~\ref{fig:fig15} contains a plot of \Robject{pt1}.
+Figure~\ref{fig:fig15} contains a plot of \Robject{pt1}. For this we use the \Rfunction{plot} method for \Rclass{probtrans} objects.
 <<label=pt2plot,eval=FALSE>>=
-tv <- pt1$time
-nmax <- length(tv)
-tmax <- tv[nmax]
-plot(tv,pt1$pstate2,type="s",ylim=c(0,1),
-    xlab="Years since transplant", ylab="Prediction probabilities",
-    lwd=2)
-lines(tv,pt1$pstate2+pt1$pstate3,type="s",lwd=2)
-lines(tv,pt1$pstate2+pt1$pstate3+pt1$pstate4,type="s",lwd=2)
-text(tmax,pt1$pstate2[nmax]/2,"Alive in remission, PR",adj=1,cex=0.75)
-text(tmax,pt1$pstate2[nmax]+pt1$pstate3[nmax]*.65,"Relapse or death after PR",adj=1,cex=0.75)
-text(tmax,pt1$pstate2[nmax]+pt1$pstate3[nmax]+pt1$pstate4[nmax]/2,"Relapse or death without PR",adj=1,cex=0.75)
-text(tmax,1-pt1$pstate1[nmax]/2,"Alive in remission, no PR",adj=1,cex=0.75)
+plot(pt,ord=c(2,3,4,1),lwd=2,
+    xlab="Years since transplant",ylab="Prediction probabilities",cex=0.75,
+    legend=c("Alive in remission, no PR","Alive in remission, PR",
+    "Relapse or death after PR","Relapse or death without PR"))
 @
 \begin{figure}[h!]
     \centering
 <<label=pt2plot,echo=FALSE,fig=TRUE>>=
-tv <- pt1$time
-nmax <- length(tv)
-tmax <- tv[nmax]
-plot(tv,pt1$pstate2,type="s",ylim=c(0,1),
-    xlab="Years since transplant", ylab="Prediction probabilities",
-    lwd=2)
-lines(tv,pt1$pstate2+pt1$pstate3,type="s",lwd=2)
-lines(tv,pt1$pstate2+pt1$pstate3+pt1$pstate4,type="s",lwd=2)
-text(tmax,pt1$pstate2[nmax]/2,"Alive in remission, PR",adj=1,cex=0.75)
-text(tmax,pt1$pstate2[nmax]+pt1$pstate3[nmax]*.65,"Relapse or death after PR",adj=1,cex=0.75)
-text(tmax,pt1$pstate2[nmax]+pt1$pstate3[nmax]+pt1$pstate4[nmax]/2,"Relapse or death without PR",adj=1,cex=0.75)
-text(tmax,1-pt1$pstate1[nmax]/2,"Alive in remission, no PR",adj=1,cex=0.75)
+plot(pt,ord=c(2,3,4,1),lwd=2,
+    xlab="Years since transplant",ylab="Prediction probabilities",cex=0.75,
+    legend=c("Alive in remission, no PR","Alive in remission, PR",
+    "Relapse or death after PR","Relapse or death without PR"))
 @
     \caption{Stacked prediction probabilities at $s=0$ for a reference patient. PR stands for \PR}
     \label{fig:fig15}
 \end{figure}
+The argument \Rfunarg{from} determines from which state the transition probabilities are to be plotted. The default is from state 1, which is what we want, so the \Rfunarg{from} argument is omitted here. The default \Rfunarg{type} of the \Rfunction{plot} method for \Rclass{probtrans} objects is a "stacked" plot, for which the difference between two adjacent lines represents the probability of being in a state. The argument \Rfunarg{ord} specifies the order of the states of which the probabilities are stacked. The present order, 2, 3, 4, 1, allows states 2 and 3 to be combined visually (states with \PR) and states 3 and 4 (death states). Other plot types are "filled", which is like "stacked", but uses colors to fill the space between adjacent lines, "single", which simply plots the transition probabilities as different lines in a single plot, and "separate", which uses separate plots for the transition probabilities.
+
 To obtain the predictions $\hat{P}_{1h}(s,t)$ for $s=0.5$, which are plotted in Figure 16 of \tut, we simply change the value of \Rfunarg{predt} in the call to \probtrans.
 <<label=probtrans2>>=
-pt <- probtrans(msf1,tmat2,predt=0.5)
-pt1 <- pt[[1]]
-head(pt1)
+pt <- probtrans(msf2, predt=0.5)
+summary(pt, from=1)
 @
 The result now contains only time points $t \geq 0.5$. Figure~\ref{fig:fig16} contains a plot of \Robject{pt1}.
 <<label=pt2plot2state,eval=FALSE>>=
-tv <- pt1$time
-nmax <- length(tv)
-tmax <- tv[nmax]
-plot(tv,pt1$pstate2,type="s",ylim=c(0,1),xlim=c(0,tmax),
-    xlab="Years since transplant", ylab="Prediction probabilities",
-    lwd=2)
-lines(tv,pt1$pstate2+pt1$pstate3,type="s",lwd=2)
-lines(tv,pt1$pstate2+pt1$pstate3+pt1$pstate4,type="s",lwd=2)
-text(tmax,pt1$pstate2[nmax]/2,"Alive in remission, PR",adj=1,cex=0.75)
-text(tmax,pt1$pstate2[nmax]+pt1$pstate3[nmax]*.65,"Relapse or death after PR",adj=1,cex=0.75)
-text(tmax,pt1$pstate2[nmax]+pt1$pstate3[nmax]+pt1$pstate4[nmax]/2,"Relapse or death without PR",adj=1,cex=0.75)
-text(tmax,1-pt1$pstate1[nmax]/2,"Alive in remission, no PR",adj=1,cex=0.75)
+plot(pt,ord=c(2,3,4,1),lwd=2,
+    xlab="Years since transplant",ylab="Prediction probabilities",cex=0.75,
+    legend=c("Alive in remission, no PR","Alive in remission, PR",
+    "Relapse or death after PR","Relapse or death without PR"))
 @
 \begin{figure}
     \centering
 <<label=pt2plot2do,echo=FALSE,fig=TRUE>>=
-tv <- pt1$time
-nmax <- length(tv)
-tmax <- tv[nmax]
-plot(tv,pt1$pstate2,type="s",ylim=c(0,1),xlim=c(0,tmax),
-    xlab="Years since transplant", ylab="Prediction probabilities",
-    lwd=2)
-lines(tv,pt1$pstate2+pt1$pstate3,type="s",lwd=2)
-lines(tv,pt1$pstate2+pt1$pstate3+pt1$pstate4,type="s",lwd=2)
-text(tmax,pt1$pstate2[nmax]/2,"Alive in remission, PR",adj=1,cex=0.75)
-text(tmax,pt1$pstate2[nmax]+pt1$pstate3[nmax]*.65,"Relapse or death after PR",adj=1,cex=0.75)
-text(tmax,pt1$pstate2[nmax]+pt1$pstate3[nmax]+pt1$pstate4[nmax]/2,"Relapse or death without PR",adj=1,cex=0.75)
-text(tmax,1-pt1$pstate1[nmax]/2,"Alive in remission, no PR",adj=1,cex=0.75)
+plot(pt,ord=c(2,3,4,1),lwd=2,
+    xlab="Years since transplant",ylab="Prediction probabilities",cex=0.75,
+    legend=c("Alive in remission, no PR","Alive in remission, PR",
+    "Relapse or death after PR","Relapse or death without PR"))
 @
     \caption{Stacked prediction probabilities at $s=0.5$ for a reference patient}
     \label{fig:fig16}
 \end{figure}
 Figure 17 of \tut distinguishes between three patients, one being the good old (or rather young) reference patient, for which we have already calculated the probabilities, one for a patient in the age category 20-40, and one for a patient older than 40. To obtain prediction probabilities for the latter two patients as well, we have to repeat part of the calculations, changing only the value of age in the \Robject{newdata} data frame.
 <<label=makefig17a,keep.source=TRUE>>=
+msf2$trans <- tmat
 msf.20 <- msf2 # copy msfit result for reference (young) patient
 newd <- newd[,1:5] # use the basic covariates of the reference patient
 newd2 <- newd
 newd2$age <- 1
 newd2$age <- factor(newd2$age,levels=0:2,labels=levels(ebmt3$age))
-newd2 <- expand.covs(newd2,tmat,covs[1:4],longnames=FALSE)
+attr(newd2, "trans") <- tmat
+class(newd2) <- c("msdata","data.frame")
+newd2 <- expand.covs(newd2,covs[1:4],longnames=FALSE)
 newd2$strata=c(1,2,2)
 newd2$pr <- c(0,0,1)
-msf.2040 <- msfit(c2, newdata=newd2)
+msf.2040 <- msfit(c2, newdata=newd2, trans=tmat)
 newd3 <- newd
 newd3$age <- 2
 newd3$age <- factor(newd3$age,levels=0:2,labels=levels(ebmt3$age))
-newd3 <- expand.covs(newd3,tmat,covs[1:4],longnames=FALSE)
+attr(newd3, "trans") <- tmat
+class(newd3) <- c("msdata","data.frame")
+newd3 <- expand.covs(newd3,covs[1:4],longnames=FALSE)
 newd3$strata=c(1,2,2)
 newd3$pr <- c(0,0,1)
-msf.40 <- msfit(c2, newdata=newd3)
-pt.20 <- probtrans(msf.20,tmat,predt=0) # original young (<= 20) patient
+msf.40 <- msfit(c2, newdata=newd3, trans=tmat)
+pt.20 <- probtrans(msf.20,predt=0) # original young (<= 20) patient
 pt.201 <- pt.20[[1]]; pt.202 <- pt.20[[2]]
-pt.2040 <- probtrans(msf.2040,tmat,predt=0) # patient 20-40
+pt.2040 <- probtrans(msf.2040,predt=0) # patient 20-40
 pt.20401 <- pt.2040[[1]]; pt.20402 <- pt.2040[[2]]
-pt.40 <- probtrans(msf.40,tmat,predt=0) # patient > 40
+pt.40 <- probtrans(msf.40,predt=0) # patient > 40
 pt.401 <- pt.40[[1]]; pt.402 <- pt.40[[2]]
 @
 The 5-years transition probabilities $P_{13}(0,5)$ and $P_{23}(0,5)$ are estimated as 0.30275 and 0.26210 respectively.
@@ -537,15 +489,15 @@ legend("topright",c("<=20","20-40",">40"),lwd=2,col=c("red","blue","green"),bty=
 \end{figure}
 It is also possible to do backward prediction. This should not be understood as attempting to predict the past. It means that in our prediction probabilities $P_{gh}(s,t)$, we fix $t$, a time horizon, and we want to study how $P_{gh}(s,t)$ changes as more and more information on a patient becomes available. From a computational point of view this just means that the order of the matrix multiplication in~\eqref{eq:AJ} is reversed. We will plot $1-\hat{P}_{13}(s,5)$ and $1-\hat{P}_{23}(s,5)$, the 5-years relapse-free survival probabilities given that the patient is in state 1 (no PR) and in state 2 (PR), respectively, for the same three patients as before.
 <<label=backward>>=
-pt.20 <- probtrans(msf.20,tmat,direction="backward",predt=5)
+pt.20 <- probtrans(msf.20,direction="backward",predt=5)
 pt.201 <- pt.20[[1]]; pt.202 <- pt.20[[2]]
 head(pt.201); head(pt.202)
 @
 Here item \Ritem{[[1]]} gives estimates $\hat{P}_{1h}(s,5)$ and \Ritem{[[2]]} gives estimates $\hat{P}_{2h}(s,5)$. For item \Ritem{[[g]]}, the column \Rcolumn{time} gives the different values of $s$ and \Rcolumn{pstate1} etc give the estimated probabilities of being in state 1 etc at 5 years, conditional on being in state $g$ at time $s$. In \Robject{pt.201} we recognize at \Rcolumn{time} ($s$)=0) 0.30275 as $\hat{P}_{1h}(0,5)$ and in \Robject{pt.202} we see 0.26210 as $\hat{P}_{2h}(0,5)$. The backward transition probabilities for the other two patients are calculated similarly.
 <<label=backward2>>=
-pt.2040 <- probtrans(msf.2040,tmat,direction="backward",predt=5) # patient 20-40
+pt.2040 <- probtrans(msf.2040,direction="backward",predt=5) # patient 20-40
 pt.20401 <- pt.2040[[1]]; pt.20402 <- pt.2040[[2]]
-pt.40 <- probtrans(msf.40,tmat,direction="backward",predt=5) # patient > 40
+pt.40 <- probtrans(msf.40,direction="backward",predt=5) # patient > 40
 pt.401 <- pt.40[[1]]; pt.402 <- pt.40[[2]]
 @
 As mentioned before, in $s=0$, these probabilities are the same as the five-years probabilities of Figure~\ref{fig:Fig17}, and as $s$ approaches 5, the probabilities approach 1, since both $\hat{P}_{13}(s,5)$ and $\hat{P}_{23}(s,5)$ approach 0. Figure~\ref{fig:new} shows 5-years relapse-free survival probabilities, both with and without \PR, with the prediction time $s$ varying.
@@ -605,11 +557,11 @@ silong <- msprep(time=c(NA,"time","time"),status=c(NA,"stat1","stat2"),data=si,
 @
 We can use \events to check whether the number of events from original data (\Robject{si}) corresponds with long data.
 <<label=check>>=
-events(silong,tmat)
+events(silong)
 @
-For the regression analyses ot be performed later we add transition-specific covariates. In the context of \crs one could call them cause-specific covariates. Since the factor levels of CCR5 are quite short we keep the default setting (\TRUE) of \Rfunarg{longnames}.
+For the regression analyses to be performed later we add transition-specific covariates. In the context of \crs one could call them cause-specific covariates. Since the factor levels of CCR5 are quite short we keep the default setting (\TRUE) of \Rfunarg{longnames}.
 <<label=dummies>>=
-silong <- expand.covs(silong,tmat,"ccr5")
+silong <- expand.covs(silong,"ccr5")
 silong[1:8,] # shows the first four patients in long format, as in tutorial
 @
 To illustrate the fact that naive Kaplan-Meiers are biased estimators of the probabilities of failing from the different causes of failure, we just make use of the functions in the \Rpackage{survival} package. I am using \coxph below, probably this could be done quicker.
@@ -766,13 +718,13 @@ msf.WW <- msfit(c1, WW, trans=tmat)
 @
 And finally, to obtain the \cis we apply \probtrans. Item \Ritem{[[1]]} is selected because the prediction starts from state 1 (event-free) at time $s=0$.
 <<label=ci13>>=
-pt.WW <- probtrans(msf.WW, tmat, 0)[[1]]
+pt.WW <- probtrans(msf.WW, 0)[[1]]
 @
 Similarly for an individual with the CCR5 mutant (WM) genotype.
 <<label=ci22>>=
 WM <- data.frame(ccr5WM.1=c(1,0),ccr5WM.2=c(0,1),trans=c(1,2),strata=c(1,2))
 msf.WM <- msfit(c1, WM, trans=tmat)
-pt.WM <- probtrans(msf.WM, tmat, 0)[[1]]
+pt.WM <- probtrans(msf.WM, 0)[[1]]
 @
 We now plot these \ci curves for AIDS (\Rcolumn{pstate2}) and SI appearance (\Rcolumn{pstate3}), for wild-type (WW) and mutant (WM) in Figure~\ref{fig:Fig5} (Figure 5 in \tut).
 <<label=fig5,eval=FALSE>>=
@@ -820,16 +772,16 @@ text(7.5,0.245,"WM",adj=0,cex=0.75)
 The illustration of the phenomenon that the same cause-specific hazard ratio may have different effects on the cumulative incidences (Figure 7 in \tut) may be performed as well, by replacing the appropriate parts of the cumulative hazard of AIDS (\Rcolumn{trans}=1), and calling \probtrans. We are interested in SI appearance and adjust the hazards of the competing risk (AIDS) while keeping the remainder the same (Figure 7 in \tut). The result is shown in Figure~\ref{fig:Fig7}. We multiply the baseline hazard of AIDS with factors (\Robject{ff} = 0, 0.5, 1, 1.5, 2, 4).
 <<label=fig7,eval=FALSE>>=
 ffs <- c(0,0.5,1,1.5,2,4)
+newmsf.WW <- msf.WW
+newmsf.WM <- msf.WM
 par(mfrow=c(2,3))
 for (ff in ffs) {
     # WW
-    Haz.WW <- msf.WW$Haz
-    Haz.WW$Haz[Haz.WW$trans==1] <- ff*Haz.WW$Haz[Haz.WW$trans==1]
-    pt.WW <- probtrans(list(Haz=Haz.WW), tmat, 0, variance=FALSE)[[1]]
+    newmsf.WW$Haz$Haz[newmsf.WW$Haz$trans==1] <- ff*msf.WW$Haz$Haz[msf.WW$Haz$trans==1]
+    pt.WW <- probtrans(newmsf.WW, 0, variance=FALSE)[[1]]
     # WM
-    Haz.WM <- msf.WM$Haz
-    Haz.WM$Haz[Haz.WM$trans==1] <- ff*Haz.WM$Haz[Haz.WM$trans==1]
-    pt.WM <- probtrans(list(Haz=Haz.WM), tmat, 0, variance=FALSE)[[1]]
+    newmsf.WM$Haz$Haz[newmsf.WM$Haz$trans==1] <- ff*msf.WM$Haz$Haz[msf.WM$Haz$trans==1]
+    pt.WM <- probtrans(newmsf.WM, 0, variance=FALSE)[[1]]
     # Plot
     idx1 <- (pt.WW$time<13)
     idx2 <- (pt.WM$time<13)
@@ -845,16 +797,16 @@ par(mfrow=c(1,1))
 ### Multiply baseline hazard of AIDS with factors (ff)
 ### of ff = 0, 0.5, 1, 1.5, 2, 4
 ffs <- c(0,0.5,1,1.5,2,4)
+newmsf.WW <- msf.WW
+newmsf.WM <- msf.WM
 par(mfrow=c(2,3))
 for (ff in ffs) {
     # WW
-    Haz.WW <- msf.WW$Haz
-    Haz.WW$Haz[Haz.WW$trans==1] <- ff*Haz.WW$Haz[Haz.WW$trans==1]
-    pt.WW <- probtrans(list(Haz=Haz.WW), tmat, 0, variance=FALSE)[[1]]
+    newmsf.WW$Haz$Haz[newmsf.WW$Haz$trans==1] <- ff*msf.WW$Haz$Haz[msf.WW$Haz$trans==1]
+    pt.WW <- probtrans(newmsf.WW, 0, variance=FALSE)[[1]]
     # WM
-    Haz.WM <- msf.WM$Haz
-    Haz.WM$Haz[Haz.WM$trans==1] <- ff*Haz.WM$Haz[Haz.WM$trans==1]
-    pt.WM <- probtrans(list(Haz=Haz.WM), tmat, 0, variance=FALSE)[[1]]
+    newmsf.WM$Haz$Haz[newmsf.WM$Haz$trans==1] <- ff*msf.WM$Haz$Haz[msf.WM$Haz$trans==1]
+    pt.WM <- probtrans(newmsf.WM, 0, variance=FALSE)[[1]]
     # Plot
     idx1 <- (pt.WW$time<13)
     idx2 <- (pt.WM$time<13)

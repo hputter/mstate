@@ -102,4 +102,4 @@ Cuminc(time="surv", status="stat", data=fake, group="Tstage")
 Cuminc(time="surv", status="stat", data=fake, group="Tstage",
         failcodes=c("event1","event2","event3"))
 }
-\keyword{univar}
+\keyword{survival}
