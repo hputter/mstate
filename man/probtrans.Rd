@@ -5,7 +5,7 @@
 This function computes subject-specific or overall transition probabilities
 in multi-state models. If requested, also standard errors are calculated.}
 \usage{
-probtrans(object, predt, direction=c("forward","backward"),
+probtrans(object, predt, direction=c("forward","fixedhorizon"),
           method=c("aalen","greenwood"), variance=TRUE, covariance=FALSE)
 }
 \arguments{
@@ -16,9 +16,9 @@ probtrans(object, predt, direction=c("forward","backward"),
   \item{predt}{A positive number indicating the prediction time. This is
   either the time at which the prediction is made (if \code{direction}=
   \code{"forward"}) or the time for which the prediction is to be made (if
-  \code{direction}=\code{"backward"})}
-  \item{direction}{One of \code{"forward"} (default) or \code{"backward"},
-  indicating whether prediction is forward or backward in time}
+  \code{direction}=\code{"fixedhorizon"})}
+  \item{direction}{One of \code{"forward"} (default) or \code{"fixedhorizon"},
+  indicating whether prediction is forward or for a fixed horizon}
   \item{method}{A character string specifying the type of variances
   to be computed (so only needed if either \code{variance} or \code{covariance}
   is \code{TRUE}). Possible values are \code{"aalen"} or \code{"greenwood"}}
@@ -29,14 +29,18 @@ probtrans(object, predt, direction=c("forward","backward"),
   (default is \code{FALSE})}
 }
 \details{
-For details refer to de Wreede, Fiocco & Putter (2009).
+For details refer to de Wreede, Fiocco & Putter (2010).
 }
-\value{A list containing S (if \code{covariance}=\code{FALSE}) or
+\value{An object of class \code{"probtrans"}, which is a list containing
+  S (if \code{covariance}=\code{FALSE}) or
   S+1 items (if \code{covariance}=\code{TRUE}), S being the number of states
   in the multi-state model. Item [[s]] contains a dataframe with
   the estimated transition probabilities from state s.
   If \code{covariance}=\code{TRUE}, item [[S+1]] contains an array
   with all the covariances of the estimated transition probabilities.
+  The \code{"probtrans"} object has an attribute \code{"trans"} containing
+  the transition matrix. Plot and summary methods have been defined for
+  \code{"probtrans"} objects.
 }
 \references{
 Andersen PK, Borgan O, Gill RD, Keiding N (1993). \emph{Statistical Models

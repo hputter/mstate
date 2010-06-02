@@ -12,13 +12,12 @@ and van Houwelingen & Putter (2008).
 The included variables are
   \describe{
   \item{id}{Patient identification number}
-  \item{plat}{Time in days from transplantation to platelet recovery
-  or last follow-up}
-  \item{plat.s}{Platelet recovery status; 1 = platelet recovery, 0 =
-  censored}
-  \item{agvh}{Time in days from transplantation to acute graft-versus-host
-  disease (AGvHD) or last follow-up}
-  \item{agvh.s}{Acute GvHD status; 1 = acute GvHD, 0 = censored}
+  \item{rec}{Time in days from transplantation to recovery or last follow-up}
+  \item{rec.s}{Recovery status; 1 = recovery, 0 = censored}
+  \item{ae}{Time in days from transplantation to adverse event (AE) or last follow-up}
+  \item{ae.s}{Adverse event status; 1 = adverse event, 0 = censored}
+  \item{recae}{Time in days from transplantation to both recovery and AE or last follow-up}
+  \item{plag.s}{Recovery and AE status; 1 = both recovery and AE, 0 = no recovery or no AE or censored}
   \item{rel}{Time in days from transplantation to relapse or last follow-up}
   \item{rel.s}{Relapse status; 1 = relapse, 0 = censored}
   \item{srv}{Time in days from transplantation to death or last follow-up}
@@ -27,9 +26,9 @@ The included variables are
   "1990-1994", "1995-1998"}
   \item{agecl}{Patient age at transplant; factor with levels "<=20",
   "20-40", ">40"}
-  \item{tcd}{T-cell depletion; factor with levels "No TCD", "TCD"}
+  \item{proph}{Prophylaxis; factor with levels "no", "yes"}
   \item{match}{Donor-recipient gender match; factor with levels
-  "No gender mismatch", "Gender mismatch"}
+  "no gender mismatch", "gender mismatch"}
   }
 }
 

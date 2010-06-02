@@ -3,6 +3,7 @@
     if (!inherits(data, "msdata"))
         stop("'data' must be an 'msdata' object")
     trans <- attr(data, "trans")
+    data <- as.data.frame(data)
     trans2 <- to.trans2(trans)
     K <- nrow(trans2)
     if (is.character(covs)) form1 <- as.formula(paste("~ ",paste(covs,collapse=" + ")))

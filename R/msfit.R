@@ -56,7 +56,7 @@
         noevent <- sf0$n.event
         sf0 <- data.frame(time=sf0$time,Haz=-log(sf0$surv),norisk=norisk,
             noevent=noevent, trans=as.numeric(sf0$strata))
-        allt <- sort(c(unique(sf0$time,lasty)))
+        allt <- sort(unique(c(sf0$time,lasty)))
         nt <- length(allt)
         K <- nrow(to.trans2(trans))
         ### Set up empty structures for Haz and varHaz
@@ -120,7 +120,7 @@
                 noevent <- sf0$n.event
                 sf0 <- data.frame(time=sf0$time,Haz=-log(sf0$surv),norisk=norisk,
                     noevent=noevent,var=sf0$std.err^2/(sf0$surv)^2,trans=as.numeric(sf0$strata))
-                allt <- sort(c(unique(sf0$time,lasty)))
+                allt <- sort(unique(c(sf0$time,lasty)))
                 nt <- length(allt)
                 K <- max(sf0$trans)
                 ### Set up empty structures for Haz and varHaz
@@ -195,6 +195,9 @@
             # Get the second, "new" data set
             offset2 <- 0   #offset variable for the new data set
             if (!missing(newdata)) {
+                # sort newdata according to trans
+#                ord <- order(newdata$trans)
+#                newdata <- newdata[ord,]
                 m2 <- model.frame(delete.response(Terms), newdata, xlev=object$xlevels)
                 if (!inherits(m2, 'data.frame'))  {
                     x2 <- as.matrix(m2)

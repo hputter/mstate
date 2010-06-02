@@ -1,4 +1,4 @@
-`probtrans` <- function(object,predt,direction=c("forward","backward"),
+`probtrans` <- function(object,predt,direction=c("forward","fixedhorizon"),
                 method=c("aalen","greenwood"),variance=TRUE,covariance=FALSE)
 {
     if (!inherits(object, "msfit"))

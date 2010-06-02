@@ -71,23 +71,46 @@
                 loglik = loglik, cox.itr1 = cox.itr1))
 }
 
-`redrank` <- function(data, covariates, fullcovs = NULL, R,
-            clock = c("forward","reset"), strata = NULL, Gamma.start,
-            eps = 1e-5, print.level = 1)
+`redrank` <- function(redrank, full = ~1, data, R,
+            strata = NULL, Gamma.start, method = "breslow", eps = 1e-5, print.level = 1)
 {
     if (!inherits(data, "msdata"))
         stop("'data' must be an 'msdata' object")
     trans <- attr(data, "trans")
-    clock <- match.arg(clock)
-    cols <- match(covariates, names(data))
-    fullcols <- NULL
-    if (!is.null(fullcovs)) fullcols <- match(fullcovs, names(data))
-    p <- length(cols)
-    p2 <- length(fullcols)
-    if (any(is.na(cols)))
-        stop("covariate names do not match data")
-    if (any(is.na(fullcols)))
-        stop("full covariate names do not match data")
+    # Now we need only the data
+    data <- as.data.frame(data)
+
+    # Get model matrices of reduced rank and full rank parts
+    mmrr <- model.matrix(redrank, data=data)
+    mmrr <- mmrr[,-1,drop=FALSE] # without intercept
+    p <- ncol(mmrr)
+    if (p==0) stop("Empty reduced rank part; please consider full model")
+    mmrr <- data.frame(mmrr)
+    covs <- names(mmrr)
+    mmfull <- model.matrix(full, data=data)
+    mmfull <- mmfull[,-1,drop=FALSE] # without intercept
+    p2 <- ncol(mmfull)
+    # Construct working data
+    if (p2>0) {
+        mmfull <- data.frame(mmfull)
+        fullcovs <- names(mmfull)
+        rrdata <- as.data.frame(data[,c("id","from","to","trans","Tstart","Tstop","time","status")])
+        rrdata <- cbind(rrdata,mmrr,mmfull)
+        cols <- 8 + (1:p)
+        fullcols <- 8 + p + (1:p2)
+    }
+    else {
+        rrdata <- as.data.frame(data[,c("id","from","to","trans","Tstart","Tstop","time","status")])
+        rrdata <- cbind(rrdata,mmrr)
+        cols <- 8 + (1:p)
+        fullcols <- NULL        
+    }
+
+    # Get and store whether clock is forward or reset
+    cx <- coxph(redrank, data=data)
+    if (attr(cx$y, "type") == "counting") clock <- "forward" else if (attr(cx$y, "type") == "right") clock <- "reset" else stop("Surv object should be either of type 'counting' or 'right'")
+
+    # Preparations for iterative algorithm
     trans2 <- to.trans2(trans)
     K <- nrow(trans2)
     if (!is.null(dimnames(trans)))
@@ -96,10 +119,10 @@
     ### add to the data set R replicates of columns with covariates Z_1...Z_p
     colsR <- matrix(0,R,p)
     for (r in 1:R) {
-        ncd <- ncol(data)
-        data <- cbind(data,data[,cols])
+        ncd <- ncol(rrdata)
+        rrdata <- cbind(rrdata,rrdata[,cols])
         colsR[r,] <- ((ncd+1):(ncd+p))
-        names(data)[((ncd+1):(ncd+p))] <- paste(covariates, as.character(r), sep=".rr")
+        names(rrdata)[((ncd+1):(ncd+p))] <- paste(covs, as.character(r), sep=".rr")
     }
     if (missing(Gamma.start)) Gamma.start <- matrix(rnorm(R*K),R,K)
     Gamma.iter <- Gamma.start
@@ -107,15 +130,16 @@
     prev.loglik <- 0
     loglik <- 100
     Delta <- loglik - prev.loglik
+
     while(abs(Delta) > eps) {
         if (print.level > 0) {
             cat("\n\nIteration", iter, "... \n")
             flush.console()
         }
         iter <- iter + 1
-        attr(data, "trans") <- trans
-        class(data) <- c("msdata", "data.frame")
-        ms.it <- redrank.iter(data = data, cols = cols, colsR = colsR,
+        attr(rrdata, "trans") <- trans
+        class(rrdata) <- c("msdata", "data.frame")
+        ms.it <- redrank.iter(data = rrdata, cols = cols, colsR = colsR,
             fullcols = fullcols, R = R, clock = clock, strata = strata, Gamma.iter = Gamma.iter,
             print.level = print.level - 1)
         Gamma.iter <- ms.it$Gamma
@@ -144,10 +168,10 @@
     else norm.Alpha <- sqrt(sum(Alpha^2))
     norm.Alpha.mat <- matrix(norm.Alpha,p,R,byrow=TRUE)
     Alpha <- Alpha/norm.Alpha.mat
-    dimnames(Alpha) <- list(covariates,rnames)
-    AlphaX <-  as.matrix(data[,cols]) %*% Alpha
+    dimnames(Alpha) <- list(covs,rnames)
+    AlphaX <-  as.matrix(rrdata[,cols]) %*% Alpha
     Gamma.final <- Gamma.final * matrix(norm.Alpha,R,K)
-    dimnames(B) <- list(covariates,tnames)
+    dimnames(B) <- list(covs,tnames)
     return(list(Alpha = Alpha, Gamma = Gamma.final, Beta = B,
             Beta2 = ms.it$Beta2, cox.itr1 = ms.it$cox.itr1,
             AlphaX = AlphaX, niter = iter, df = R*(p+K-R), loglik = loglik))

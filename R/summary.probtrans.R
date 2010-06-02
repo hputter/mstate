@@ -25,12 +25,12 @@ summary.probtrans <- function(object,from,complete=FALSE,variance=TRUE,...)
             if (variance) {
                 print(head(objs),...)
                 cat("\n...\n\n")
-                print(head(objs),...)
+                print(tail(objs),...)
             }
             else {
                 print(head(objs[,1:(S+1)]),...)
                 cat("\n...\n\n")
-                print(head(objs[,1:(S+1)]),...)
+                print(tail(objs[,1:(S+1)]),...)
             }
         }
     }

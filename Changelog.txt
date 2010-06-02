@@ -1,4 +1,22 @@
-Version 0.2.3 (2009-11-076)
+Version 0.2.4 (2010-05-12)
+- The ebmt4 dataset has been adapted; recovery and adverse event are abstracted.
+  Simultaneous occurrences of recovery and adverse events are removed; these
+  have been adapted so that recoveries occur half a day earlier. Also simultaneous
+  relapse and death have been set to relapse, the death status has been set to 0.
+  A new variable recae has been created, defined as the time at which both recovery
+  and AE have been obtained. The corresponding status variable recae.s
+  is only 1 in case the patient has experienced both recovery and AE.
+- In probtrans, the argument direction now can take the values of "forward" and
+  "fixedhorizon". The option "fixedhorizon" was previously called "backward".
+- In the summary method for probtrans, a bug has beeen fixed. This summary used
+  to show head and again head, this has been changed to head and tail.
+- In msfit, the newdata argument is now first sorted according to trans
+- The function redrank now asks for two formulas, rather than two character strings
+  containing column names in the data for reduced rank and full covariates
+- xlim has been added as explicit argument to plot.probtrans
+- Error fixed in handling last time point in msfit
+
+Version 0.2.3 (2009-11-06)
 
 - The results of calls to msfit and probtrans are now 'msfit' and 'probtrans'
   S3 objects

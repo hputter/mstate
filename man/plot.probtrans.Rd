@@ -7,7 +7,7 @@ probabilities as estimated by \code{\link{probtrans}}.}
 \usage{
 \S3method{plot}{probtrans}(x,from=1,
     type=c("stacked","filled","single","separate"),ord,
-    cols,xlab="Time",ylab="Probability",ylim,lwd,lty,cex,
+    cols,xlab="Time",ylab="Probability",xlim,ylim,lwd,lty,cex,
     legend,legend.pos,bty="o",...)
 }
 \arguments{
@@ -31,11 +31,13 @@ probabilities as estimated by \code{\link{probtrans}}.}
   \item{xlab}{A title for the x-axis; default is \code{"Time"}}
   \item{ylab}{A title for the y-axis; default is
   \code{"Probability"}}
+  \item{xlim}{The x limits of the plot(s), default is range of time}
   \item{ylim}{The y limits of the plot(s); if ylim is specified for
   type="separate", then all plots use the same ylim for y limits}
   \item{lwd}{The line width, see \code{\link{par}}; default is 1}
   \item{lty}{The line type, see \code{\link{par}}; default is 1}
-  \item{cex}{}
+  \item{cex}{Character size, used in text; only used when
+  type=\code{"stacked"} or \code{"filled"}}
   \item{legend}{Character vector of length equal to the number of
   transitions, to be used in a legend; if missing, numbers will be used;
   this and the legend arguments following are ignored when type="separate"}

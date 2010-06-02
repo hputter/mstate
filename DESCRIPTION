@@ -1,18 +1,18 @@
 Package: mstate
-Version: 0.2.3
-Date: 2009-11-07
+Version: 0.2.4
+Date: 2010-05-12
 Title: Data preparation, estimation and prediction in multi-state
         models
 Author: Hein Putter, Liesbeth de Wreede, Marta Fiocco
 Maintainer: Hein Putter <H.Putter@lumc.nl>
 Depends: survival
 Imports: survival
-Suggests: cmprsk, diagram
+Suggests: cmprsk
 Description: Functions for data preparation, descriptives, hazard
         estimation and prediction with Aalen-Johansen or simulation in
         competing risks and multi-state models
 License: GPL (>= 2)
 URL: http://www.msbi.nl/putter
-Packaged: 2009-11-06 16:07:17 UTC; hputter
+Packaged: 2010-06-02 10:05:05 UTC; hputter
 Repository: CRAN
-Date/Publication: 2009-11-06 17:09:47
+Date/Publication: 2010-06-02 10:25:43

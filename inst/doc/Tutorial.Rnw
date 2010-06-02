@@ -487,17 +487,17 @@ legend("topright",c("<=20","20-40",">40"),lwd=2,col=c("red","blue","green"),bty=
     prediction was at transplant (note: in \tut this was at 1 month after transplant).}
     \label{fig:Fig17}
 \end{figure}
-It is also possible to do backward prediction. This should not be understood as attempting to predict the past. It means that in our prediction probabilities $P_{gh}(s,t)$, we fix $t$, a time horizon, and we want to study how $P_{gh}(s,t)$ changes as more and more information on a patient becomes available. From a computational point of view this just means that the order of the matrix multiplication in~\eqref{eq:AJ} is reversed. We will plot $1-\hat{P}_{13}(s,5)$ and $1-\hat{P}_{23}(s,5)$, the 5-years relapse-free survival probabilities given that the patient is in state 1 (no PR) and in state 2 (PR), respectively, for the same three patients as before.
+It is also possible to do prediction with a fixed horizon. This should not be understood as attempting to predict the past. It means that in our prediction probabilities $P_{gh}(s,t)$, we fix $t$, a time horizon, and we want to study how $P_{gh}(s,t)$ changes as more and more information on a patient becomes available. From a computational point of view this just means that the order of the matrix multiplication in~\eqref{eq:AJ} is reversed. We will plot $1-\hat{P}_{13}(s,5)$ and $1-\hat{P}_{23}(s,5)$, the 5-years relapse-free survival probabilities given that the patient is in state 1 (no PR) and in state 2 (PR), respectively, for the same three patients as before.
 <<label=backward>>=
-pt.20 <- probtrans(msf.20,direction="backward",predt=5)
+pt.20 <- probtrans(msf.20,direction="fixedhorizon",predt=5)
 pt.201 <- pt.20[[1]]; pt.202 <- pt.20[[2]]
 head(pt.201); head(pt.202)
 @
 Here item \Ritem{[[1]]} gives estimates $\hat{P}_{1h}(s,5)$ and \Ritem{[[2]]} gives estimates $\hat{P}_{2h}(s,5)$. For item \Ritem{[[g]]}, the column \Rcolumn{time} gives the different values of $s$ and \Rcolumn{pstate1} etc give the estimated probabilities of being in state 1 etc at 5 years, conditional on being in state $g$ at time $s$. In \Robject{pt.201} we recognize at \Rcolumn{time} ($s$)=0) 0.30275 as $\hat{P}_{1h}(0,5)$ and in \Robject{pt.202} we see 0.26210 as $\hat{P}_{2h}(0,5)$. The backward transition probabilities for the other two patients are calculated similarly.
 <<label=backward2>>=
-pt.2040 <- probtrans(msf.2040,direction="backward",predt=5) # patient 20-40
+pt.2040 <- probtrans(msf.2040,direction="fixedhorizon",predt=5) # patient 20-40
 pt.20401 <- pt.2040[[1]]; pt.20402 <- pt.2040[[2]]
-pt.40 <- probtrans(msf.40,direction="backward",predt=5) # patient > 40
+pt.40 <- probtrans(msf.40,direction="fixedhorizon",predt=5) # patient > 40
 pt.401 <- pt.40[[1]]; pt.402 <- pt.40[[2]]
 @
 As mentioned before, in $s=0$, these probabilities are the same as the five-years probabilities of Figure~\ref{fig:Fig17}, and as $s$ approaches 5, the probabilities approach 1, since both $\hat{P}_{13}(s,5)$ and $\hat{P}_{23}(s,5)$ approach 0. Figure~\ref{fig:new} shows 5-years relapse-free survival probabilities, both with and without \PR, with the prediction time $s$ varying.
