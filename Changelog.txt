@@ -1,3 +1,9 @@
+Version 0.2.5 (2010-10-12)
+- Function events had been omitted from version 0.2.4; this has been restored
+- Error fixed in handling of xlim in plot.probtrans
+- Reference to the mstate paper in Computer Methods and Programs in Biomedicine
+  updated
+
 Version 0.2.4 (2010-05-12)
 - The ebmt4 dataset has been adapted; recovery and adverse event are abstracted.
   Simultaneous occurrences of recovery and adverse events are removed; these

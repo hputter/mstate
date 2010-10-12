@@ -23,8 +23,8 @@ plot.probtrans <- function(x,from=1,type=c("stacked","filled","single","separate
     ptp <- pt1[,2:(S+1)] # those are the actual transition probabilities
     type <- match.arg(type)
     if (missing(legend)) {
-    	legend <- dimnames(trans)[[2]]
-    	if (is.null(legend)) legend <- as.character(1:S)
+        legend <- dimnames(trans)[[2]]
+        if (is.null(legend)) legend <- as.character(1:S)
     }
     else if (length(legend) != S) stop("legend has incorrect length")
     if (type=="single") {
@@ -52,7 +52,7 @@ plot.probtrans <- function(x,from=1,type=c("stacked","filled","single","separate
         y <- y0 + dy/2
         y1 <- y0 + dy
         plot(ptt,ptpsum,type="s",xlim=xlim,ylim=ylim,xlab=xlab,ylab=ylab,col=cols[1],lwd=lwd,...)
-        text(ptt[nt],y,legend[ord[1]],adj=1,cex=cex)
+        text(xlim[2],y,legend[ord[1]],adj=1,cex=cex)
         for (s in 2:S) {
             ptpsum <- ptpsum + ptp[,ord[s]]
             lines(ptt,ptpsum,type="s",col=cols[s],lwd=lwd,...)
@@ -79,7 +79,7 @@ plot.probtrans <- function(x,from=1,type=c("stacked","filled","single","separate
         y1 <- y0 + dy
         plot(ptt,ptpup,type="n",xlim=xlim,ylim=ylim,xlab=xlab,ylab=ylab,col=cols[1],lwd=lwd,...)
         fillplot(ptt,ptplow,ptpup,col=cols[1])
-        text(ptt[nt],y,legend[ord[1]],adj=1,cex=cex)
+        text(xlim[2],y,legend[ord[1]],adj=1,cex=cex)
         for (s in 2:S) {
             ptplow <- ptpup
             ptpup <- ptpup + ptp[,ord[s]]

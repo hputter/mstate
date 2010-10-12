@@ -13,8 +13,8 @@ risks and multi-state models.}
 \tabular{ll}{
 Package: \tab mstate\cr
 Type: \tab Package\cr
-Version: \tab 0.2.4\cr
-Date: \tab 2010-05-12\cr
+Version: \tab 0.2.5\cr
+Date: \tab 2010-10-12\cr
 License: \tab GPL 2.0\cr
 }
 An overview of how to use the package, including the most important
@@ -29,8 +29,9 @@ Putter H, Fiocco M, Geskus RB (2007). Tutorial in biostatistics:
 Competing risks and multi-state models. Statistics in Medicine 26,
 2389--2430.
 
-L. C. de Wreede, M. Fiocco, and H. Putter (2009). The mstate package
+L. C. de Wreede, M. Fiocco, and H. Putter (2010). The mstate package
 for estimation and prediction in non- and semi-parametric multi-state
-and competing risks models. Submitted.
+and competing risks models. Computer Methods and Programs in
+Biomedicine 99: 261--274.
 }
 \keyword{ package }
