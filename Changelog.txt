@@ -1,3 +1,7 @@
+Version 0.2.6 (2010-12-04)
+- Citation updated
+- Function crprep added to implement the method of Geskus, Biometric 2010
+
 Version 0.2.5 (2010-10-12)
 - Function events had been omitted from version 0.2.4; this has been restored
 - Error fixed in handling of xlim in plot.probtrans

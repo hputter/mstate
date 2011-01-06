@@ -1,6 +1,6 @@
 Package: mstate
-Version: 0.2.5
-Date: 2010-10-12
+Version: 0.2.6
+Date: 2011-01-06
 Title: Data preparation, estimation and prediction in multi-state
         models
 Author: Hein Putter, Liesbeth de Wreede, Marta Fiocco
@@ -13,6 +13,6 @@ Description: Functions for data preparation, descriptives, hazard
         competing risks and multi-state models
 License: GPL (>= 2)
 URL: http://www.msbi.nl/putter
-Packaged: 2010-10-11 15:06:59 UTC; hputter
+Packaged: 2011-01-06 07:50:21 UTC; hputter
 Repository: CRAN
-Date/Publication: 2010-10-12 10:13:11
+Date/Publication: 2011-01-06 05:58:18
