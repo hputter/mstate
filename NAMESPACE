@@ -1,5 +1,7 @@
+import(survival)
+importFrom("RColorBrewer", brewer.pal)
 useDynLib(mstate)
-export(msprep,events,paths,expand.covs,msfit,mssample,msboot,probtrans,Cuminc,redrank,trans.comprisk,trans.illdeath,transMat,crprep)
+export(msprep,events,paths,expand.covs,msfit,mssample,msboot,probtrans,Cuminc,redrank,trans.comprisk,trans.illdeath,transMat,crprep,ELOS,xsect,cutLMms)
 S3method(plot,msfit)
 S3method(plot,probtrans)
 S3method(summary,msfit)

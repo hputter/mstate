@@ -13,8 +13,8 @@ risks and multi-state models.}
 \tabular{ll}{
 Package: \tab mstate\cr
 Type: \tab Package\cr
-Version: \tab 0.2.6\cr
-Date: \tab 2011-01-06\cr
+Version: \tab 0.2.7\cr
+Date: \tab 2014-05-30\cr
 License: \tab GPL 2.0\cr
 }
 An overview of how to use the package, including the most important

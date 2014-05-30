@@ -1,6 +1,29 @@
+Version 0.2.7 (2014-05-29)
+- Added function cutLMms (mirrored after cutLM from dynpred) that cuts a multi-
+  state data frame (object of type "msdata") at a landmark time point LM;
+  administrative censoring at one common time point is also supported
+- Added function xsect that takes a cross-section at a particular time point
+- Added function ELOS that calculates expected length of stay (ELOS) from
+  a probtrans object
+- Added disclaimers to the EBMT data sets
+- Repaired a bug in the example of events()
+- Made a much user-friendlier version of the covariance matrix (list element
+  K+1 with K states) of probtrans. NOTE: the dimension has changed from
+  nt x K^2 x K^2 (with nt the distinct transition time points) to
+  K^2 x K^2 x (nt+1); the extra time point (time 0) is also present in the column
+  "time" of each of the data frames in [[1]] up to [[K]], containing the
+  transition probabilities and SE's.
+- plot.msfit now uses names rather than numbers for transitions (set legend=1:K
+  if you don't want that  (K is no of transitions))
+- Changed default colors for plot.probtrans
+- Fixed a bug in plot.probtrans that misplaced text with filled or stacked
+  probability plots when xlim has been set
+- Fixed lwd bugs in plot.msfit and plot.probtrans
+- Citation to Geskus, Biometrics 2010, updated
+
 Version 0.2.6 (2010-12-04)
 - Citation updated
-- Function crprep added to implement the method of Geskus, Biometric 2010
+- Function crprep added to implement the method of Geskus, Biometrics 2010
 
 Version 0.2.5 (2010-10-12)
 - Function events had been omitted from version 0.2.4; this has been restored

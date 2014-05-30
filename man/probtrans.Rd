@@ -31,16 +31,17 @@ probtrans(object, predt, direction=c("forward","fixedhorizon"),
 \details{
 For details refer to de Wreede, Fiocco & Putter (2010).
 }
-\value{An object of class \code{"probtrans"}, which is a list containing
-  S (if \code{covariance}=\code{FALSE}) or
-  S+1 items (if \code{covariance}=\code{TRUE}), S being the number of states
-  in the multi-state model. Item [[s]] contains a dataframe with
-  the estimated transition probabilities from state s.
-  If \code{covariance}=\code{TRUE}, item [[S+1]] contains an array
-  with all the covariances of the estimated transition probabilities.
-  The \code{"probtrans"} object has an attribute \code{"trans"} containing
-  the transition matrix. Plot and summary methods have been defined for
-  \code{"probtrans"} objects.
+\value{An object of class \code{"probtrans"}, which is a list of which item
+  [[s]] contains a data frame with the estimated transition probabilities (and
+  standard errors if \code{variance}=\code{TRUE}) from state s.
+  If \code{covariance}=\code{TRUE}, item \code{varMatrix} contains an array
+  of dimension K^2 x K^2 x (nt+1) (with K the number of states and nt the
+  distinct transition time points); the time points correspond to those in
+  the data frames with the estimated transition probabilities.
+  Finally, there are items \code{trans}, \code{method}, \code{predt},
+  \code{direction}, recording the transition matrix, and the method, predt
+  and direction arguments used in the call to probtrans.
+  Plot and summary methods have been defined for \code{"probtrans"} objects.
 }
 \references{
 Andersen PK, Borgan O, Gill RD, Keiding N (1993). \emph{Statistical Models

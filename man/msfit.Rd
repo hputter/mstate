@@ -29,11 +29,14 @@ msfit(object, newdata, variance=TRUE, vartype=c("aalen","greenwood"), trans)
 }
 \details{
 The data frame needs to have one row for each transition in the
-multi-state model. An additional column \code{stratum} (numeric) is
+multi-state model. An additional column \code{strata} (numeric) is
 needed to describe for each transition to which stratum it belongs.
-For details refer to de Wreede, Fiocco & Putter (2009). So far, the
+The name has to be \code{strata}, even if in the original \code{coxph}
+call another variable was used.
+For details refer to de Wreede, Fiocco & Putter (2010). So far, the
 results have been checked only for the \code{"breslow"} method of
-dealing with ties in \code{\link[survival:coxph]{coxph}}.
+dealing with ties in \code{\link[survival:coxph]{coxph}}, so this
+is recommended.
 }
 \value{An object of class \code{"msfit"}, which is a list containing
   \item{Haz }{A data frame with \code{time}, \code{Haz},

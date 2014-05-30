@@ -1,11 +1,7 @@
 \name{EBMT cause of death data}
-
 \docType{data}
-
 \alias{ebmt2}
-
-\title{Data from the European Registry for Blood and Marrow Transplantation (EBMT)}
-
+\title{Data from the European Society for Blood and Marrow Transplantation (EBMT)}
 \description{A data frame of 8966 patients transplanted at the EBMT.
 The included variables are
   \describe{
@@ -30,14 +26,15 @@ The included variables are
   "20-40", ">40"}
   }
 }
-
 \usage{data(ebmt2)}
-
 \format{A data frame, see \code{\link{data.frame}}.}
-
+\source{We acknowledge the European Society for Blood and Marrow Transplantation
+(EBMT) for making available these data. Disclaimer: these data were simplified
+for the purpose of illustration of the analysis of competing risks and multi-state
+models and do not reflect any real life situation. No clinical conclusions should
+be drawn from these data.}
 \references{
 Fiocco M, Putter H, van Houwelingen JC (2005). Reduced rank proportional
 hazards model for competing risks. \emph{Biostatistics} \bold{6}, 465--478.
 }
-
 \keyword{datasets}

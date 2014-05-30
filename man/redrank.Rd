@@ -64,38 +64,39 @@ Competing risks and multi-state models. \emph{Statistics in Medicine}
 }
 \author{Marta Fiocco and Hein Putter \email{H.Putter@lumc.nl}}
 \examples{
-# Based on Fiocco, Putter & van Houwelingen (2005)
-data(ebmt2)
-# transition matrix for competing risks
-tmat <- trans.comprisk(6,names=c("Relapse","GvHD","Bacterial","Viral","Fungal","Other"))
-# preparing long dataset
-ebmt2$stat1 <- as.numeric(ebmt2$status==1)
-ebmt2$stat2 <- as.numeric(ebmt2$status==2)
-ebmt2$stat3 <- as.numeric(ebmt2$status==3)
-ebmt2$stat4 <- as.numeric(ebmt2$status==4)
-ebmt2$stat5 <- as.numeric(ebmt2$status==5)
-ebmt2$stat6 <- as.numeric(ebmt2$status==6)
-covs <- c("dissub","match","tcd","year","age")
-ebmtlong <- msprep(time=c(NA,rep("time",6)),
-            stat=c(NA,paste("stat",1:6,sep="")),
-            data=ebmt2,keep=covs,trans=tmat)
-# Actually run for a subset of the actual data
-ebmtlongsub <- ebmtlong[1:1200,] # first 200 patients
-# The reduced rank 2 solution
-rr2 <- redrank(Surv(Tstart,Tstop,status) ~ dissub+match+tcd+year+age, data=ebmtlongsub, R=2, eps=0.001)
-rr2$Alpha; rr2$Gamma; rr2$Beta; rr2$loglik
-
-# This reproduces the results in Fiocco, Putter & van Houwelingen (2005)
-# Takes a while to run
 \dontrun{
+    # This reproduces the results in Fiocco, Putter & van Houwelingen (2005)
+    # Takes a while to run
+    data(ebmt2)
+    # transition matrix for competing risks
+    tmat <- trans.comprisk(6,names=c("Relapse","GvHD","Bacterial","Viral","Fungal","Other"))
+    # preparing long dataset
+    ebmt2$stat1 <- as.numeric(ebmt2$status==1)
+    ebmt2$stat2 <- as.numeric(ebmt2$status==2)
+    ebmt2$stat3 <- as.numeric(ebmt2$status==3)
+    ebmt2$stat4 <- as.numeric(ebmt2$status==4)
+    ebmt2$stat5 <- as.numeric(ebmt2$status==5)
+    ebmt2$stat6 <- as.numeric(ebmt2$status==6)
+    covs <- c("dissub","match","tcd","year","age")
+    ebmtlong <- msprep(time=c(NA,rep("time",6)),
+                       stat=c(NA,paste("stat",1:6,sep="")),
+                       data=ebmt2,keep=covs,trans=tmat)
+
+    # The reduced rank 2 solution
+    rr2 <- redrank(Surv(Tstart,Tstop,status) ~ dissub+match+tcd+year+age,
+                   data=ebmtlong, R=2)
+    rr3$Alpha; rr3$Gamma; rr3$Beta; rr3$loglik
     # The reduced rank 3 solution
-    rr3 <- redrank(Surv(Tstart,Tstop,status) ~ dissub+match+tcd+year+age, data=ebmtlong, R=3)
+    rr3 <- redrank(Surv(Tstart,Tstop,status) ~ dissub+match+tcd+year+age,
+                   data=ebmtlong, R=3)
     rr3$Alpha; rr3$Gamma; rr3$Beta; rr3$loglik
     # The reduced rank 3 solution, with no reduction on age
-    rr3 <- redrank(Surv(Tstart,Tstop,status) ~ dissub+match+tcd+year, full=~age, data=ebmtlong, R=3)
+    rr3 <- redrank(Surv(Tstart,Tstop,status) ~ dissub+match+tcd+year, full=~age,
+                   data=ebmtlong, R=3)
     rr3$Alpha; rr3$Gamma; rr3$Beta; rr3$loglik
     # The full rank solution
-    fullrank <- redrank(Surv(Tstart,Tstop,status) ~ dissub+match+tcd+year+age, data=ebmtlong, R=6)
+    fullrank <- redrank(Surv(Tstart,Tstop,status) ~ dissub+match+tcd+year+age,
+                        data=ebmtlong, R=6)
     fullrank$Beta; fullrank$loglik
 }
 }

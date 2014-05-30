@@ -5,9 +5,9 @@
 Plot method for an object of class 'msfit'. It plots the estimated
 cumulative transition intensities in the multi-state model.}
 \usage{
-\S3method{plot}{msfit}(x,type=c("single","separate"),cols,
-    xlab="Time",ylab="Cumulative hazard",ylim,lwd,lty,
-    legend,legend.pos,bty="o",...)
+\S3method{plot}{msfit}(x, type=c("single", "separate"), cols,
+    xlab="Time", ylab="Cumulative hazard", ylim, lwd, lty,
+    legend, legend.pos, bty="n", ...)
 }
 \arguments{
   \item{x}{Object of class 'msfit', containing estimated cumulative
@@ -27,9 +27,9 @@ cumulative transition intensities in the multi-state model.}
   \item{lwd}{The line width, see \code{\link{par}}; default is 1}
   \item{lty}{The line type, see \code{\link{par}}; default is 1}
   \item{legend}{Character vector of length equal to the number of
-  transitions, to be used in a legend; if missing, numbers will be used;
-  this and the legend arguments following are ignored when
-  type=\code{"separate"}}
+  transitions, to be used in a legend; if missing, these will be taken
+  from the row- and column-names of the transition matrix contained in
+  \code{x$trans}. Also used as titles of plots for type=\code{"separate"}}
   \item{legend.pos}{The position of the legend, see \code{\link{legend}};
   default is \code{"topleft"}}
   \item{bty}{The box type of the legend, see \code{\link{legend}}}

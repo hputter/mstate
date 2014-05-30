@@ -52,7 +52,13 @@
     }
     P <- diag(S)
     
-    if (covariance) varParr <- array(0,c(TT,S^2,S^2))
+    if (covariance) {
+      varParr <- array(0,c(S^2,S^2,TT+1))
+      ffrom <- rep(1:S, S)
+      tto <- rep(1:S, rep(S,S))
+      fromto <- paste("from",ffrom,"to",tto,sep="")
+      dimnames(varParr) <- list(fromto,fromto,c(0,untimes))
+    }
     if (variance) {
         varP <- matrix(0,S^2,S^2)
         if (direction=="forward") {
@@ -89,7 +95,9 @@
             }
         }
     }
-   
+    
+    if (covariance) varParr[,,0] <- matrix(0, S^2, S^2)
+    
     for (i in 1:TT)
     {
         idx <- ifelse(direction=="forward",i,TT+1-i)
@@ -209,7 +217,7 @@
             seP <- sqrt(diag(varP))
             seP <- matrix(seP,S,S)
         }
-        if (covariance) varParr[i,,] <- varP
+        if (covariance) varParr[,,i+1] <- varP
         if (direction=="forward") {
             res[idx+1,1,] <- tt
             res[idx+1,2:(S+1),] <- t(P)
@@ -222,11 +230,7 @@
         }
     }
     ### res[,,s] contains prediction from state s, convert to list of dataframes
-    if (covariance==FALSE) res2 <- vector("list", S)
-    else {
-        res2 <- vector("list", S+1) # element S+1 will contain varP
-        res2[[S+1]] <- varParr
-    }
+    res2  <- vector("list", S)
     for (s in 1:S) {
         tmp <- as.data.frame(res[,,s])
         if (min(dim(tmp))==1) tmp <- res[,,s]
@@ -234,7 +238,11 @@
         else names(tmp) <- c("time",paste("pstate",1:S,sep=""))
         res2[[s]] <- tmp
     }
+    if (covariance) res2$varMatrix <- varParr
     res2$trans <- trans
+    res2$method <- method
+    res2$predt <- predt
+    res2$direction <- direction
     class(res2) <- "probtrans"
     return(res2)
 }

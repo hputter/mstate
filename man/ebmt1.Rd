@@ -1,11 +1,7 @@
 \name{EBMT year of relapse data}
-
 \docType{data}
-
 \alias{ebmt1}
-
-\title{Data from the European Registry for Blood and Marrow Transplantation (EBMT)}
-
+\title{Data from the European Society for Blood and Marrow Transplantation (EBMT)}
 \description{A data frame of 1977 patients transplanted for CML.
 The included variables are
   \describe{
@@ -21,11 +17,13 @@ The included variables are
   "High risk"}
   }
 }
-
 \usage{data(ebmt1)}
-
 \format{A data frame, see \code{\link{data.frame}}.}
-
+\source{We acknowledge the European Society for Blood and Marrow Transplantation
+(EBMT) for making available these data. Disclaimer: these data were simplified
+for the purpose of illustration of the analysis of competing risks and multi-state
+models and do not reflect any real life situation. No clinical conclusions should
+be drawn from these data.}
 \references{
 Fiocco M, Putter H, Iacobelli S, Heim D, de Witte T, Olavarria E, Guglielmi E,
 Gratwohl A, Brand R, on behalf of the Chronic Leukemia Working party of the 
@@ -34,5 +32,4 @@ the impact of relapse after allogeneic hematopoietic stem cell transplantation
 on death rate in patients with chronic myeloid leukemia: the need for a
 multi-state model. Submitted.
 }
-
 \keyword{datasets}

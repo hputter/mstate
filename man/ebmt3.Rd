@@ -1,11 +1,7 @@
 \name{EBMT platelet recovery data}
-
 \docType{data}
-
 \alias{ebmt3}
-
-\title{Data from the European Registry for Blood and Marrow Transplantation (EBMT)}
-
+\title{Data from the European Society for Blood and Marrow Transplantation (EBMT)}
 \description{A data frame of 2204 patients transplanted at the EBMT
 between 1995 and 1998. These data were used in Section 4 of the tutorial
 on competing risks and multi-state models (Putter, Fiocco & Geskus, 2007).
@@ -29,15 +25,16 @@ The included variables are
   \item{tcd}{T-cell depletion; factor with levels "No TCD", "TCD"}
   }
 }
-
 \usage{data(ebmt3)}
-
 \format{A data frame, see \code{\link{data.frame}}.}
-
+\source{We acknowledge the European Society for Blood and Marrow Transplantation
+(EBMT) for making available these data. Disclaimer: these data were simplified
+for the purpose of illustration of the analysis of competing risks and multi-state
+models and do not reflect any real life situation. No clinical conclusions should
+be drawn from these data.}
 \references{
 Putter H, Fiocco M, Geskus RB (2007). Tutorial in biostatistics:
 Competing risks and multi-state models. \emph{Statistics in Medicine} \bold{26},
 2389--2430.
 }
-
 \keyword{datasets}

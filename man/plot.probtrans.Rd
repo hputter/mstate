@@ -5,10 +5,9 @@
 Plot method for an object of class 'probtrans'. It plots the transition
 probabilities as estimated by \code{\link{probtrans}}.}
 \usage{
-\S3method{plot}{probtrans}(x,from=1,
-    type=c("stacked","filled","single","separate"),ord,
-    cols,xlab="Time",ylab="Probability",xlim,ylim,lwd,lty,cex,
-    legend,legend.pos,bty="o",...)
+\S3method{plot}{probtrans}(x, from=1, type=c("stacked","filled","single","separate"), ord,
+    cols, xlab="Time", ylab="Probability", xlim, ylim, lwd, lty, cex, legend, legend.pos,
+    bty="n", xaxs="i", yaxs="i", ...)
 }
 \arguments{
   \item{x}{Object of class 'probtrans', containing estimated transition
@@ -26,8 +25,8 @@ probabilities as estimated by \code{\link{probtrans}}.}
   \item{ord}{A vector of length equal to the number of states, specifying
   the order of plotting in case type=\code{"stacked"} or \code{"filled"}}
   \item{cols}{A vector specifying colors for the different transitions;
-  default is 1:K (K no of transitions), when type=\code{"single"}, and
-  1 (black), when type=\code{"separate"}}
+  default is a palette from green to red, when type=\code{"filled"}
+  (reordered according to \code{ord}, and 1 (black), otherwise}
   \item{xlab}{A title for the x-axis; default is \code{"Time"}}
   \item{ylab}{A title for the y-axis; default is
   \code{"Probability"}}
@@ -44,6 +43,8 @@ probabilities as estimated by \code{\link{probtrans}}.}
   \item{legend.pos}{The position of the legend, see \code{\link{legend}};
   default is \code{"topleft"}}
   \item{bty}{The box type of the legend, see \code{\link{legend}}}
+  \item{xaxs}{See \code{\link{par}}, default is "i", for type=\code{"stacked"}}
+  \item{yaxs}{See \code{\link{par}}, default is "i", for type=\code{"stacked"}}
   \item{\dots}{Further arguments to plot}
 }
 \value{No return value}

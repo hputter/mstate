@@ -8,7 +8,8 @@ weighted dataset in counting process style notation. With this data set,
 competing risks analyses can be performed.
 }
 \usage{
-crprep(Tstop, status, data, trans = 1, cens = 0, Tstart=0, id, keep, shorten = TRUE, rm.na = TRUE, origin = 0, prec.factor = 100)
+crprep(Tstop, status, data, trans = 1, cens = 0, Tstart=0, id, keep,
+       shorten = TRUE, rm.na = TRUE, origin = 0, prec.factor = 100)
 }
 \arguments{
   \item{Tstop}{Either 1) a vector containing the time at which the follow-up is
@@ -82,7 +83,7 @@ A data frame in long (counting process) format containing the covariates
 \references{
 Geskus RB (2011). Cause-Specific Cumulative Incidence Estimation and the Fine
 and Gray Model Under Both Left Truncation and Right Censoring.
-Biometrics, to appear. 
+\emph{Biometrics} \bold{67}, 39--49. 
 
 Putter H, Fiocco M, Geskus RB (2007). Tutorial in biostatistics:
 Competing risks and multi-state models. \emph{Statistics in Medicine}
@@ -91,6 +92,35 @@ Competing risks and multi-state models. \emph{Statistics in Medicine}
 \author{Ronald Geskus \email{statistics@inter.nl.net}, Kristian van Hemert;
   some adaptation by Marcel Wolbers}
 \examples{
+data(ebmt2)
+Data <- ebmt2[c(1:5,7:8,30),] # just a small (non-representative) subset
+Data$Tstart <- 0
+Data$Tstop <- Data$time
+Data$status[Data$status==6] <- 2 # recode 6 to 2
+Data$dissub <- factor(Data$dissub) # get rid of missing level
+Data.weight <- crprep(Data$Tstop, Data$status, trans=c(1,2), keep=Data$dissub)
+
+# calculate cause-specific cumulative incidence, no truncation,
+# compare with Cuminc (also from mstate)
+ci <- Cuminc(Data$Tstop, Data$status)
+ci
+sf <- survfit(Surv(Tstart,Tstop,status==1)~1, data=Data.weight,
+              weight=weight.cens, subset=failcode==1)
+sf <- summary(sf)
+data.frame(time=sf$time, CI.1=1-sf$surv)
+sf <- survfit(Surv(Tstart,Tstop,status==2)~1, data=Data.weight,
+              weight=weight.cens, subset=failcode==2)
+sf <- summary(sf)
+data.frame(time=sf$time, CI.2=1-sf$surv)
+
+# Fine and Gray regression for cause 1
+cw <- coxph(Surv(Tstart,Tstop,status==1)~dissub, data=Data.weight,
+      weight=weight.cens, subset=failcode==1)
+cw
+# This can be checked with the results of crr (cmprsk)
+# crr(ftime=Data$Tstop, fstatus=Data$status, cov1=as.numeric(Data$dissub)-1)
+
+\donttest{
 # Create simulated data
 set.seed(1234)
 N <- 200
@@ -116,7 +146,8 @@ Data.weight <- crprep(Data$Tstop, Data$stat, trans=c(1,2))
 # calculate cause-specific cumulative incidence, no truncation,
 # compare with Cuminc (also from mstate)
 ci <- Cuminc(Data$Tstop, Data$stat)
-plot(ci$time,ci$CI.1,type="s",lwd=3,col="black",ylim=c(0,0.5),xlab="Time",ylab="Cumulative incidence")
+plot(ci$time,ci$CI.1,type="s",lwd=3,col="black",ylim=c(0,0.5),
+   xlab="Time",ylab="Cumulative incidence")
 lines(ci$time,ci$CI.2,type="s",lwd=3,col="red")
 lines(ci$time,ci$CI.1-qnorm(0.975)*ci$seCI.1,type="s",lty=3)
 lines(ci$time,ci$CI.1+qnorm(0.975)*ci$seCI.1,type="s",lty=3)
@@ -142,7 +173,6 @@ coxph(Surv(Tstart,Tstop,stat==1)~Z1+Z2,data=subset(Data, tstat==0))
 coxph(Surv(Tstart,Tstop,status==1)~Z1+Z2,data=Data.weight.trunc,
    subset=failcode==1&count==1)
 
-## Not run: 
 data(ebmt2)
 ebmt2.long <- crprep("time", "status", data=ebmt2, trans=1:6,
                 keep=c("dissub", "match", "tcd", "year", "age"))
@@ -152,6 +182,6 @@ plot(survfit(Surv(time, status>0)~1, data=ebmt2, etype=cod), mark.time=FALSE,
    col=2:7, fun="event",lwd=3)
 lines(survfit(Surv(Tstart, Tstop, failcode==status) ~ failcode, data=ebmt2.long,
    weight=weight.cens), lwd=2, lty=2, fun="event", mark.time=FALSE)
-## End(Not run)
+}
 }
 \keyword{datagen}

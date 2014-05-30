@@ -1,11 +1,7 @@
 \name{EBMT data}
-
 \docType{data}
-
 \alias{ebmt4}
-
-\title{Data from the European Registry for Blood and Marrow Transplantation (EBMT)}
-
+\title{Data from the European Society for Blood and Marrow Transplantation (EBMT)}
 \description{A data frame of 2279 patients transplanted at the EBMT
 between 1985 and 1998. These data were used in Fiocco, Putter & van Houwelingen (2008)
 and van Houwelingen & Putter (2008).
@@ -31,11 +27,13 @@ The included variables are
   "no gender mismatch", "gender mismatch"}
   }
 }
-
 \usage{data(ebmt4)}
-
 \format{A data frame, see \code{\link{data.frame}}.}
-
+\source{We acknowledge the European Society for Blood and Marrow Transplantation
+(EBMT) for making available these data. Disclaimer: these data were simplified
+for the purpose of illustration of the analysis of competing risks and multi-state
+models and do not reflect any real life situation. No clinical conclusions should
+be drawn from these data.}
 \references{
 Fiocco M, Putter H, van Houwelingen HC (2008). Reduced-rank proportional hazards regression
 and simulation-based prediction for multi-state models. \emph{Statistics in Medicine} \bold{27},
@@ -45,5 +43,4 @@ van Houwelingen HC, Putter H (2008). Dynamic predicting by landmarking as an alt
 for multi-state modeling: an application to acute lymphoid leukemia data. \emph{Lifetime Data Anal}
 \bold{14}, 447--463.
 }
-
 \keyword{datasets}
