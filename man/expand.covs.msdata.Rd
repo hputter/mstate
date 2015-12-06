@@ -1,13 +1,13 @@
-\name{expand.covs}
-\alias{expand.covs}
-\title{Expand covariates in dataset in long format}
+\name{expand.covs.msdata}
+\alias{expand.covs.msdata}
+\title{Expand covariates in multi-state dataset in long format}
 \description{
 Given a multi-state dataset in long format, and one or more
 covariates, this function adds transition-specific covariates,
 expanding the original covariate(s), to the dataset. The original
 dataset with the transition-specific covariates appended is returned.
 }
-\usage{expand.covs(data,covs,append=TRUE,longnames=TRUE)}
+\usage{\method{expand.covs}{msdata}(data,covs,append=TRUE,longnames=TRUE,\ldots)}
 \arguments{
   \item{data}{An object of class \code{"msdata"}, such as output by
   \code{\link{msprep}}}
@@ -20,12 +20,13 @@ dataset with the transition-specific covariates appended is returned.
   are to be used for the names of the expanded covariates that are
   categorical (default=\code{TRUE}); in case of \code{FALSE} numbers
   from 1 up to the number of contrasts are used}
+ \item{\ldots}{further arguments to be passed to or from other methods. They are ignored in this function.}
 }
 \details{
 For a given basic covariate \code{Z}, the transition-specific
 covariate for transition \code{s} is called \code{Z.s}. The concept of
 transition-specific covariates in the context of multi-state models
-was introduced by Andersen, Hansen & Keiding (1991), see also Putter, 
+was introduced by Andersen, Hansen & Keiding (1991), see also Putter,
 Fiocco & Geskus (2007). It is
 only unambiguously defined for numeric covariates or for explicit
 codings. Then it will take the value 0 for all rows in the long

@@ -15,6 +15,7 @@
 \usepackage{natbib}
 \usepackage{hyperref}
 \usepackage{Sweave}
+\usepackage[utf8]{inputenc}
 
 \renewcommand{\headrulewidth}{0.4pt}
 \renewcommand{\headsep}{25pt}

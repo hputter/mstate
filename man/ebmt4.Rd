@@ -2,9 +2,9 @@
 \docType{data}
 \alias{ebmt4}
 \title{Data from the European Society for Blood and Marrow Transplantation (EBMT)}
-\description{A data frame of 2279 patients transplanted at the EBMT
-between 1985 and 1998. These data were used in Fiocco, Putter & van Houwelingen (2008)
-and van Houwelingen & Putter (2008).
+\description{A data frame of 2279 patients transplanted at the EBMT between 1985
+and 1998. These data were used in Fiocco, Putter & van Houwelingen (2008),
+van Houwelingen & Putter (2008, 2012) and de Wreede, Fiocco & Putter (2011).
 The included variables are
   \describe{
   \item{id}{Patient identification number}
@@ -13,7 +13,7 @@ The included variables are
   \item{ae}{Time in days from transplantation to adverse event (AE) or last follow-up}
   \item{ae.s}{Adverse event status; 1 = adverse event, 0 = censored}
   \item{recae}{Time in days from transplantation to both recovery and AE or last follow-up}
-  \item{plag.s}{Recovery and AE status; 1 = both recovery and AE, 0 = no recovery or no AE or censored}
+  \item{recae.s}{Recovery and AE status; 1 = both recovery and AE, 0 = no recovery or no AE or censored}
   \item{rel}{Time in days from transplantation to relapse or last follow-up}
   \item{rel.s}{Relapse status; 1 = relapse, 0 = censored}
   \item{srv}{Time in days from transplantation to death or last follow-up}
@@ -42,5 +42,12 @@ and simulation-based prediction for multi-state models. \emph{Statistics in Medi
 van Houwelingen HC, Putter H (2008). Dynamic predicting by landmarking as an alternative
 for multi-state modeling: an application to acute lymphoid leukemia data. \emph{Lifetime Data Anal}
 \bold{14}, 447--463.
+
+van Houwelingen HC, Putter H (2012). Dynamic Prediction in Clinical Survival Analaysis.
+Chapman & Hall/CRC Press, Boca Raton.
+
+de Wreede LC, Fiocco M, and Putter H (2011). mstate: An R Package
+for the Analysis of Competing Risks and Multi-State Models. \emph{Journal of
+Statistical Software}, Volume 38, Issue 7.
 }
 \keyword{datasets}

@@ -2,6 +2,7 @@
 {
     trans <- attr(msdata, "trans")
     K <- nrow(trans)
+    absorbing <- which(apply(is.na(trans), 1, all))
     if (!is.null(dimnames(trans))) states <- dimnames(trans)[[1]]
     else states <- as.character(1:K)
     from <- factor(msdata$from,levels=1:K,labels=states)
@@ -10,6 +11,7 @@
     counts <- tbl
     tbl <- table(from,to,dnn=c("from","to"))
     total <- apply(tbl,1,max)
+    total[absorbing] <- apply(counts[,absorbing,drop=FALSE], 2, sum)
     noevent <- total - apply(counts,1,sum)
     counts <- cbind(counts,noevent,total)
     dn <- dimnames(counts)

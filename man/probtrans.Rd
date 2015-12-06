@@ -54,10 +54,14 @@ Competing risks and multi-state models. \emph{Statistics in Medicine}
 Therneau TM, Grambsch PM (2000). \emph{Modeling Survival Data:
 Extending the Cox Model}. Springer, New York.
 
-L. C. de Wreede, M. Fiocco, and H. Putter (2010). The mstate package
+de Wreede LC, Fiocco M, and Putter H (2010). The mstate package
 for estimation and prediction in non- and semi-parametric multi-state
-and competing risks models. Computer Methods and Programs in
-Biomedicine 99: 261--274.
+and competing risks models. \emph{Computer Methods and Programs in
+Biomedicine} \bold{99}, 261--274.
+
+de Wreede LC, Fiocco M, and Putter H (2011). mstate: An R Package
+for the Analysis of Competing Risks and Multi-State Models. \emph{Journal of
+Statistical Software}, Volume 38, Issue 7.
 }
 \author{Liesbeth de Wreede and Hein Putter \email{H.Putter@lumc.nl}}
 \examples{

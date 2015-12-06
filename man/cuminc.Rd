@@ -1,5 +1,8 @@
 \name{Cuminc}
 \alias{Cuminc}
+\alias{print.Cuminc}
+\alias{plot.Cuminc}
+\alias{summary.Cuminc}
 \title{Calculate nonparametric cumulative incidence functions and
 associated standard errors}
 \description{
@@ -8,6 +11,9 @@ associated standard errors for each value of a group variable.}
 \usage{
 Cuminc(time, status, data, group, failcodes, na.status=c("remove","extra"),
         variance=TRUE)
+\method{print}{Cuminc}(x, ...)
+\method{plot}{Cuminc}(x, ...)
+\method{summary}{Cuminc}(object, ...)
 }
 \arguments{
   \item{time}{Either 1) a numeric vector containing the failure times
@@ -34,17 +40,21 @@ Cuminc(time, status, data, group, failcodes, na.status=c("remove","extra"),
   \item{variance}{Logical value, indicating whether the standard errors
   of the cumulative incidences should be output (\code{TRUE}, the default)
   or not}
+  \item{x}{Object of class \code{"Cuminc"} to be printed or plotted}
+  \item{object}{Object of class \code{"Cuminc"} to be summarized}
+  \item{\dots}{Further arguments to plot or print method}
 }
 \details{
 The estimated cumulative incidences are as described in Putter,
 Fiocco & Geskus (2007); the standard errors are the square roots of
 the Greenwood variance estimators, see eg. Andersen, Borgan, Gill & Keiding
 (1993), de Wreede, Fiocco & Putter (2009), and they correspond to the
-variances in eg. Marubini & Valsecchi (1997). In case of no
+variances in eg. Marubini & Valsecchi (1995). In case of no
 censoring, the estimated cumulative incidences and variances reduce
 to simple binomial frequencies and their variances.
 }
-\value{A data frame containing the estimated failure-free
+\value{An object of class \code{"Cuminc"}, which is a data frame
+containing the estimated failure-free
 probabilities and cumulative incidences and their standard errors.
 The names of the dataframe are \code{time}, \code{Surv},
 \code{seSurv}, and \code{cuminc} and \code{secuminc} followed by
@@ -52,6 +62,14 @@ the values or levels of the \code{failcodes}. If \code{group} was
 specified, a \code{group} variable is included with the same name and
 values/levels as the original grouping variable, and with estimated
 cumulative incidences (SE) for each value/level of \code{group}.
+
+Cuminc is now simply a wrapper around survfit of the survival package
+with type=\code{"mstate"}, only maintained for backward compatibility.
+The survfit object is kept as attribute (\code{attr("survfit")}), and
+the print, plot and summary functions are simply print, plot and
+summary applied to the survfit object. Subsetting the \code{"Cuminc"}
+object results in subsetting the data frame, not in subsetting the
+survfit object.
 }
 \references{
 Andersen PK, Borgan O, Gill RD, Keiding N (1993). \emph{Statistical Models
@@ -88,18 +106,5 @@ Cuminc(time="surv", status="stat", data=fake)
 # we should get binomial sample probabilities and corresponding SEs
 fake0 <- fake[fake$stat!=0,]
 Cuminc(time="surv", status="stat", data=fake0)
-# Use failcodes
-Cuminc(time="surv", status="stat", data=fake, failcodes=c(1,3))
-# Make grouping variable and status variable a factor
-fake$Tstage <- factor(fake$Tstage,labels=c("T1","T2","T3","T4"))
-fake$stat <- factor(fake$stat,levels=0:3,
-            labels=c("eventfree","event1","event2","event3"))
-Cuminc(time="surv", status="stat", data=fake, group="Tstage")
-# (The warnings are a result of the fact that some failure causes
-# do not occur for some values/levels of the grouping variable)
-# The previous command didn't do what we wanted because we didn't
-# tell Cuminc that eventfree is not an event
-Cuminc(time="surv", status="stat", data=fake, group="Tstage",
-        failcodes=c("event1","event2","event3"))
 }
 \keyword{survival}

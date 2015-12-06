@@ -1,6 +1,5 @@
 msprep <- function (time, status, data, trans, start, id, keep) 
 {
-   # on.exit(browser())
     if (!(is.matrix(time) | (is.data.frame(time)))) {
         if (!is.character(time)) 
             stop("argument \"time\" should be a character vector")
@@ -42,8 +41,11 @@ msprep <- function (time, status, data, trans, start, id, keep)
     if ((dim(trans)[2] != K) | (dim(time)[2] != K)) 
         stop("dimension of \"trans\" does not match with length of \"time\" and \"status\"")
     idname <- "id"
-    if (missing(id)) 
+    missingid <- FALSE
+    if (missing(id)) {
+        missingid <- TRUE
         id <- 1:n
+    }
     else {
         if (!is.vector(id)) 
             stop("argument \"id\" is not a vector")
@@ -91,6 +93,8 @@ msprep <- function (time, status, data, trans, start, id, keep)
         starttime <- rep(0, n)
     }
     
+    ord1 <- order(id)
+    
     msres <- msprepEngine(time = time, status = status, id = id, 
         starttime = starttime, startstate = startstate, trans = trans, 
         originalStates = (1:nrow(trans)), longmat = NULL)
@@ -99,8 +103,8 @@ msprep <- function (time, status, data, trans, start, id, keep)
         "Tstop", "status")
     msres$time <- msres$Tstop - msres$Tstart
     msres <- msres[, c(1:6, 8, 7)]
-    msres <- msres[order(msres[, 1], msres[, 5], msres[, 2], 
-        msres[, 3]), ]
+    ord <- order(msres[, 1], msres[, 5], msres[, 2], msres[, 3])
+    msres <- msres[ord, ]
     row.names(msres) <- 1:nrow(msres)
     if (!is.null(idlevels)) 
         msres[, 1] <- factor(msres[, 1], 1:length(idlevels), 
@@ -120,6 +124,7 @@ msprep <- function (time, status, data, trans, start, id, keep)
             else {
                 nkeep <- 1
                 keepname <- names(keep)
+                if (is.null(keepname)) keepname <- "keep"
                 if (length(keep) != n) 
                   stop("argument \"keep\" has incorrect dimension")
             }
@@ -132,23 +137,26 @@ msprep <- function (time, status, data, trans, start, id, keep)
             if (nkeep == 1) 
                 keep <- keep[, 1]
         }
-        if (is.null(keepname)) 
+        if (is.null(keepname))
             keepname <- paste("keep", as.character(1:nkeep), 
                 sep = "")
         if (nkeep > 0) {
             if (is.factor(msres[, 1])) 
                 msres[, 1] <- factor(msres[, 1])
             tbl <- table(msres[, 1])
+            if (nkeep > 1)
+              keep <- keep[ord1,,drop=FALSE]
             if (nkeep == 1) {
-                ddcovs <- rep(keep, tbl)
-                ddcovs <- as.data.frame(ddcovs)
-                names(ddcovs) <- keepname
+              ddcovs <- rep(keep, tbl)
+              ddcovs <- as.data.frame(ddcovs)
+              ddcovs <- ddcovs[ord1,,drop=FALSE]
+              names(ddcovs) <- keepname
             }
             else {
-                ddcovs <- lapply(1:nkeep, function(i) rep(keep[, 
-                  i], tbl))
-                ddcovs <- as.data.frame(ddcovs)
-                names(ddcovs) <- keepname
+              ddcovs <- lapply(1:nkeep, function(i) rep(keep[, 
+                i], tbl))
+              ddcovs <- as.data.frame(ddcovs)
+              names(ddcovs) <- keepname
             }
             msres <- cbind(msres, ddcovs)
         }

@@ -60,8 +60,5 @@ pt <- probtrans(HvH,predt=0)
 ELOS(pt)
 # Restricted ELOS until tau=10
 ELOS(pt, tau=10)
-# Restricted ELOS beyond last time point
-# (Inf will not work, choose very large tau instead, ignore last column in results)
-ELOS(pt, tau=1000)
 }
 \keyword{univar}

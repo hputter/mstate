@@ -24,12 +24,4 @@ The included variables are
 for the purpose of illustration of the analysis of competing risks and multi-state
 models and do not reflect any real life situation. No clinical conclusions should
 be drawn from these data.}
-\references{
-Fiocco M, Putter H, Iacobelli S, Heim D, de Witte T, Olavarria E, Guglielmi E,
-Gratwohl A, Brand R, on behalf of the Chronic Leukemia Working party of the 
-European Group for Blood and Marrow Transplantation EBMT (2009). Evaluation of
-the impact of relapse after allogeneic hematopoietic stem cell transplantation
-on death rate in patients with chronic myeloid leukemia: the need for a
-multi-state model. Submitted.
-}
 \keyword{datasets}

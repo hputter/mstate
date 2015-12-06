@@ -29,7 +29,7 @@ citEntry(entry = "Article",
   volume       = "99",
   pages        = "261--274",
   textVersion =
-  paste("Liesbeth C. de Wreede, Marta Fiocco, Hein Putter (2009)",
+  paste("Liesbeth C. de Wreede, Marta Fiocco, Hein Putter (2010)",
         "The {mstate} Package for Estimation and Prediction in Non- and Semi-Parametric Multi-State and Competing Risks Models.",
         "Submitted to Computer Methods and Programs in Biomedicine.")
 )

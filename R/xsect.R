@@ -10,5 +10,8 @@ xsect <- function(msdata, xtime=0)
   tbl <- table(msd$from)
   atrisk <- sum(tbl)
   prop <- tbl/atrisk
-  return(list(idstate=idstate, atrisk=tbl, prop=prop))
+  res <- idstate
+  attr(res, "atrisk") <- tbl
+  attr(res, "prop") <- prop
+  return(res)
 }

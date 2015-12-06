@@ -29,10 +29,10 @@
         if (is.vector(history$tstate)) 
             if (length(history$tstate) != K) stop("length of history$tstate should equal no of states")
             else history$tstate <- matrix(history$tstate,K,M)
-        if (is.null(beta.state)) stop("beta.state should be specified wben history$tstate not null")
+        if (is.null(beta.state)) stop("beta.state should be specified when history$tstate not null")
     }
     if (!is.null(beta.state))
-        if (any(dim(beta.state) != c(ntrans,K)))
+        if (any(dim(beta.state) != c(K,ntrans)))
             stop("incorrect dimension of beta.state")
     if (output=="state") # to contain sum
         res <- matrix(0, length(tvec), K)
@@ -105,17 +105,20 @@
    }
     else res <- NULL
     ### keep track of when states were visited
-    tstates <- history$tstates
+    tstates <- history$tstate
     while (!is.na(to)) {
         from <- to
         nstates <- trans[from,]
         transs <- nstates[!is.na(nstates)]
         allto <- which(!is.na(nstates))
         ntr <- length(transs)
+              
         if (ntr!=0 ) { # if not yet in absorbing state
-            transnos <- trans2$transno[trans2$from==from]
-            for (tr in 1:length(transnos))
-                Haz$Haz[Haz$trans==transnos[tr]] <- exp(sum(beta.state[tr,]*tstates))*Haz$Haz[Haz$trans==transnos[tr]]
+            transnos <- transs
+            for (tr in 1:ntr)
+                Haz$Haz[Haz$trans==transnos[tr]] <-
+                  exp(sum(beta.state[,transnos[tr]]*tstates)) *
+                    Haz$Haz[Haz$trans==transnos[tr]]
             whh <- which(!is.na(match(Haz$trans,transnos)))
             if (clock=="forward") {
                 crs <- crsample(Haz[whh,], tcond, censtime)

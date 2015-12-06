@@ -12,6 +12,8 @@ ELOS <- function(pt, tau) {
   for (k in 1:K) {
     ptk <- pt[[k]]
     ptk <- subset(ptk, time<=tau)
+    if (any(ptk[,(2:(K+1))]<0))
+      warning("negative transition probabilities present; ELOS may not be well defined")
     ntk <- nrow(ptk)
     ptk <- rbind(ptk, ptk[ntk,])
     ptk$time[ntk+1] <- tau

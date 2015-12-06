@@ -54,10 +54,17 @@
     
     if (covariance) {
       varParr <- array(0,c(S^2,S^2,TT+1))
+      if ((direction=="fixedhorizon") & !(predt %in% untimes))
+        varParr <- array(0,c(S^2,S^2,TT+2))
       ffrom <- rep(1:S, S)
       tto <- rep(1:S, rep(S,S))
       fromto <- paste("from",ffrom,"to",tto,sep="")
-      dimnames(varParr) <- list(fromto,fromto,c(0,untimes))
+      if (direction=="forward")
+        dimnames(varParr) <- list(fromto,fromto,c(predt,untimes))
+      else {
+        if (predt %in% untimes) dimnames(varParr) <- list(fromto,fromto,c(0,untimes))
+        else dimnames(varParr) <- list(fromto,fromto,c(0,untimes,predt))
+      }
     }
     if (variance) {
         varP <- matrix(0,S^2,S^2)
@@ -95,8 +102,6 @@
             }
         }
     }
-    
-    if (covariance) varParr[,,0] <- matrix(0, S^2, S^2)
     
     for (i in 1:TT)
     {
@@ -217,7 +222,12 @@
             seP <- sqrt(diag(varP))
             seP <- matrix(seP,S,S)
         }
-        if (covariance) varParr[,,i+1] <- varP
+        if (covariance) {
+          if (direction=="forward") varParr[,,i+1] <- varP
+          else {
+            varParr[,,idx+1] <- varP
+          }
+        }
         if (direction=="forward") {
             res[idx+1,1,] <- tt
             res[idx+1,2:(S+1),] <- t(P)
@@ -229,6 +239,8 @@
             if (variance) res[idx,(S+2):(2*S+1),] <- t(seP)
         }
     }
+    if (covariance & (direction=="fixedhorizon"))
+      varParr[,,1] <- varParr[,,2]
     ### res[,,s] contains prediction from state s, convert to list of dataframes
     res2  <- vector("list", S)
     for (s in 1:S) {
