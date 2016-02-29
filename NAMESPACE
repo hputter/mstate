@@ -8,7 +8,7 @@ importFrom("stats", "as.formula", "delete.response", "model.frame",
 importFrom("utils", "flush.console", "head", "tail")
 useDynLib(mstate)
 export(msprep, events, paths, expand.covs, msfit, mssample, msboot, probtrans, Cuminc, redrank,
-       trans.comprisk, trans.illdeath, transMat, crprep, ELOS, xsect, cutLMms)
+       trans.comprisk, trans.illdeath, transMat, crprep, ELOS, xsect, cutLMms, LMAJ)
 S3method(plot, msfit)
 S3method(plot, probtrans)
 S3method(plot, Cuminc)

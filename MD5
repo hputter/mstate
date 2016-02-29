@@ -1,7 +1,8 @@
-543220bd41831c6d80c02c357f134b9d *ChangeLog
-4dbb0941e5bf8e57ed709185c7eba7f6 *DESCRIPTION
-23a21e9291d271f700661694076329d9 *NAMESPACE
+11e23ad32d9f636e1c8e605dac8feba8 *ChangeLog
+6f418ec0b0e68d7e27b15ab51e0a723b *DESCRIPTION
+a1ed2257e3aeeb6d40c8673208f348e1 *NAMESPACE
 cf6b68c89448fcaee15cadf449753fb3 *R/ELOS.R
+d369e315dc026f7e36d1bdf26f2fb426 *R/LMAJ.R
 22bf5f84cce96947b6df7f102cb82f82 *R/create.wData.omega.R
 aaea2b8ab6ddef1828b6421b5d83ebf4 *R/crprep.R
 fe572c6cd51dd7d0f621b5a1d0f1e440 *R/cuminc.R
@@ -11,7 +12,7 @@ ccf54551b5665b7b6ba3d3cce88b0394 *R/cutLMms.R
 c3da84029075caed02cda27b55fa054d *R/misc.R
 8cc8b9787d37627ec9d0b481a988baa5 *R/msboot.R
 50b4ca064fc2de047f69c6e14a4ec98a *R/msfit.R
-d0d2342f3c37e07dd8d4948aa7a630f7 *R/msprep.R
+2c88aca2c7c0492ee3768e5872c538f6 *R/msprep.R
 1613b35f36100d20d66bf86616adb824 *R/mssample.R
 6e434ed107d48e4ac353cd4c9c5ee130 *R/paths.R
 a6b2b5e3d816f7ef20950694aa57b657 *R/plot.Cuminc.R
@@ -39,8 +40,9 @@ cece4edb8f444d47e21186e77567c269 *data/ebmt1.RData
 4337fe9f24a3a65f9a6685f02a360da3 *inst/CITATION
 842d781148c142c24656bedc8366c45b *inst/doc/Tutorial.R
 8c695e6af059fcf4bf9fecffd3f29c89 *inst/doc/Tutorial.Rnw
-0edf61aa8acb0ec13d9234cc58135b62 *inst/doc/Tutorial.pdf
+6efa22896fcd7dd339c24cccb870185a *inst/doc/Tutorial.pdf
 9bc07610479af471584a394cbd8148d0 *man/ELOS.Rd
+425fedc28e7ab4d0b857e014439b64c0 *man/LMAJ.Rd
 5594ed00678dd5082f6948b40fb95f7c *man/aidssi.Rd
 23c585b2724de92079e271012c1b556f *man/bmt.Rd
 e5033dacc7e43f003ad585fcf7b9f23b *man/crprep.Rd
@@ -57,7 +59,7 @@ c4cbee0c74d576e31538b6f0dc042e0f *man/msboot.Rd
 048207a9620cb8f3021147f095b2fef2 *man/msfit.Rd
 d8b5ac0594c002999694bb67298d658d *man/msprep.Rd
 14d4ad468d4d63b30357a7f9116ad12f *man/mssample.Rd
-4f94fab770fb7e4ff6ebf8c240f17df8 *man/mstate-package.Rd
+a6d72c0516a2a176ef261522f0f0962e *man/mstate-package.Rd
 9f00970080ad435ab2e6ab208dca8bc5 *man/paths.Rd
 bf10bf50e6e0f7fffc1760bc0c7b1f83 *man/plot.msfit.Rd
 b7bca5e8fd1cbeec85f9e0e480a39f87 *man/plot.probtrans.Rd

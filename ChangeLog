@@ -1,3 +1,10 @@
+Version 0.2.9 (2016-02-28)
+- Repaired small bug in msprep introduced in version 0.2.8, in case
+  of one covariate.
+- Added LMAJ function to estimate non-parametrically transition
+  probabilities for possibly non-Markov multi-state models. LMAJ
+  stands for landmark Aalen-Johansen.
+
 Version 0.2.8 (2015-12-05)
 - crprep function. Object orientation is introduced. Function is
   renamed to crprep.default. Code that calculates the weights has
