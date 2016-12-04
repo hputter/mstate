@@ -23,18 +23,21 @@
 
   if (missing(group)) {
     tmp <- data.frame(time=time, status=status)
-    # Just call survfit with type="mstate"
-    sf <- survfit(Surv(time, status, type="mstate") ~ 1, data=tmp)
+    # Just call survfit with status argument a factor
+    tmp$statuscr <- factor(tmp$status)
+    sf <- survfit(Surv(time, statuscr) ~ 1, data=tmp)
     tt <- sf$time
-    CIs <- sf$prev
-    SSurv <- 1 - apply(CIs, 1, sum)
+    CIs <- sf$pstate
+    K <- ncol(CIs)
+    SSurv <- CIs[, K]
+    CIs <- CIs[, -K]
     ses <- sf$std.err
-    sf1 <- survfit(Surv(time, status>0) ~ 1, data=tmp)
-    se0 <- sf1$std.err
+    se0 <- ses[, K]
+    ses <- ses[, -K]
     res <- cbind(tt, SSurv, CIs, se0, ses)
     res <- as.data.frame(res)
-    names(res) <- c("time", "Surv", paste("CI", sf$states, sep="."),
-                    "seSurv", paste("seCI", sf$states, sep="."))
+    names(res) <- c("time", "Surv", paste("CI", sf$states[-K], sep="."),
+                    "seSurv", paste("seCI", sf$states[-K], sep="."))
     res <- res[!duplicated(res$Surv), ]
     rownames(res) <- 1:nrow(res)
     class(res) <- c("Cuminc", "data.frame")
@@ -66,18 +69,21 @@
     group <- as.factor(group)
     if (is.null(groupname)) groupname <- "group"
     tmp <- data.frame(time=time, status=status, group=group)
-    # Call survfit with type="mstate"
-    sf <- survfit(Surv(time, status, type="mstate") ~ group, data=tmp)
+    # Call survfit with status argument a factor
+    tmp$statuscr <- factor(tmp$status)
+    sf <- survfit(Surv(time, statuscr) ~ group, data=tmp)
     tt <- sf$time
-    CIs <- sf$prev
-    SSurv <- 1 - apply(CIs, 1, sum)
+    CIs <- sf$pstate
+    K <- ncol(CIs)
+    SSurv <- CIs[, K]
+    CIs <- CIs[, -K]
     ses <- sf$std.err
-    sf1 <- survfit(Surv(time, status>0) ~ group, data=tmp)
-    se0 <- sf1$std.err
+    se0 <- ses[, K]
+    ses <- ses[, -K]
     res <- cbind(tt, SSurv, CIs, se0, ses)
     res <- as.data.frame(res)
-    names(res) <- c("time", "Surv", paste("CI", sf$states, sep="."),
-                    "seSurv", paste("seCI", sf$states, sep="."))
+    names(res) <- c("time", "Surv", paste("CI", sf$states[-K], sep="."),
+                    "seSurv", paste("seCI", sf$states[-K], sep="."))
     group <- rep(levels(as.factor(tmp$group)), sf$strata)
     res <- cbind(data.frame(group=group), res)
     res <- res[!duplicated(res$Surv), ]

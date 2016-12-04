@@ -9,10 +9,11 @@
   transvec <- as.vector(trans)
   for (i in 1:mx) {
     idx <- which(transvec==i)
-    res[i, 2:3] <- c(idx %% S, idx %/% S + 1)
+    res[i, 2:3] <- c((idx-1) %% S + 1, (idx-1) %/% S + 1)
   }
   res <- data.frame(res)
   names(res) <- c("transno", "from", "to")
+  res$from[res$from==0] <- S
   statesfrom <- dimnames(trans)[[1]]
   if (is.null(statesfrom)) statesfrom <- 1:S
   statesto <- dimnames(trans)[[2]]

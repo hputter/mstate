@@ -49,7 +49,7 @@
     else {
       y <- model.response(mf)
       y2 <- object[['y']]
-      if (!is.null(y2) && any(as.matrix(y2) != as.matrix(y)))
+      if (!is.null(y2) && any(dim(y2) != dim(y)))
         stop("Could not reconstruct the y vector")
     }
     
