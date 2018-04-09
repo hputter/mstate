@@ -84,6 +84,7 @@
 
 
 \begin{document}
+\SweaveOpts{concordance=TRUE}
 \title{Tutorial in biostatistics: Competing risks and multi-state models\\
     Analyses using the \mstate package}
 \author{Hein Putter\\

@@ -1,6 +1,6 @@
-f6670fc16d025050fbd459f7f1642396 *ChangeLog
-fa1041ec9d4b73ce074fd012e90ac7fd *DESCRIPTION
-a1ed2257e3aeeb6d40c8673208f348e1 *NAMESPACE
+44e9b695b52b947b12dd6b86e6b37d49 *ChangeLog
+7ee39d3c77effdcba96f585a782532ea *DESCRIPTION
+da5736866d791a12f3c3c51352e59a68 *NAMESPACE
 cf6b68c89448fcaee15cadf449753fb3 *R/ELOS.R
 d369e315dc026f7e36d1bdf26f2fb426 *R/LMAJ.R
 22bf5f84cce96947b6df7f102cb82f82 *R/create.wData.omega.R
@@ -12,7 +12,7 @@ ccf54551b5665b7b6ba3d3cce88b0394 *R/cutLMms.R
 ea5907c94c03e64f598b47490f452365 *R/misc.R
 8cc8b9787d37627ec9d0b481a988baa5 *R/msboot.R
 4cd2927fa5f9726785b3241aa7997d8a *R/msfit.R
-2c88aca2c7c0492ee3768e5872c538f6 *R/msprep.R
+78b63abc8f3bc97b88525409ed1a57f7 *R/msprep.R
 1613b35f36100d20d66bf86616adb824 *R/mssample.R
 6e434ed107d48e4ac353cd4c9c5ee130 *R/paths.R
 a6b2b5e3d816f7ef20950694aa57b657 *R/plot.Cuminc.R
@@ -28,7 +28,7 @@ a439a6e4eb77909eff1624611efd015d *R/redrank.R
 fa783783890a0bac5f9aeffbe07ca504 *R/trans.R
 5a6cde929eac7888e056fca798dc9bbd *R/transMat.R
 298dc94d5b126e953fe574e2a1313c2c *R/xsect.R
-e4a2a870693e9166d289f00e2d9dc74c *build/vignette.rds
+ecc7f349ec55ed912621925f5b855a6b *build/vignette.rds
 b3e829108c3ba4c2e9608f6bc162f981 *data/aidssi.RData
 2a9dd89d650c4ddce0a78fabcde20219 *data/aidssi2.RData
 b646f096fad989d70c8e95166f9a6a97 *data/bmt.RData
@@ -39,8 +39,8 @@ cece4edb8f444d47e21186e77567c269 *data/ebmt1.RData
 99614ac11305b572b6bf74ca21127a93 *data/prothr.RData
 4337fe9f24a3a65f9a6685f02a360da3 *inst/CITATION
 842d781148c142c24656bedc8366c45b *inst/doc/Tutorial.R
-8c695e6af059fcf4bf9fecffd3f29c89 *inst/doc/Tutorial.Rnw
-20f1a4ddfe27d98339479d424125ba6c *inst/doc/Tutorial.pdf
+29814187a5412ceab2861076392d8e4d *inst/doc/Tutorial.Rnw
+d8635285de9e038c08092f8bd75d7214 *inst/doc/Tutorial.pdf
 9bc07610479af471584a394cbd8148d0 *man/ELOS.Rd
 425fedc28e7ab4d0b857e014439b64c0 *man/LMAJ.Rd
 5594ed00678dd5082f6948b40fb95f7c *man/aidssi.Rd
@@ -72,5 +72,6 @@ c1530d4ed5f3566d092601ce0358b0c2 *man/summary.probtrans.Rd
 a1ed9db3a51251aa4d73f7fcc0a4fb7d *man/trans.Rd
 1ea6e0877a4fc8f7e1b0d8fbc375c387 *man/xsect.Rd
 b82b99b4cfce15e8bc284daec18e0fb5 *src/agmssurv.c
-8c695e6af059fcf4bf9fecffd3f29c89 *vignettes/Tutorial.Rnw
+62353ac3eefc346b934822be3d4070a9 *src/mstate_init.c
+29814187a5412ceab2861076392d8e4d *vignettes/Tutorial.Rnw
 97f0b104a37a0cd4c6d74278db2825fb *vignettes/Tutorial.bib
