@@ -1,26 +1,26 @@
 `Cuminc` <- function(time, status, data, group, failcodes, na.status=c("remove","extra"), variance=TRUE)
 {
-    ## time
-    if (!is.vector(time)) stop("argument \"time\" not of correct type")
-    if (is.character(time)) {
-        if (length(time) != 1)
-            stop("single character string required for \"time\" argument")
-        if (missing(data)) stop("argument \"data\" missing")
-        time <- data[[time]]
+  ## time
+  if (!is.vector(time)) stop("argument \"time\" not of correct type")
+  if (is.character(time)) {
+    if (length(time) != 1)
+      stop("single character string required for \"time\" argument")
+    if (missing(data)) stop("argument \"data\" missing")
+    time <- data[[time]]
+  }
+  ## status
+  if (!is.vector(status)) stop("argument \"status\" not of correct type")
+  if (is.character(status)) {
+    if (length(status) == 1) {
+      if (missing(data)) stop("argument \"data\" missing")
+      status <- data[[status]]
     }
-    ## status
-    if (!is.vector(status)) stop("argument \"status\" not of correct type")
-    if (is.character(status)) {
-        if (length(status) == 1) {
-            if (missing(data)) stop("argument \"data\" missing")
-            status <- data[[status]]
-        }
-    }
-
-    ## check for compatibility of time and status
-    if (length(status) != length(time)) stop("lengths of time and status do not match")
-    n <- length(time)
-
+  }
+  ## check for compatibility of time and status
+  if (length(status) != length(time))
+    stop("lengths of time and status do not match")
+  n <- length(time)
+  
   if (missing(group)) {
     tmp <- data.frame(time=time, status=status)
     # Just call survfit with status argument a factor
@@ -28,16 +28,11 @@
     sf <- survfit(Surv(time, statuscr) ~ 1, data=tmp)
     tt <- sf$time
     CIs <- sf$pstate
-    K <- ncol(CIs)
-    SSurv <- CIs[, K]
-    CIs <- CIs[, -K]
     ses <- sf$std.err
-    se0 <- ses[, K]
-    ses <- ses[, -K]
-    res <- cbind(tt, SSurv, CIs, se0, ses)
+    res <- cbind(tt, CIs, ses)
     res <- as.data.frame(res)
-    names(res) <- c("time", "Surv", paste("CI", sf$states[-K], sep="."),
-                    "seSurv", paste("seCI", sf$states[-K], sep="."))
+    names(res) <- c("time", "Surv", paste("CI", sf$states[-1], sep="."),
+                    "seSurv", paste("seCI", sf$states[-1], sep="."))
     res <- res[!duplicated(res$Surv), ]
     rownames(res) <- 1:nrow(res)
     class(res) <- c("Cuminc", "data.frame")
@@ -74,16 +69,11 @@
     sf <- survfit(Surv(time, statuscr) ~ group, data=tmp)
     tt <- sf$time
     CIs <- sf$pstate
-    K <- ncol(CIs)
-    SSurv <- CIs[, K]
-    CIs <- CIs[, -K]
     ses <- sf$std.err
-    se0 <- ses[, K]
-    ses <- ses[, -K]
-    res <- cbind(tt, SSurv, CIs, se0, ses)
+    res <- cbind(tt, CIs, ses)
     res <- as.data.frame(res)
-    names(res) <- c("time", "Surv", paste("CI", sf$states[-K], sep="."),
-                    "seSurv", paste("seCI", sf$states[-K], sep="."))
+    names(res) <- c("time", "Surv", paste("CI", sf$states[-1], sep="."),
+                    "seSurv", paste("seCI", sf$states[-1], sep="."))
     group <- rep(levels(as.factor(tmp$group)), sf$strata)
     res <- cbind(data.frame(group=group), res)
     res <- res[!duplicated(res$Surv), ]

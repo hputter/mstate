@@ -84,7 +84,7 @@ Competing risks and multi-state models. \emph{Statistics in Medicine} \bold{26},
 
 de Wreede L, Fiocco M, Putter H (2009). The mstate package for
 estimation and prediction in non- and semi-parametric multi-state
-models. Submitted. \url{www.msbi.nl/multistate}.
+models. Submitted. \url{http://www.msbi.nl/multistate}.
 }
 \author{Hein Putter \email{H.Putter@lumc.nl}}
 \examples{

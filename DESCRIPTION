@@ -1,12 +1,12 @@
 Package: mstate
-Version: 0.2.11
-Date: 2018-04-06
+Version: 0.2.12
+Date: 2019-12-10
 Title: Data Preparation, Estimation and Prediction in Multi-State
         Models
 Author: Hein Putter, Liesbeth de Wreede, Marta Fiocco, with contributions by
         Ronald Geskus
 Maintainer: Hein Putter <H.Putter@lumc.nl>
-Depends: survival (>= 2.40)
+Depends: survival (>= 3.1)
 Imports: RColorBrewer
 Suggests: cmprsk
 Description: Contains functions for data preparation, descriptives, hazard estimation and prediction with Aalen-Johansen or simulation in competing risks and multi-state models, see Putter, Fiocco, Geskus (2007) <doi:10.1002/sim.2712>.
@@ -15,5 +15,5 @@ URL:
         https://www.lumc.nl/org/bds/research/medische-statistiek/survival-analysis/
 NeedsCompilation: yes
 Repository: CRAN
-Packaged: 2018-04-09 13:42:37 UTC; hputter
-Date/Publication: 2018-04-09 17:35:34 UTC
+Packaged: 2019-12-11 12:02:31 UTC; hputter
+Date/Publication: 2019-12-11 12:30:03 UTC

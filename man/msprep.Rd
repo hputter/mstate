@@ -26,7 +26,7 @@ msprep(time, status, data, trans, start, id, keep)
   2) a character vector of length S containing the column
   names indicating these status variables. In the latter cases,
   some elements of \code{status} may be NA, see Details}
-  \item{data}{Data frame in wide format in which to interpret
+  \item{data}{Data frame (not a tibble) in wide format in which to interpret
   \code{time}, \code{status}, \code{id} or \code{keep}, if appropriate}
   \item{trans}{Transition matrix describing the states and transitions
   in the multi-state model. If S is the number of states in the
