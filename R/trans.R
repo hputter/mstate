@@ -28,5 +28,3 @@
     dimnames(tmat) <- list(from=names, to=names)
     return(tmat)
 }
-
-# Ed was here
