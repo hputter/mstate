@@ -8,7 +8,9 @@ importFrom("stats", "as.formula", "delete.response", "model.frame",
 importFrom("utils", "flush.console", "head", "tail")
 useDynLib(mstate, .registration = TRUE)
 export(msprep, events, paths, expand.covs, msfit, mssample, msboot, probtrans, Cuminc, redrank,
-       trans.comprisk, trans.illdeath, transMat, crprep, ELOS, xsect, cutLMms, LMAJ)
+       trans.comprisk, trans.illdeath, transMat, crprep, ELOS, xsect, cutLMms, LMAJ,
+       to.trans2, trans2Q, absorbing, is.circular, msdata2etm, trans2tra, etm2msdata, tra2trans,
+       MarkovTest)
 S3method(plot, msfit)
 S3method(plot, probtrans)
 S3method(plot, Cuminc)
@@ -20,3 +22,5 @@ S3method(print, Cuminc)
 S3method(crprep, default)
 S3method(expand.covs, default)
 S3method(expand.covs, msdata)
+S3method(print, MarkovTest)
+S3method(plot, MarkovTest)

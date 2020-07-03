@@ -1,29 +1,3 @@
-`to.trans2` <- function(trans)
-{
-  dm <- dim(trans)
-  if (dm[1] != dm[2]) stop("transition matrix should be square")
-  S <- dm[1]
-  mx <- max(trans, na.rm=TRUE)
-  res <- matrix(NA, mx, 3)
-  res[, 1] <- 1:mx
-  transvec <- as.vector(trans)
-  for (i in 1:mx) {
-    idx <- which(transvec==i)
-    res[i, 2:3] <- c((idx-1) %% S + 1, (idx-1) %/% S + 1)
-  }
-  res <- data.frame(res)
-  names(res) <- c("transno", "from", "to")
-  res$from[res$from==0] <- S
-  statesfrom <- dimnames(trans)[[1]]
-  if (is.null(statesfrom)) statesfrom <- 1:S
-  statesto <- dimnames(trans)[[2]]
-  if (is.null(statesto)) statesto <- 1:S
-  res$fromname <- statesfrom[res$from]
-  res$toname <- statesto[res$to]
-  res$transname <- paste(res$fromname, res$toname, sep=" -> ")
-  return(res)
-}
-
 `NAfix` <- function(x, subst=-Inf) {
 ### Written by Christian Hoffmann; propagate last known non-NA value
 ### Input:

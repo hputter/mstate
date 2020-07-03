@@ -1,0 +1,107 @@
+\name{MarkovTest}
+\alias{MarkovTest}
+\alias{optimal_weights_multiple}
+\alias{optimal_weights_matrix}
+\title{Log-rank based test for the validity of the Markov assumption}
+\description{
+Log-rank based test for the validity of the Markov assumption}
+\usage{
+MarkovTest(data, id, formula = NULL, transition, grid, B = 1000,
+  fn = list(function(x) mean(abs(x), na.rm = TRUE)),
+  fn2 = list(function(x) mean(x, na.rm = TRUE)),
+  dist = c("poisson", "normal"), seed = 2020)
+optimal_weights_multiple(data, id, grid, transition, min_time = 0)
+optimal_weights_matrix(data, id, grid, transition, min_time = 0,
+  other_weights = NULL)
+}
+\arguments{
+  \item{data}{Multi-state data in \code{msdata} format. Should also contain (dummy codings of) the relevant covariates; no factors allowed}
+  \item{id}{Column name in \code{data} containing subject id}
+  \item{formula}{Right-hand side of the formula. If NULL will fit with no covariates (formula="1" will also work), offset terms can also be specified.}
+  \item{transition}{Transition number of the transition to be tested (in the transition matrix as attribute to \code{data})}
+  \item{grid}{Grid of time points at which to compute the statistic}
+  \item{B}{Number of wild bootstrap replications to perform}
+  \item{fn}{A list of summary functions to be applied to the individual zbar traces (or a list of lists)}
+  \item{fn2}{A list of summary functions to be applied to the overall chi-squared trace}
+  \item{dist}{Distribution of wild bootstrap random weights, either "poisson" for
+    centred Poisson (default), or "normal" for standard normal}
+  \item{min_time}{The minimum time for calculating optimal weights}
+  \item{other_weights}{Other (than optimal) weights can be specified here}
+}
+\details{
+Function MarkovTest performs the log-rank test described in Titman & Putter (2020).
+Function optimal_weights_matrix implements the optimal weighting for the state-specific trace.
+Function optimal_weights_multiple implements the optimal weighting for the chi-squared trace.
+}
+\value{MarkovTest returns an object of class "MarkovTest", which is a list with the following items:
+  \item{orig_stat}{Summary statistic for each of the starting states}
+  \item{orig_ch_stat}{Overall chi-squared summary statistic}
+  \item{p_stat_wb}{P-values corresponding to each of the summary statistics
+    for each starting state}
+  \item{p_ch_stat_wb}{P-values for overall chi-squared summary statistic}
+  \item{b_stat_wb}{Bootstrap summary statistics for each of the starting states}
+  \item{zbar}{Individual traces for each of the starting states}
+  \item{nobs_grid}{The number of events after time s for each s in the grid}
+  \item{Nsub}{Number of patients who are ever at risk of the transition of interest}
+  \item{est_quant}{Pointwise 2.5 and 97.5 quantile limits for each of the traces}
+  \item{obs_chisq_trace}{Trace of the chi-squared statistic}
+  \item{nch_wb_trace}{Individual values of the chi-squared statistic trace for
+    the wild bootstrap samples}
+  \item{n_wb_trace}{Individual values of the log-rank z statistic traces for the
+    wild bootstrap samples}
+  \item{est_cov}{Estimated covariance matrix between the log-rank statistics at
+    each grid point}
+  \item{transition}{The transition number tested}
+  \item{from}{The from state of the transition tested}
+  \item{to}{The to state of the transition tested}
+  \item{seed}{The random seed used}
+  \item{B}{The number of wild bootstrap replications}
+  \item{dist}{The distribution used in the wild bootstrap}
+  \item{qualset}{Set of qualifying states corresponding to the components of the above traces}
+  \item{coxfit}{Fitted coxph object}
+  \item{fn}{List of functions applied to state-specific trace}
+  \item{fn2}{List of functions applied to overall trace}
+}
+\references{
+Titman AC, Putter H (2020). General tests of the Markov property in
+multi-state models. \emph{Biostatistics} To appear.
+}
+\author{Andrew Titman \email{a.titman@lancaster.ac.uk},
+transported to mstate by Hein Putter \email{H.Putter@lumc.nl}}
+\examples{
+# Example provided by the prothrombin data
+data("prothr")
+# Apply Markov test to grid of monthly time points over the first 7.5 years
+year <- 365.25
+month <- year / 12
+grid <- month * (1 : 90)
+# Markov test for transition 1 (wild bootstrap based on 1000 replications)
+MT <- MarkovTest(prothr, id = "id", transition = 1,
+                 grid = grid, B = 1000)
+
+# Plot traces
+plot(MT, grid, what="states", idx=1:50, states=rownames(attr(prothr, "trans")),
+     xlab="Days since randomisation", ylab="Log-rank test statistic",
+     main="Transition Normal -> Low")
+plot(MT, grid,what="overall", idx=1:50,
+     xlab="Days since randomisation", ylab="Chi-square test statistic",
+     main="Transition Normal -> Low")
+
+# Example using optimal weights
+oweights_fun <-
+  optimal_weights_matrix(prothr, id = "id", grid=grid, transition = 1,
+                         other_weights=list(
+                           function(x) mean(abs(x),na.rm=TRUE),
+                           function(x) max(abs(x),na.rm=TRUE)))
+
+oweights_chi <- optimal_weights_multiple(prothr, id = "id", grid=grid, transition = 1)
+
+MT <- MarkovTest(prothr, id = "id", transition = 1,
+                 grid = grid, B = 1000,
+                 fn = oweights_fun,
+                 fn2 = list(
+                   function(x) weighted.mean(x, w=oweights_chi, na.rm=TRUE),
+                   function(x) mean(x, na.rm=TRUE),
+                   function(x) max(x, na.rm=TRUE)))
+}
+\keyword{univar}
