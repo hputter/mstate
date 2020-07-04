@@ -38,12 +38,12 @@ variances.}
   probabilities should be printed (\code{TRUE}) or not (\code{FALSE});
   default is \code{FALSE}, in which case the estimated transition
   probilities will be printed for the first and last 6 time points of
-  each starting state (or all when there are at most 12 of these time
-  points}
+  each starting state or of the selected times (or all when there are at
+  most 12 of these time points}
   \item{\dots}{Further arguments to print}
 }
 \value{Function \code{summary.probtrans} returns an object of class
-"summary.survfit", which is a list (for each \code{from} state) of transition
+"summary.probtrans", which is a list (for each \code{from} state) of transition
 probabilities at the specified (or all) time points. The \code{print} method
 of a \code{summary.probtrans} doesn't return a value.}
 \seealso{\code{\link{probtrans}}}

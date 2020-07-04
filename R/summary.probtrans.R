@@ -26,7 +26,6 @@ summary.probtrans <- function(object, times, from=1, to=0,
         secols <- S + 1 + to
         cols <- c(cols, secols)
         if (missing(times)) {
-            times <- tt
             res <- list()
             for (k in from) {
                 ptk <- object[[k]]
@@ -98,7 +97,6 @@ summary.probtrans <- function(object, times, from=1, to=0,
     }
     else {
         if (missing(times)) {
-            times <- tt
             res <- list()
             for (k in from) {
                 ptk <- object[[k]]
@@ -139,14 +137,12 @@ print.summary.probtrans <- function(x, complete=FALSE, ...)
     tt <- unique(x[[1]]$time) # the time points
     nt <- length(tt)
     if (nt<=12 | complete) {
-        cat("here ...\n")
         for (k in from) {
             cat("\nPrediction from state", k, ":\n")
             ptk <- x[[k]]
             print(ptk, ...)
         }
     } else {
-        cat("not here ...\n")
         for (k in from) {
             cat("\nPrediction from state", k, "(head and tail):\n")
             ptk <- x[[k]]
