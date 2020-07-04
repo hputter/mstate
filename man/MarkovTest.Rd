@@ -9,7 +9,7 @@ Log-rank based test for the validity of the Markov assumption}
 MarkovTest(data, id, formula = NULL, transition, grid, B = 1000,
   fn = list(function(x) mean(abs(x), na.rm = TRUE)),
   fn2 = list(function(x) mean(x, na.rm = TRUE)),
-  dist = c("poisson", "normal"), seed = 2020)
+  dist = c("poisson", "normal"))
 optimal_weights_multiple(data, id, grid, transition, min_time = 0)
 optimal_weights_matrix(data, id, grid, transition, min_time = 0,
   other_weights = NULL)
@@ -54,7 +54,6 @@ Function optimal_weights_multiple implements the optimal weighting for the chi-s
   \item{transition}{The transition number tested}
   \item{from}{The from state of the transition tested}
   \item{to}{The to state of the transition tested}
-  \item{seed}{The random seed used}
   \item{B}{The number of wild bootstrap replications}
   \item{dist}{The distribution used in the wild bootstrap}
   \item{qualset}{Set of qualifying states corresponding to the components of the above traces}
@@ -75,15 +74,15 @@ data("prothr")
 year <- 365.25
 month <- year / 12
 grid <- month * (1 : 90)
-# Markov test for transition 1 (wild bootstrap based on 1000 replications)
+# Markov test for transition 1 (wild bootstrap based on 25 replications, 1000 recommended)
 MT <- MarkovTest(prothr, id = "id", transition = 1,
-                 grid = grid, B = 1000)
+                 grid = grid, B = 25)
 
 # Plot traces
-plot(MT, grid, what="states", idx=1:50, states=rownames(attr(prothr, "trans")),
+plot(MT, grid, what="states", idx=1:10, states=rownames(attr(prothr, "trans")),
      xlab="Days since randomisation", ylab="Log-rank test statistic",
      main="Transition Normal -> Low")
-plot(MT, grid,what="overall", idx=1:50,
+plot(MT, grid,what="overall", idx=1:10,
      xlab="Days since randomisation", ylab="Chi-square test statistic",
      main="Transition Normal -> Low")
 
@@ -97,7 +96,7 @@ oweights_fun <-
 oweights_chi <- optimal_weights_multiple(prothr, id = "id", grid=grid, transition = 1)
 
 MT <- MarkovTest(prothr, id = "id", transition = 1,
-                 grid = grid, B = 1000,
+                 grid = grid, B = 25,
                  fn = oweights_fun,
                  fn2 = list(
                    function(x) weighted.mean(x, w=oweights_chi, na.rm=TRUE),

@@ -2,10 +2,8 @@ MarkovTest <- function(data, id, formula = NULL, transition, grid,
                        B = 1000,
                        fn = list(function(x) mean(abs(x), na.rm = TRUE)),
                        fn2 = list(function(x) mean(x, na.rm = TRUE)),
-                       dist = c("poisson", "normal"),
-                       seed = 2020) {
+                       dist = c("poisson", "normal")) {
   
-  set.seed(seed)
   dist <- match.arg(dist)
   
   # Convert data to etm data
@@ -258,7 +256,7 @@ MarkovTest <- function(data, id, formula = NULL, transition, grid,
                 nobs_grid = nobs_grid, Nsub = length(relpat), est_quant = est_quant, 
                 obs_chisq_trace = obs_chisq_trace, nch_wb_trace = nch_wb_trace, 
                 n_wb_trace = n_wb_trace, est_cov = est_cov, transition = transition,
-                from = tfrom, to = tto, seed = seed, B = B, dist = dist,
+                from = tfrom, to = tto, B = B, dist = dist,
                 qualset = qualset, coxfit = progfit, fn = fn, fn2 = fn2)
   
   class(MTres) <- c("MarkovTest")

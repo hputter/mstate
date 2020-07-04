@@ -20,9 +20,9 @@ data("prothr")
 year <- 365.25
 month <- year / 12
 grid <- month * (1 : 90)
-# Markov test for transition 1 (wild bootstrap based on 100 replications)
+# Markov test for transition 1 (wild bootstrap based on 25 replications for brevity)
 MT <- MarkovTest(prothr, id = "id", transition = 1,
-                 grid = grid, B = 100)
+                 grid = grid, B = 25)
 MT
 }
 \keyword{hplot}

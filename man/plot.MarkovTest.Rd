@@ -5,11 +5,21 @@
 Plot method for an object of class 'MarkovTest'. It plots the trace of the log-rank
 statistics provided by \code{\link{MarkovTest}}.}
 \usage{
-\S3method{plot}{MarkovTest}(x, y,...)
+\S3method{plot}{MarkovTest}(x, y, what=c("states", "overall"), idx=NULL, quantiles=TRUE, qsup, states,
+                            xlab, ylab, main, ...)
 }
 \arguments{
-  \item{x}{Object of class 'probtrans', containing estimated transition
-  probabilities}
+  \item{x}{Object of class 'MarkovTest'}
+  \item{y}{The grid at which \code{MarkovTest} was calculated}
+  \item{what}{Choose "states" for plotting state-specific traces, and "overall" for the overall chi-squared trace}
+  \item{idx}{Vector of indices of wild bootstrap traces to plot}
+  \item{quantiles}{Boolean whether or not to plot the 2.5 and 97.5 percent quantiles, default is \code{TRUE}}
+  \item{qsup}{The index of the function in either \code{fn} (when plotting state-specific) or \code{fn2} (when
+  plotting overall) to plot along with the traces; when missing this line is not included}
+  \item{states}{Number of the qualifying state(s) to plot trace for}
+  \item{xlab}{Text for x-axis label}
+  \item{ylab}{Text for y-axis label}
+  \item{main}{Text for title (main)}
   \item{\dots}{Further arguments to plot}
 }
 \value{No return value}

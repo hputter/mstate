@@ -4,19 +4,22 @@ importFrom("graphics", "box", "lines", "par", "plot", "polygon",
            "text", "title")
 importFrom("stats", "as.formula", "delete.response", "model.frame",
            "model.matrix", "model.offset", "model.response", "rnorm",
-           "terms", "time")
+           "terms", "time", "aggregate", "approxfun", "quantile", "rpois",
+           "weighted.mean", "approx", "qnorm")
 importFrom("utils", "flush.console", "head", "tail")
+importFrom("lattice", "xyplot")
 useDynLib(mstate, .registration = TRUE)
 export(msprep, events, paths, expand.covs, msfit, mssample, msboot, probtrans, Cuminc, redrank,
        trans.comprisk, trans.illdeath, transMat, crprep, ELOS, xsect, cutLMms, LMAJ,
        to.trans2, trans2Q, absorbing, is.circular, msdata2etm, trans2tra, etm2msdata, tra2trans,
-       MarkovTest)
+       MarkovTest, optimal_weights_multiple, optimal_weights_matrix)
 S3method(plot, msfit)
 S3method(plot, probtrans)
 S3method(plot, Cuminc)
 S3method(summary, msfit)
 S3method(summary, probtrans)
 S3method(summary, Cuminc)
+S3method(print, summary.probtrans)
 S3method(print, msdata)
 S3method(print, Cuminc)
 S3method(crprep, default)
