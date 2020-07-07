@@ -5,6 +5,7 @@ MarkovTest <- function(data, id, formula = NULL, transition, grid,
                        dist = c("poisson", "normal")) {
   
   dist <- match.arg(dist)
+  if (missing(id)) id <- "id"
   # Remove "empty" lines in the data
   wh <- which(data$Tstop <= data$Tstart)
   if (length(wh)>0)
@@ -14,12 +15,19 @@ MarkovTest <- function(data, id, formula = NULL, transition, grid,
   }
 
   # Convert data to etm data
+  # Make sure to retain all covariates (possibly way to many) in msdata (needed in formula perhaps)
+  mtch <- match(c("id", "from", "to", "trans", "Tstart", "Tstop", "status"), names(data))
+  covcols <- 1:ncol(data)
+  covcols <- covcols[!covcols %in% mtch]
+  ncovs <- length(covcols)
+  
   trans <- attr(data, "trans")
   etmdata <- msdata2etm(data, id)
+  if (ncovs > 0) etmdata <- msdata2etm(data, id, names(data)[covcols])
   trans2 <- to.trans2(trans)
   tfrom <- trans2$from[trans2$transno == transition]
   tto <- trans2$to[trans2$transno == transition]
-
+  
   # Determine qualifying set
   qualset <- c(tfrom, which(trans2Q(trans)[, tfrom] > 0))
   qualset <- sort(unique(qualset))  # for circular models, tfrom is included twice

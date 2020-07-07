@@ -1,4 +1,4 @@
-msdata2etm <- function(msdata, id)
+msdata2etm <- function(msdata, id, covs)
 {
   if (missing(id)) id <- "id"
   msdata$tostat <- msdata$to * msdata$status
@@ -6,17 +6,27 @@ msdata2etm <- function(msdata, id)
                     by=list(id=msdata[, id], from=msdata$from, Tstart=msdata$Tstart, Tstop=msdata$Tstop),
                     FUN=max)
   names(aggr)[names(aggr)=="tostat"] <- "to"
-  etm <- aggr[, c(1, 3, 4, 2, 6)]
+  ord <- c(1, 3, 4, 2, 6)
+  etm <- aggr[, ord]
   names(etm)[2:5] <- c("entry", "exit", "from", "to")
   etm$to[etm$to==0] <- 99
   etm <- etm[order(etm[, id], etm$entry), ]
+  
+  # Add covariates
+  if (missing(covs)) covs <- NULL
+  ncovs <- length(covs)
+  if (ncovs > 0) {
+    msdatacovs <- as.data.frame(msdata[, c("id", covs)])
+    msdatacovs <- msdatacovs[!duplicated(msdatacovs$id), ]
+    etm <- merge(etm, msdatacovs, by="id")
+  }
   etm
 }
 
 trans2tra <- function(trans)
   return(!(is.na(trans)))
 
-etm2msdata <- function(etmdata, id, tra)
+etm2msdata <- function(etmdata, id, tra, covs)
 {
   nout <- apply(tra, 1, sum)
   trans <- tra2trans(tra)
@@ -37,6 +47,16 @@ etm2msdata <- function(etmdata, id, tra)
   msdata$status[msdata$status==msdata$to] <- -1 # these are going to be 1
   msdata$status[msdata$status>0] <- 0
   msdata$status <- -msdata$status
+
+  # Add covariates
+  if (missing(covs)) covs <- NULL
+  ncovs <- length(covs)
+  if (ncovs > 0) {
+    etmdatacovs <- as.data.frame(etmdata[, c("id", covs)])
+    etmdatacovs <- etmdatacovs[!duplicated(etmdatacovs$id), ]
+    msdata <- merge(msdata, etmdatacovs, by="id")
+  }
+  
   class(msdata) <- c("msdata", "data.frame")
   attr(msdata, "trans") <- trans
   return(msdata) 
@@ -51,3 +71,4 @@ tra2trans <- function(tra)
   trans <- t(ttrans)
   return(trans)
 }
+

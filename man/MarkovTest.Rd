@@ -86,7 +86,7 @@ plot(MT, grid,what="overall", idx=1:10,
      xlab="Days since randomisation", ylab="Chi-square test statistic",
      main="Transition Normal -> Low")
 
-# Example using optimal weights
+# Example using optimal weights and adjustment for covariates
 oweights_fun <-
   optimal_weights_matrix(prothr, id = "id", grid=grid, transition = 1,
                          other_weights=list(
@@ -95,7 +95,12 @@ oweights_fun <-
 
 oweights_chi <- optimal_weights_multiple(prothr, id = "id", grid=grid, transition = 1)
 
-MT <- MarkovTest(prothr, id = "id", transition = 1,
+# Formula in MarkovTest only works for continuous covariates and dummy coded variables
+# No factors allowed
+prothr$prednisone <- as.numeric(prothr$treat == "Prednisone")
+MT <- MarkovTest(prothr, id = "id", 
+                 formula = "prednisone",
+                 transition = 1,
                  grid = grid, B = 25,
                  fn = oweights_fun,
                  fn2 = list(
