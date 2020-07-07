@@ -5,7 +5,14 @@ MarkovTest <- function(data, id, formula = NULL, transition, grid,
                        dist = c("poisson", "normal")) {
   
   dist <- match.arg(dist)
-  
+  # Remove "empty" lines in the data
+  wh <- which(data$Tstop <= data$Tstart)
+  if (length(wh)>0)
+  {
+    warning(length(wh), " lines with Tstart <= Tstop, have been removed before applying tests!")
+    data <- data[-wh, ]
+  }
+
   # Convert data to etm data
   trans <- attr(data, "trans")
   etmdata <- msdata2etm(data, id)
@@ -32,7 +39,7 @@ MarkovTest <- function(data, id, formula = NULL, transition, grid,
   # Establish the relevant patients who ever enter tfrom
   relpat <- sort(unique(etmdata$id[etmdata$from == tfrom]))
   
-  rdata <- etmdata[etmdata$from == tfrom, ]  #Only need time periods in the relevant state...
+  rdata <- etmdata[etmdata$from == tfrom, ]  # only need time periods in the relevant state...
   rdata$status <- 1 * (rdata$to == tto)
   if (!is.null(formula)) {
     form <- as.formula(paste("Surv(entry, exit, status) ~ ", formula, 
@@ -77,6 +84,7 @@ MarkovTest <- function(data, id, formula = NULL, transition, grid,
 
   # Need a separate Z3mat for each group as well...
   Z3mat <- index_gM[match(progdat$id, relpat), , , drop = FALSE]
+  
   N1 <- dim(progdat)[1]
   
   if (Ncov > 0) {
