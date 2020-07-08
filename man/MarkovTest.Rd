@@ -15,7 +15,8 @@ optimal_weights_matrix(data, id, grid, transition, min_time = 0,
   other_weights = NULL)
 }
 \arguments{
-  \item{data}{Multi-state data in \code{msdata} format. Should also contain (dummy codings of) the relevant covariates; no factors allowed}
+  \item{data}{Multi-state data in \code{msdata} format. Should also contain (dummy codings of) the relevant covariates;
+  no factors allowed}
   \item{id}{Column name in \code{data} containing subject id}
   \item{formula}{Right-hand side of the formula. If NULL will fit with no covariates (formula="1" will also work), offset terms can also be specified.}
   \item{transition}{Transition number of the transition to be tested (in the transition matrix as attribute to \code{data})}
