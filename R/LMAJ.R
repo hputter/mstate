@@ -1,3 +1,57 @@
+#' Landmark Aalen-Johansen method
+#' 
+#' This function implements the landmark Aalen-Johansen method of Putter &
+#' Spitoni (2016) for non-parametric estimation of transition probabilities in
+#' non-Markov models.
+#' 
+#' 
+#' @param msdata An \code{"msdata"} object, as for instance prepared by
+#' \code{link{msprep}}
+#' @param s The prediction time point s from which transition probabilities are
+#' to be obtained
+#' @param from Either a single state or a set of states in the state space
+#' 1,...,S
+#' @param method The method for calculating variances, as in
+#' \code{\link{probtrans}}
+#' @return A data frame containing estimates and associated standard errors of
+#' the transition probabilities P(X(t)=k | X(s) in \code{from}) with \code{s}
+#' and \code{from} the arguments of the function.
+#' @author Hein Putter \email{H.Putter@@lumc.nl}
+#' @references H. Putter and C. Spitoni (2016). Estimators of transition
+#' probabilities in non-Markov multi-state models. Submitted.
+#' @keywords survival
+#' @examples
+#' 
+#' data(prothr)
+#' tmat <- attr(prothr, "trans")
+#' pr0 <- subset(prothr, treat=="Placebo")
+#' attr(pr0, "trans") <- tmat
+#' pr1 <- subset(prothr, treat=="Prednisone")
+#' attr(pr1, "trans") <- tmat
+#' c0 <- coxph(Surv(Tstart, Tstop, status) ~ strata(trans), data=pr0)
+#' c1 <- coxph(Surv(Tstart, Tstop, status) ~ strata(trans), data=pr1)
+#' msf0 <- msfit(c0, trans=tmat)
+#' msf1 <- msfit(c1, trans=tmat)
+#' # Comparison as in Figure 2 of Titman (2015)
+#' # Aalen-Johansen
+#' pt0 <- probtrans(msf0, predt=1000)[[2]]
+#' pt1 <- probtrans(msf1, predt=1000)[[2]]
+#' par(mfrow=c(1,2))
+#' plot(pt0$time, pt0$pstate1, type="s", lwd=2, xlim=c(1000,4000), ylim=c(0,0.61),
+#'      xlab="Time since randomisation (days)", ylab="Probability")
+#' lines(pt1$time, pt1$pstate1, type="s", lwd=2, lty=3)
+#' legend("topright", c("Placebo", "Prednisone"), lwd=2, lty=1:2, bty="n")
+#' title(main="Aalen-Johansen")
+#' # Landmark Aalen-Johansen
+#' LMpt0 <- LMAJ(msdata=pr0, s=1000, from=2)
+#' LMpt1 <- LMAJ(msdata=pr1, s=1000, from=2)
+#' plot(LMpt0$time, LMpt0$pstate1, type="s", lwd=2, xlim=c(1000,4000), ylim=c(0,0.61),
+#'      xlab="Time since randomisation (days)", ylab="Probability")
+#' lines(LMpt1$time, LMpt1$pstate1, type="s", lwd=2, lty=3)
+#' legend("topright", c("Placebo", "Prednisone"), lwd=2, lty=1:2, bty="n")
+#' title(main="Landmark Aalen-Johansen")
+#' 
+#' @export LMAJ
 LMAJ <- function(msdata, s, from, method=c("aalen", "greenwood"))
 {
   tmat <- attr(msdata, "trans")

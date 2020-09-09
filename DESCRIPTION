@@ -3,17 +3,48 @@ Version: 0.2.12
 Date: 2019-12-10
 Title: Data Preparation, Estimation and Prediction in Multi-State
         Models
-Author: Hein Putter, Liesbeth de Wreede, Marta Fiocco, with contributions by
-        Ronald Geskus
-Maintainer: Hein Putter <H.Putter@lumc.nl>
-Depends: survival (>= 3.1)
-Imports: RColorBrewer, lattice
-Suggests: cmprsk
+Authors@R: c(
+  person(
+    given = "Hein",
+    family = "Putter",
+    role = c("aut", "cre"),
+    email = "H.Putter@lumc.nl"),
+  person(
+    given = "Liesbeth C.",
+    family = "de Wreede",
+    role = "aut"
+  ),
+  person(
+    given = "Marta",
+    family = "Fiocco",
+    role = "aut"
+  ),
+  person(
+    given = "Ronald B.",
+    family = "Geskus",
+    role = "ctb"
+  ),
+  person(
+    given = "Edouard F.",
+    family = "Bonneville",
+    role = "ctb"
+  )
+  ) 
+Depends: 
+  survival (>= 3.1)
+Imports: 
+  RColorBrewer,
+  lattice
+Suggests: 
+  cmprsk,
+  ggplot2
 Description: Contains functions for data preparation, descriptives, hazard estimation and prediction with Aalen-Johansen or simulation in competing risks and multi-state models, see Putter, Fiocco, Geskus (2007) <doi:10.1002/sim.2712>.
 License: GPL (>= 2)
+Encoding: UTF-8
 URL:
-        https://www.lumc.nl/org/bds/research/medische-statistiek/survival-analysis/
+  https://www.lumc.nl/org/bds/research/medische-statistiek/survival-analysis/
 NeedsCompilation: yes
 Repository: CRAN
 Packaged: 2019-12-11 12:02:31 UTC; hputter
-Date/Publication: 2019-12-11 12:30:03 UTC
+  Date/Publication: 2019-12-11 12:30:03 UTC
+RoxygenNote: 7.1.0

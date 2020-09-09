@@ -1,3 +1,56 @@
+#' Plot method for a MarkovTest object
+#' 
+#' Plot method for an object of class 'MarkovTest'. It plots the trace of the
+#' log-rank statistics provided by \code{\link{MarkovTest}}.
+#' 
+#' 
+#' @param x Object of class 'MarkovTest'
+#' @param y The grid at which \code{MarkovTest} was calculated
+#' @param what Choose "states" for plotting state-specific traces, and
+#' "overall" for the overall chi-squared trace
+#' @param idx Vector of indices of wild bootstrap traces to plot
+#' @param quantiles Boolean whether or not to plot the 2.5 and 97.5 percent
+#' quantiles, default is \code{TRUE}
+#' @param qsup The index of the function in either \code{fn} (when plotting
+#' state-specific) or \code{fn2} (when plotting overall) to plot along with the
+#' traces; when missing this line is not included
+#' @param states Number of the qualifying state(s) to plot trace for
+#' @param xlab Text for x-axis label
+#' @param ylab Text for y-axis label
+#' @param main Text for title (main)
+#' @param \dots Further arguments to plot
+#' @return No return value
+#' @author Hein Putter \email{H.Putter@@lumc.nl}
+#' @seealso \code{\link{MarkovTest}}
+#' @keywords hplot
+#' @examples
+#' 
+#' # Example provided by the prothrombin data
+#' data("prothr")
+#' # Apply Markov test to grid of monthly time points over the first 7.5 years
+#' year <- 365.25
+#' month <- year / 12
+#' grid <- month * (1 : 90)
+#' # Markov test for transition 1 (wild bootstrap based on 100 replications)
+#' MT <- MarkovTest(prothr, id = "id", transition = 1,
+#'                  grid = grid, B = 100)
+#' 
+#' plot(MT, grid, what="states", idx=1:50, states=rownames(attr(prothr, "trans")),
+#'      xlab="Days since randomisation", ylab="Log-rank test statistic",
+#'      main="Transition Normal -> Low")
+#' 
+#' plot(MT, grid,what="overall", idx=1:50,
+#'      xlab="Days since randomisation", ylab="Chi-square test statistic",
+#'      main="Transition Normal -> Low")
+#' 
+#' plot(MT, grid, what="states", quantiles=FALSE) # only trace
+#' plot(MT, grid, what="states") # trace plus quantiles (default)
+#' plot(MT, grid, what="states", idx=1:10) # trace plus quantiles, plus first 10 bootstrap traces
+#'  
+#' plot(MT, grid, what="overall", quantiles=FALSE) # only trace
+#' plot(MT, grid, what="overall") # trace plus quantiles (default)
+#' plot(MT, grid, what="overall", idx=1:10) # trace plus quantiles, plus first 10 bootstrap traces
+#' 
 plot.MarkovTest <- function(x, y, what=c("states", "overall"), idx=NULL, quantiles=TRUE, qsup, states,
                             xlab, ylab, main, ...)
 {

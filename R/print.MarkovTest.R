@@ -1,3 +1,28 @@
+#' Print method for a MarkovTest object
+#' 
+#' Print method for an object of class 'MarkovTest'
+#' 
+#' 
+#' @param x Object of class 'markovTest', as obtained by call to
+#' \code{\link{MarkovTest}}
+#' @param \dots Further arguments to print
+#' @return No return value
+#' @author Hein Putter \email{H.Putter@@lumc.nl}
+#' @seealso \code{\link{MarkovTest}}
+#' @keywords hplot
+#' @examples
+#' 
+#' # Example provided by the prothrombin data
+#' data("prothr")
+#' # Apply Markov test to grid of monthly time points over the first 7.5 years
+#' year <- 365.25
+#' month <- year / 12
+#' grid <- month * (1 : 90)
+#' # Markov test for transition 1 (wild bootstrap based on 25 replications for brevity)
+#' MT <- MarkovTest(prothr, id = "id", transition = 1,
+#'                  grid = grid, B = 25)
+#' MT
+#' 
 print.MarkovTest <- function(x, ...)
 {
   cat("Log-rank based Markov test for transition ", x$trans, " (", x$from, " -> ", x$to, ")\n", sep="")
