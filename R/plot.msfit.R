@@ -26,7 +26,12 @@
 #' @param legend.pos The position of the legend, see \code{\link{legend}};
 #' default is \code{"topleft"}
 #' @param bty The box type of the legend, see \code{\link{legend}}
+#' @param use_ggplot Default FALSE, set TRUE for ggplot version of plot
+#' @param xlim Limits of x axis, relevant if use_ggplot = T
+#' @param scale_type "fixed", "free", "free_x" or "free_y", see scales argument
+#' of facet_wrap(). Only relevant for use_ggplot = T.
 #' @param \dots Further arguments to plot
+#' 
 #' @return No return value
 #' @author Hein Putter \email{H.Putter@@lumc.nl}
 #' @seealso \code{\link{msfit}}
@@ -62,14 +67,50 @@
 #' plot(msf,lwd=2,col=c("darkgreen","darkblue","darkred"),legend=c("1->2","1->3","2->3"))
 #' # separate plots
 #' par(mfrow=c(2,2))
-#' plot(msf,type="sep",lwd=2)
+#' plot(msf,type="separate",lwd=2)
 #' par(mfrow=c(1,1))
 #' 
 #' @export 
-plot.msfit <- function(x, type=c("single", "separate"), cols,
-    xlab="Time", ylab="Cumulative hazard", ylim, lwd, lty,
-    legend, legend.pos, bty="n", ...)
-{
+plot.msfit <- function(x, 
+                       type = c("single", "separate"), 
+                       cols,
+                       xlab = "Time",
+                       ylab = "Cumulative hazard", 
+                       ylim,
+                       lwd, 
+                       lty,
+                       legend, 
+                       legend.pos = "right", 
+                       bty = "n", 
+                       use_ggplot = F,
+                       
+                       # Possible ggplot args here
+                       xlim,
+                       scale_type = "fixed",
+                       ...) {
+  
+  # Prelim
+  type <- match.arg(type)
+  
+  # Use ggplot or not?
+  if (use_ggplot) {
+    p <- ggplot.msfit(
+      x = x,
+      type = type,
+      cols = cols,
+      xlab = xlab,
+      ylab = ylab,
+      ylim = ylim,
+      lwd = lwd,
+      lty = lty,
+      legend = legend,
+      legend.pos = legend.pos,
+      xlim = xlim,
+      scale_type = scale_type
+    )
+    return(p)
+  }
+  
   if (!inherits(x, "msfit"))
     stop("'x' must be a 'msfit' object")
   msf1 <- x$Haz
@@ -77,7 +118,6 @@ plot.msfit <- function(x, type=c("single", "separate"), cols,
   msft <- unique(msf1$time) # the time points
   nt <- length(msft)
   msfp <- matrix(msf1[,2], nrow=nt) # the cumulative hazards in matrix (nt x K)
-  type <- match.arg(type)
   if (missing(legend))
     legend <- to.trans2(x$trans)$transname
   if (type=="single") {

@@ -14,8 +14,11 @@
   lwd,
   lty,
   legend,
-  legend.pos,
+  legend.pos = "right",
   bty = "n",
+  use_ggplot = F,
+  xlim,
+  scale_type = "fixed",
   ...
 )
 }
@@ -52,6 +55,13 @@ as titles of plots for type=\code{"separate"}}
 default is \code{"topleft"}}
 
 \item{bty}{The box type of the legend, see \code{\link{legend}}}
+
+\item{use_ggplot}{Default FALSE, set TRUE for ggplot version of plot}
+
+\item{xlim}{Limits of x axis, relevant if use_ggplot = T}
+
+\item{scale_type}{"fixed", "free", "free_x" or "free_y", see scales argument
+of facet_wrap(). Only relevant for use_ggplot = T.}
 
 \item{\dots}{Further arguments to plot}
 }
@@ -93,7 +103,7 @@ plot(msf)
 plot(msf,lwd=2,col=c("darkgreen","darkblue","darkred"),legend=c("1->2","1->3","2->3"))
 # separate plots
 par(mfrow=c(2,2))
-plot(msf,type="sep",lwd=2)
+plot(msf,type="separate",lwd=2)
 par(mfrow=c(1,1))
 
 }

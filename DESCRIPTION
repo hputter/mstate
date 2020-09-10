@@ -34,7 +34,9 @@ Depends:
   survival (>= 3.1)
 Imports: 
   RColorBrewer,
-  lattice
+  lattice,
+  data.table,
+  rlang
 Suggests: 
   cmprsk,
   ggplot2
