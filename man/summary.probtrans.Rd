@@ -2,10 +2,9 @@
 % Please edit documentation in R/summary.probtrans.R
 \name{summary.probtrans}
 \alias{summary.probtrans}
-\alias{print.summary.probtrans}
 \title{Summary method for a probtrans object}
 \usage{
-\method{print}{summary.probtrans}(
+\method{summary}{probtrans}(
   object,
   times,
   from = 1,
@@ -46,14 +45,6 @@ specified times, even if there are no subjects left at the end of the
 specified times. This is only valid if the times argument is present}
 
 \item{\dots}{Further arguments to print}
-
-\item{x}{Object of class 'summary.probtrans', to be printed}
-
-\item{complete}{Whether or not the complete estimated transition
-probabilities should be printed (\code{TRUE}) or not (\code{FALSE}); default
-is \code{FALSE}, in which case the estimated transition probilities will be
-printed for the first and last 6 time points of each starting state or of
-the selected times (or all when there are at most 12 of these time points}
 }
 \value{
 Function \code{summary.probtrans} returns an object of class
@@ -105,8 +96,6 @@ summary(pt, times=seq(0, 15, by=3), conf.type="no")
 # When the number of time points specified is larger than 12, head and tail is shown
 x <- summary(pt, times=seq(5, 8, by=0.25))
 x
-# If all time points should be printed, specify complete=TRUE in the print statement
-print(x, complete=TRUE)
 
 }
 \seealso{

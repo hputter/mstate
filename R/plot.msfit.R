@@ -65,8 +65,7 @@
 #' plot(msf,type="sep",lwd=2)
 #' par(mfrow=c(1,1))
 #' 
-#' @method plot msfit
-#' @export
+#' @export 
 plot.msfit <- function(x, type=c("single", "separate"), cols,
     xlab="Time", ylab="Cumulative hazard", ylim, lwd, lty,
     legend, legend.pos, bty="n", ...)

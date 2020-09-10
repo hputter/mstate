@@ -30,7 +30,7 @@ Authors@R: c(
     role = "ctb"
   )
   ) 
-Depends: 
+Depends:
   survival (>= 3.1)
 Imports: 
   RColorBrewer,

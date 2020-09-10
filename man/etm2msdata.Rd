@@ -2,8 +2,6 @@
 % Please edit documentation in R/etm2msdata.R
 \name{etm2msdata}
 \alias{etm2msdata}
-\alias{trans2tra}
-\alias{msdata2etm}
 \alias{tra2trans}
 \title{Converts between etm and msdata format}
 \usage{
@@ -17,11 +15,6 @@ etm2msdata(etmdata, id, tra, covs)
 \item{tra}{Transition matrix in \code{etm} format}
 
 \item{covs}{Vector of column names containing covariates to be included}
-
-\item{msdata}{Multi-state data in \code{msdata} format, as used in
-\code{mstate}}
-
-\item{trans}{Transition matrix in \code{mstate} format}
 }
 \description{
 Converts multi-state data back and forth between etm and msdata formats.

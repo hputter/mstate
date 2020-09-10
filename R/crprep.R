@@ -76,8 +76,9 @@
 #' @param prec.factor Factor by which to multiply the machine's precision.
 #' Censoring and truncation times are shifted by prec.factor*precision if event
 #' times and censoring/truncation times are equal.
-#' @param list() further arguments to be passed to or from other methods. They
-#' are ignored in this function.
+#' @param \dots Further arguments to be passed to or from other methods. They
+#' are ignored in this function. 
+#' 
 #' @return A data frame in long (counting process) format containing the
 #' covariates (replicated per subject). The following column names are used:
 #' \item{Tstart}{start dates of dataset} \item{Tstop}{stop dates of dataset}
@@ -144,13 +145,10 @@
 #' # with(aidssi, cuminc(time, status, group=ccr5)$Tests)
 #' # Note: results are not exactly the same
 #' 
-#' @export 
-crprep <- function(Tstop, ...) UseMethod("crprep")
-
-#' @method crprep default
 #' @export
 crprep.default <-
-function(Tstop, status, data, trans=1, cens=0, Tstart=0, id, strata, keep, shorten=TRUE, rm.na=TRUE, origin=0,
+function(Tstop, status, data, trans=1, cens=0, Tstart=0, id, strata, 
+         keep, shorten=TRUE, rm.na=TRUE, origin=0,
          prec.factor=1000, ...) {
 
   ## Extract Tstop data if given by column name
@@ -486,3 +484,6 @@ function(Tstop, status, data, trans=1, cens=0, Tstart=0, id, strata, keep, short
   return(out)
 }
 
+#' @inheritParams crprep.default
+#' @export 
+crprep <- function(Tstop, ...) UseMethod("crprep")

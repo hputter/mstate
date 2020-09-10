@@ -12,7 +12,7 @@
 #' cumulative incidences and variances reduce to simple binomial frequencies
 #' and their variances.
 #' 
-#' @aliases Cuminc print.Cuminc plot.Cuminc summary.Cuminc
+#' @aliases Cuminc print.Cuminc 
 #' @param time Either 1) a numeric vector containing the failure times or 2) a
 #' string containing the column name indicating these failure times
 #' @param status Either 1) a numeric, factor or character vector containing the
@@ -35,9 +35,7 @@
 #' failure
 #' @param variance Logical value, indicating whether the standard errors of the
 #' cumulative incidences should be output (\code{TRUE}, the default) or not
-#' @param x Object of class \code{"Cuminc"} to be printed or plotted
-#' @param object Object of class \code{"Cuminc"} to be summarized
-#' @param \dots Further arguments to plot or print method
+#' 
 #' @return An object of class \code{"Cuminc"}, which is a data frame containing
 #' the estimated failure-free probabilities and cumulative incidences and their
 #' standard errors. The names of the dataframe are \code{time}, \code{Surv},

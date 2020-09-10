@@ -4,8 +4,7 @@
 #' the estimated transition probabilities, and, if requested, also of the
 #' variances.
 #' 
-#' 
-#' @aliases summary.probtrans print.summary.probtrans
+#' @aliases summary.probtrans 
 #' @param object Object of class 'probtrans', containing estimated transition
 #' probabilities from and to all states in a multi-state model
 #' @param times Time points at which to evaluate the transition probabilites
@@ -25,13 +24,8 @@
 #' @param extend logical value: if \code{TRUE}, prints information for all
 #' specified times, even if there are no subjects left at the end of the
 #' specified times. This is only valid if the times argument is present
-#' @param x Object of class 'summary.probtrans', to be printed
-#' @param complete Whether or not the complete estimated transition
-#' probabilities should be printed (\code{TRUE}) or not (\code{FALSE}); default
-#' is \code{FALSE}, in which case the estimated transition probilities will be
-#' printed for the first and last 6 time points of each starting state or of
-#' the selected times (or all when there are at most 12 of these time points
 #' @param \dots Further arguments to print
+#' 
 #' @return Function \code{summary.probtrans} returns an object of class
 #' "summary.probtrans", which is a list (for each \code{from} state) of
 #' transition probabilities at the specified (or all) time points. The
@@ -78,10 +72,7 @@
 #' # When the number of time points specified is larger than 12, head and tail is shown
 #' x <- summary(pt, times=seq(5, 8, by=0.25))
 #' x
-#' # If all time points should be printed, specify complete=TRUE in the print statement
-#' print(x, complete=TRUE)
 #' 
-#' @method print summary.probtrans
 #' @export
 summary.probtrans <- function(object, times, from=1, to=0,
                               variance=TRUE, conf.int=0.95,
@@ -214,6 +205,27 @@ summary.probtrans <- function(object, times, from=1, to=0,
     return(res)
 }
 
+
+#' Print method for a summary.probtrans object
+#' 
+#' @param x Object of class 'summary.probtrans', to be printed
+#' @param complete Whether or not the complete estimated transition
+#' probabilities should be printed (\code{TRUE}) or not (\code{FALSE}); default
+#' is \code{FALSE}, in which case the estimated transition probilities will be
+#' printed for the first and last 6 time points of each starting state or of
+#' the selected times (or all when there are at most 12 of these time points
+#' @param \dots Further arguments to print
+#' 
+#' @aliases print.summary.probtrans
+#' 
+#' @examples 
+#' 
+#' \dontrun{
+#' # If all time points should be printed, specify complete=TRUE in the print statement
+#' print(x, complete=TRUE)
+#' }
+#' 
+#' @export 
 print.summary.probtrans <- function(x, complete=FALSE, ...)
 {
     if (!inherits(x, "summary.probtrans"))

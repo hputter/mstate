@@ -2,7 +2,6 @@
 % Please edit documentation in R/summary.msfit.R
 \name{summary.msfit}
 \alias{summary.msfit}
-\alias{print.summary.msfit}
 \title{Summary method for an msfit object}
 \usage{
 \method{summary}{msfit}(
@@ -40,14 +39,6 @@ specified times, even if there are no subjects left at the end of the
 specified times. This is only valid if the times argument is present}
 
 \item{\dots}{Further arguments to summary}
-
-\item{x}{Object of class 'summary.probtrans', to be printed}
-
-\item{complete}{Whether or not the complete estimated cumulative transition
-intensities should be printed (\code{TRUE}) or not (\code{FALSE}); default
-is \code{FALSE}, in which case the estimated cumulative transition hazards
-will be printed for the first and last 6 time points of each transition or
-of the selected times (or all when there are at most 12 of these time points}
 }
 \value{
 Function \code{summary.msfit} returns an object of class
@@ -95,8 +86,6 @@ summary(msf, times=seq(0, 15, by=3), conf.type="no")
 # When the number of time points specified is larger than 12, head and tail is shown
 x <- summary(msf, times=seq(5, 8, by=0.25))
 x
-# If all time points should be printed, specify complete=TRUE in the print statement
-print(x, complete=TRUE)
 
 }
 \seealso{

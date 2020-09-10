@@ -1,4 +1,3 @@
-#' @method print Cuminc
 #' @export
 print.Cuminc <- function(x, ...)
 {

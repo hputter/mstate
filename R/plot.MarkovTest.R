@@ -51,7 +51,6 @@
 #' plot(MT, grid, what="overall") # trace plus quantiles (default)
 #' plot(MT, grid, what="overall", idx=1:10) # trace plus quantiles, plus first 10 bootstrap traces
 #' 
-#' @method plot MarkovTest
 #' @export
 plot.MarkovTest <- function(x, y, what=c("states", "overall"), idx=NULL, quantiles=TRUE, qsup, states,
                             xlab, ylab, main, ...)

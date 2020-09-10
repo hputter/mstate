@@ -11,7 +11,6 @@
 #' @aliases transMat trans.illdeath trans.comprisk
 #' @param x List of possible transitions; x[[i]] consists of a vector of state
 #' numbers reachable from state i
-#' @param K The number of competing risks
 #' @param names A character vector containing the names of either the competing
 #' risks or the states in the multi-state model specified by the competing
 #' risks or illness-death model. \code{names} should have the same length as

@@ -3,8 +3,6 @@
 \name{Cuminc}
 \alias{Cuminc}
 \alias{print.Cuminc}
-\alias{plot.Cuminc}
-\alias{summary.Cuminc}
 \title{Calculate nonparametric cumulative incidence functions and associated
 standard errors}
 \usage{
@@ -47,12 +45,6 @@ failure}
 
 \item{variance}{Logical value, indicating whether the standard errors of the
 cumulative incidences should be output (\code{TRUE}, the default) or not}
-
-\item{x}{Object of class \code{"Cuminc"} to be printed or plotted}
-
-\item{object}{Object of class \code{"Cuminc"} to be summarized}
-
-\item{\dots}{Further arguments to plot or print method}
 }
 \value{
 An object of class \code{"Cuminc"}, which is a data frame containing

@@ -5,7 +5,7 @@
 \title{Compute subject-specific or overall transition probabilities with standard
 errors}
 \usage{
-\method{summary}{probtrans}(
+probtrans(
   object,
   predt,
   direction = c("forward", "fixedhorizon"),

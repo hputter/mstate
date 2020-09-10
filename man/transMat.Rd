@@ -17,8 +17,6 @@ risks or the states in the multi-state model specified by the competing
 risks or illness-death model. \code{names} should have the same length as
 the list \code{x} (for \code{transMat}), or either \code{K} or \code{K}+1
 (for \code{trans.comprisk}), or 3 (for \code{trans.illdeath})}
-
-\item{K}{The number of competing risks}
 }
 \value{
 A transition matrix describing the states and transitions in the

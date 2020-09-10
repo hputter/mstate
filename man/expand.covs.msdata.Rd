@@ -21,7 +21,7 @@ be used for the names of the expanded covariates that are categorical
 (default=\code{TRUE}); in case of \code{FALSE} numbers from 1 up to the
 number of contrasts are used}
 
-\item{list()}{further arguments to be passed to or from other methods. They
+\item{\dots}{Further arguments to be passed to or from other methods. They
 are ignored in this function.}
 }
 \value{

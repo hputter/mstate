@@ -1,3 +1,9 @@
+#' msdata to etm format
+#' 
+#' @param msdata Multi-state data in \code{msdata} format, as used in
+#' \code{mstate}
+#' @inheritParams etm2msdata 
+#' 
 #' @export
 msdata2etm <- function(msdata, id, covs)
 {
@@ -24,12 +30,13 @@ msdata2etm <- function(msdata, id, covs)
   etm
 }
 
+#' Convert transition matrix from mstate to etm format
+#' 
+#' @param trans Transition matrix in \code{mstate} format
+#' 
 #' @export
 trans2tra <- function(trans)
   return(!(is.na(trans)))
-
-
-
 
 
 #' Converts between etm and msdata format
@@ -44,11 +51,8 @@ trans2tra <- function(trans)
 #' The function \code{msdata2etm} will work for transition-specific covariates,
 #' but the result does not really make much sense when used in etm.
 #' 
-#' @aliases etm2msdata trans2tra msdata2etm tra2trans
-#' @param msdata Multi-state data in \code{msdata} format, as used in
-#' \code{mstate}
+#' @aliases etm2msdata tra2trans
 #' @param id Column name identifying the subject id
-#' @param trans Transition matrix in \code{mstate} format
 #' @param etmdata Multi-state data in \code{etm} format
 #' @param tra Transition matrix in \code{etm} format
 #' @param covs Vector of column names containing covariates to be included

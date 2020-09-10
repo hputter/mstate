@@ -5,7 +5,7 @@
 #' (co)variances.
 #' 
 #' 
-#' @aliases summary.msfit print.summary.msfit
+#' @aliases summary.msfit 
 #' @param object Object of class 'msfit', containing estimated cumulative
 #' transition intensities for all transitions in a multi-state model
 #' @param times Time points at which to evaluate the cumulative transition
@@ -21,17 +21,13 @@
 #' @param extend logical value: if \code{TRUE}, prints information for all
 #' specified times, even if there are no subjects left at the end of the
 #' specified times. This is only valid if the times argument is present
-#' @param x Object of class 'summary.probtrans', to be printed
-#' @param complete Whether or not the complete estimated cumulative transition
-#' intensities should be printed (\code{TRUE}) or not (\code{FALSE}); default
-#' is \code{FALSE}, in which case the estimated cumulative transition hazards
-#' will be printed for the first and last 6 time points of each transition or
-#' of the selected times (or all when there are at most 12 of these time points
 #' @param \dots Further arguments to summary
+#' 
 #' @return Function \code{summary.msfit} returns an object of class
 #' "summary.msfit", which is a list (for each \code{from} state) of cumulative
 #' transition hazaards at the specified (or all) time points. The \code{print}
 #' method of a \code{summary.probtrans} doesn't return a value.
+#' 
 #' @author Hein Putter \email{H.Putter@@lumc.nl}
 #' @seealso \code{\link{msfit}}
 #' @keywords print
@@ -70,11 +66,8 @@
 #' # When the number of time points specified is larger than 12, head and tail is shown
 #' x <- summary(msf, times=seq(5, 8, by=0.25))
 #' x
-#' # If all time points should be printed, specify complete=TRUE in the print statement
-#' print(x, complete=TRUE)
 #' 
-#' @method summary msfit
-#' @export
+#' @export 
 summary.msfit <- function(object, times, transitions,
                           variance=TRUE, conf.int=0.95,
                           conf.type=c("log", "none", "plain"),
@@ -178,6 +171,23 @@ summary.msfit <- function(object, times, transitions,
     return(res)
 }
 
+#' Print method for summary.msfit object
+#' 
+#' @param x Object of class 'summary.msfit', to be printed
+#' @param complete Whether or not the complete estimated cumulative transition
+#' intensities should be printed (\code{TRUE}) or not (\code{FALSE}); default
+#' is \code{FALSE}, in which case the estimated cumulative transition hazards
+#' will be printed for the first and last 6 time points of each transition or
+#' of the selected times (or all when there are at most 12 of these time points
+#' @param \dots Further arguments to print
+#' 
+#' @examples 
+#' \dontrun{
+#' # If all time points should be printed, specify complete=TRUE in the print statement
+#' print(x, complete=TRUE)
+#' }
+#' 
+#' @export 
 print.summary.msfit <- function(x, complete=FALSE, ...)
 {
     if (!inherits(x, "summary.msfit"))
