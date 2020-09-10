@@ -15,6 +15,8 @@ MarkovTest(
   B = 1000,
   fn = list(function(x) mean(abs(x), na.rm = TRUE)),
   fn2 = list(function(x) mean(x, na.rm = TRUE)),
+  min_time = 0,
+  other_weights = NULL,
   dist = c("poisson", "normal")
 )
 }
@@ -40,12 +42,12 @@ traces (or a list of lists)}
 \item{fn2}{A list of summary functions to be applied to the overall
 chi-squared trace}
 
-\item{dist}{Distribution of wild bootstrap random weights, either "poisson"
-for centred Poisson (default), or "normal" for standard normal}
-
 \item{min_time}{The minimum time for calculating optimal weights}
 
 \item{other_weights}{Other (than optimal) weights can be specified here}
+
+\item{dist}{Distribution of wild bootstrap random weights, either "poisson"
+for centred Poisson (default), or "normal" for standard normal}
 }
 \value{
 MarkovTest returns an object of class "MarkovTest", which is a list

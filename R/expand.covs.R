@@ -59,9 +59,13 @@
 #' expand.covs(tg,covs=c("x1","x2"),longnames=TRUE)
 #' expand.covs(tg,covs=c("x1","x2"),append=FALSE)
 #' 
-#' @export expand.covs
+#' 
+#' 
+#' @export 
 expand.covs <- function(data, ...) UseMethod("expand.covs")
 
+#' @method expand.covs default
+#' @export
 expand.covs.default <-
     function (data, covs, append = TRUE, longnames = FALSE, event.types="failcode", ...)
 {
@@ -182,6 +186,8 @@ expand.covs.default <-
 #' expand.covs(tglong,"x1")
 #' expand.covs(tglong,"x1",longnames=FALSE)
 #' 
+#' @method expand.covs msdata
+#' @export
 expand.covs.msdata <- function(data, covs, append=TRUE, longnames=TRUE, ...)
 {
     if (!inherits(data, "msdata"))

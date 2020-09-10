@@ -1,3 +1,4 @@
+#' @export
 msdata2etm <- function(msdata, id, covs)
 {
   if (missing(id)) id <- "id"
@@ -23,6 +24,7 @@ msdata2etm <- function(msdata, id, covs)
   etm
 }
 
+#' @export
 trans2tra <- function(trans)
   return(!(is.na(trans)))
 
@@ -71,7 +73,7 @@ trans2tra <- function(trans)
 #' # And back
 #' etm2msdata(tgetm, id="id", tra=tra)
 #' etm2msdata(tgetm, id="id", tra=tra, covs=c("x1", "x2")) # with covariates
-#' 
+#' @export
 etm2msdata <- function(etmdata, id, tra, covs)
 {
   nout <- apply(tra, 1, sum)
@@ -108,6 +110,7 @@ etm2msdata <- function(etmdata, id, tra, covs)
   return(msdata) 
 }
 
+#' @export
 tra2trans <- function(tra)
 {
   ttrans <- t(matrix(as.numeric(tra), nrow(tra), ncol(tra)))

@@ -1,3 +1,5 @@
+#' @method summary Cuminc
+#' @export
 summary.Cuminc <- function(object, ...)
 {
   if (!inherits(object, "Cuminc"))

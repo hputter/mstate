@@ -83,7 +83,7 @@
 #' newdata <- data.frame(trans=1:3,x1.1=c(0,0,0),x2.2=c(0,1,0),strata=1:3)
 #' msfit(cx,newdata,trans=tmat)
 #' 
-#' @export msfit
+#' @export 
 `msfit` <-
   function(object, newdata, variance=TRUE, vartype=c("aalen","greenwood"), trans)
 {

@@ -5,7 +5,7 @@
 \alias{print.summary.probtrans}
 \title{Summary method for a probtrans object}
 \usage{
-\method{summary}{probtrans}(
+\method{print}{summary.probtrans}(
   object,
   times,
   from = 1,

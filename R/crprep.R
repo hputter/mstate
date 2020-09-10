@@ -144,9 +144,11 @@
 #' # with(aidssi, cuminc(time, status, group=ccr5)$Tests)
 #' # Note: results are not exactly the same
 #' 
-#' @export crprep
+#' @export 
 crprep <- function(Tstop, ...) UseMethod("crprep")
 
+#' @method crprep default
+#' @export
 crprep.default <-
 function(Tstop, status, data, trans=1, cens=0, Tstart=0, id, strata, keep, shorten=TRUE, rm.na=TRUE, origin=0,
          prec.factor=1000, ...) {

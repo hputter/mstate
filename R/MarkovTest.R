@@ -94,11 +94,14 @@
 #'                    function(x) weighted.mean(x, w=oweights_chi, na.rm=TRUE),
 #'                    function(x) mean(x, na.rm=TRUE),
 #'                    function(x) max(x, na.rm=TRUE)))
-#' 
+#'
+#' @export MarkovTest                  
 MarkovTest <- function(data, id, formula = NULL, transition, grid, 
                        B = 1000,
                        fn = list(function(x) mean(abs(x), na.rm = TRUE)),
                        fn2 = list(function(x) mean(x, na.rm = TRUE)),
+                       min_time = 0,
+                       other_weights = NULL,
                        dist = c("poisson", "normal")) {
   
   dist <- match.arg(dist)
@@ -376,6 +379,7 @@ MarkovTest <- function(data, id, formula = NULL, transition, grid,
   return(MTres)
 }
 
+#' @export
 optimal_weights_multiple <- function(data, id, grid, transition, min_time = 0)
 {
   # Convert data to etm data
@@ -397,6 +401,7 @@ optimal_weights_multiple <- function(data, id, grid, transition, min_time = 0)
   weight * diff(c(min_time, grid))
 }
 
+#' @export
 optimal_weights_matrix <- function(data, id, grid, transition, min_time = 0, 
                                    other_weights = NULL)
 {

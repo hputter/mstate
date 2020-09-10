@@ -89,8 +89,9 @@
 #' fake0 <- fake[fake$stat!=0,]
 #' Cuminc(time="surv", status="stat", data=fake0)
 #' 
-#' @export Cuminc
-`Cuminc` <- function(time, status, data, group, failcodes, na.status=c("remove","extra"), variance=TRUE)
+#' @export 
+`Cuminc` <- function(time, status, data, group, failcodes, 
+                     na.status=c("remove","extra"), variance=TRUE)
 {
   ## time
   if (!is.vector(time)) stop("argument \"time\" not of correct type")

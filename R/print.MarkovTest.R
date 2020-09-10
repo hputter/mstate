@@ -23,6 +23,8 @@
 #'                  grid = grid, B = 25)
 #' MT
 #' 
+#' @method print MarkovTest
+#' @export
 print.MarkovTest <- function(x, ...)
 {
   cat("Log-rank based Markov test for transition ", x$trans, " (", x$from, " -> ", x$to, ")\n", sep="")

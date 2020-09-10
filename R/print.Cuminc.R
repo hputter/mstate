@@ -1,3 +1,5 @@
+#' @method print Cuminc
+#' @export
 print.Cuminc <- function(x, ...)
 {
   if (!inherits(x, "Cuminc"))

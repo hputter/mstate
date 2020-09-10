@@ -95,6 +95,8 @@ fillplot <- function(x,y1,y2,col,lwd)
 #' plot(pt,type="sep",lwd=2)
 #' par(mfrow=c(1,1))
 #' 
+#' @method plot probtrans
+#' @export
 plot.probtrans <- function(x, from=1, type=c("stacked","filled","single","separate"), ord,
                            cols, xlab="Time", ylab="Probability", xlim, ylim, lwd, lty, cex, legend, legend.pos,
                            bty="n", xaxs="i", yaxs="i", ...)

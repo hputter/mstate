@@ -1,3 +1,4 @@
+#' @export
 `trans.comprisk` <- function(K, names)
 {
     tmat <- matrix(NA, K+1, K+1)
@@ -15,6 +16,7 @@
     return(tmat)
 }
 
+#' @export
 `trans.illdeath` <- function(names)
 {
     tmat <- matrix(NA, 3, 3)
@@ -29,4 +31,3 @@
     return(tmat)
 }
 
-# Ed was here before

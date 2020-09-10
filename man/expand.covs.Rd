@@ -67,6 +67,8 @@ expand.covs(tg,covs=c("x1","x2"))
 expand.covs(tg,covs=c("x1","x2"),longnames=TRUE)
 expand.covs(tg,covs=c("x1","x2"),append=FALSE)
 
+
+
 }
 \references{
 Putter H, Fiocco M, Geskus RB (2007). Tutorial in biostatistics:

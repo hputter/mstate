@@ -54,7 +54,6 @@ tgetm <- msdata2etm(tglong, id="id", covs=c("x1", "x2")) # with covariates
 # And back
 etm2msdata(tgetm, id="id", tra=tra)
 etm2msdata(tgetm, id="id", tra=tra, covs=c("x1", "x2")) # with covariates
-
 }
 \author{
 Hein Putter \email{H.Putter@lumc.nl}

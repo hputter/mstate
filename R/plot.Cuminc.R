@@ -1,3 +1,5 @@
+#' @method plot Cuminc
+#' @export
 plot.Cuminc <- function(x, ...)
 {
   if (!inherits(x, "Cuminc"))

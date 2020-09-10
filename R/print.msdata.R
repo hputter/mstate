@@ -32,6 +32,8 @@
 #' print(msp)
 #' print(msp, trans=TRUE)
 #' 
+#' @method print msdata
+#' @export
 print.msdata <- function(x,trans=FALSE,...)
 {
     if (!inherits(x, "msdata"))

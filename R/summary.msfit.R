@@ -73,6 +73,8 @@
 #' # If all time points should be printed, specify complete=TRUE in the print statement
 #' print(x, complete=TRUE)
 #' 
+#' @method summary msfit
+#' @export
 summary.msfit <- function(object, times, transitions,
                           variance=TRUE, conf.int=0.95,
                           conf.type=c("log", "none", "plain"),

@@ -85,6 +85,7 @@
 #' # predictions from state 1
 #' pt[[1]]
 #' 
+#' @method summary probtrans
 #' @export probtrans
 `probtrans` <- function(object,predt,direction=c("forward","fixedhorizon"),
                 method=c("aalen","greenwood"),variance=TRUE,covariance=FALSE)

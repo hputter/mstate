@@ -81,6 +81,8 @@
 #' # If all time points should be printed, specify complete=TRUE in the print statement
 #' print(x, complete=TRUE)
 #' 
+#' @method print summary.probtrans
+#' @export
 summary.probtrans <- function(object, times, from=1, to=0,
                               variance=TRUE, conf.int=0.95,
                               conf.type=c("log", "none", "plain"),
