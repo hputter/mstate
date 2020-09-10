@@ -18,7 +18,6 @@ fillplot <- function(x,y1,y2,col,lwd)
 #' Plot method for an object of class 'probtrans'. It plots the transition
 #' probabilities as estimated by \code{\link{probtrans}}.
 #' 
-#' 
 #' @param x Object of class 'probtrans', containing estimated transition
 #' probabilities
 #' @param from The starting state from which the probabilities are used to plot
@@ -52,8 +51,16 @@ fillplot <- function(x,y1,y2,col,lwd)
 #' @param bty The box type of the legend, see \code{\link{legend}}
 #' @param xaxs See \code{\link{par}}, default is "i", for type=\code{"stacked"}
 #' @param yaxs See \code{\link{par}}, default is "i", for type=\code{"stacked"}
+#' @param use_ggplot Default FALSE, set TRUE for ggplot version of plot
+#' @param conf.int Confidence level (\%) from 0-1 for probabilities, 
+#' default is 0.95 (95\% CI). Setting to 0 removes the CIs.
+#' @param conf.type Type of confidence interval - either "log" or "plain" 
+#' @param label Only relevant for type = "filled" or "stacked", set to 
+#' "annotate" to have state labels on plot, or leave unspecified.
 #' @param \dots Further arguments to plot
+#' 
 #' @return No return value
+#' 
 #' @author Hein Putter \email{H.Putter@@lumc.nl}
 #' @seealso \code{\link{probtrans}}
 #' @keywords hplot
@@ -62,7 +69,7 @@ fillplot <- function(x,y1,y2,col,lwd)
 #' # transition matrix for illness-death model
 #' tmat <- trans.illdeath()
 #' # data in wide format, for transition 1 this is dataset E1 of
-#' # Therneau & Grambsch (2000)
+#' # Therneau and Grambsch (2000)
 #' tg <- data.frame(illt=c(1,1,6,6,8,9),ills=c(1,0,1,1,0,1),
 #'         dt=c(5,1,9,7,8,12),ds=c(1,1,1,1,1,1),
 #'         x1=c(1,1,1,0,0,0),x2=c(6:1))
@@ -79,7 +86,7 @@ fillplot <- function(x,y1,y2,col,lwd)
 #' 	data=tglong,method="breslow")
 #' summary(cx)
 #' # new data, to check whether results are the same for transition 1 as
-#' # those in appendix E.1 of Therneau & Grambsch (2000)
+#' # those in appendix E.1 of Therneau and Grambsch (2000)
 #' newdata <- data.frame(trans=1:3,x1.1=c(0,0,0),x2.2=c(0,1,0),strata=1:3)
 #' msf <- msfit(cx,newdata,trans=tmat)
 #' # probtrans
@@ -96,13 +103,63 @@ fillplot <- function(x,y1,y2,col,lwd)
 #' par(mfrow=c(1,1))
 #'
 #' @export 
-plot.probtrans <- function(x, from=1, type=c("stacked","filled","single","separate"), ord,
-                           cols, xlab="Time", ylab="Probability", xlim, ylim, lwd, lty, cex, legend, legend.pos,
-                           bty="n", xaxs="i", yaxs="i", ...)
-  # ord for "stacked" and "filled "only, cex for text only
-{
+plot.probtrans <- function(x, 
+                           from = 1, 
+                           type = c("filled", "single", "separate", "stacked"),
+                           ord, # ord for "stacked" and "filled "only, cex for text only
+                           cols,
+                           xlab = "Time", 
+                           ylab = "Probability", 
+                           xlim, 
+                           ylim, 
+                           lwd, 
+                           lty, 
+                           cex, 
+                           legend, 
+                           legend.pos = "right",
+                           bty = "n", 
+                           xaxs = "i", 
+                           yaxs = "i", 
+                           use_ggplot = F,
+                           
+                           # Ggplot args here
+                           conf.int = 0.95,
+                           conf.type = c("log", "plain", "none"),
+                           label, # "annotate" if want like base R
+                           ...) {
+  
+  # Prelims
+  type <- match.arg(type)
   if (!inherits(x, "probtrans"))
     stop("'x' must be a 'probtrans' object")
+  
+  # Ggplot version
+  if (use_ggplot) {
+    conf.type <- match.arg(conf.type)
+    
+    p <- ggplot.probtrans(
+      x = x,
+      from = from,
+      type = type, 
+      ord = ord,
+      cols = cols,
+      xlab = xlab,
+      ylab = ylab,
+      xlim = xlim,
+      ylim = ylim,
+      lwd = lwd, # linewidth
+      lty = lty,
+      cex = cex, # size of label
+      legend = legend,
+      legend.pos = legend.pos,
+      conf.int = conf.int, # 0 if no confidence intervals
+      conf.type = conf.type,
+      label = label
+    )
+    
+    return(p)
+  }
+  
   trans <- x$trans
   S <- dim(trans)[1]
   if ((from<1) | (from>S)) stop("'from' incorrect")
@@ -120,7 +177,6 @@ plot.probtrans <- function(x, from=1, type=c("stacked","filled","single","separa
   if (missing(cex)) cex <- 1
   cex <- rep(cex, S)
   cex <- cex[1:S]
-  type <- match.arg(type)
   if (missing(cols)) {
     if (type=="filled" | type=="single") cols <- rev(RColorBrewer::brewer.pal(S, "RdYlGn"))
     else cols <- 1

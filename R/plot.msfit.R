@@ -91,6 +91,8 @@ plot.msfit <- function(x,
   
   # Prelim
   type <- match.arg(type)
+  if (!inherits(x, "msfit"))
+    stop("'x' must be a 'msfit' object")
   
   # Use ggplot or not?
   if (use_ggplot) {
@@ -111,8 +113,7 @@ plot.msfit <- function(x,
     return(p)
   }
   
-  if (!inherits(x, "msfit"))
-    stop("'x' must be a 'msfit' object")
+  # Base R plot
   msf1 <- x$Haz
   K <- max(msf1$trans)
   msft <- unique(msf1$time) # the time points

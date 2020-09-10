@@ -34,8 +34,10 @@ Depends:
   survival (>= 3.1)
 Imports: 
   RColorBrewer,
+  viridis,
   lattice,
   data.table,
+  magrittr,
   rlang
 Suggests: 
   cmprsk,

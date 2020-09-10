@@ -7,7 +7,7 @@
 \method{plot}{probtrans}(
   x,
   from = 1,
-  type = c("stacked", "filled", "single", "separate"),
+  type = c("filled", "single", "separate", "stacked"),
   ord,
   cols,
   xlab = "Time",
@@ -18,10 +18,14 @@
   lty,
   cex,
   legend,
-  legend.pos,
+  legend.pos = "right",
   bty = "n",
   xaxs = "i",
   yaxs = "i",
+  use_ggplot = F,
+  conf.int = 0.95,
+  conf.type = c("log", "plain", "none"),
+  label,
   ...
 )
 }
@@ -76,6 +80,16 @@ default is \code{"topleft"}}
 
 \item{yaxs}{See \code{\link{par}}, default is "i", for type=\code{"stacked"}}
 
+\item{use_ggplot}{Default FALSE, set TRUE for ggplot version of plot}
+
+\item{conf.int}{Confidence level (\%) from 0-1 for probabilities, 
+default is 0.95 (95\% CI). Setting to 0 removes the CIs.}
+
+\item{conf.type}{Type of confidence interval - either "log" or "plain"}
+
+\item{label}{Only relevant for type = "filled" or "stacked", set to 
+"annotate" to have state labels on plot, or leave unspecified.}
+
 \item{\dots}{Further arguments to plot}
 }
 \value{
@@ -90,7 +104,7 @@ probabilities as estimated by \code{\link{probtrans}}.
 # transition matrix for illness-death model
 tmat <- trans.illdeath()
 # data in wide format, for transition 1 this is dataset E1 of
-# Therneau & Grambsch (2000)
+# Therneau and Grambsch (2000)
 tg <- data.frame(illt=c(1,1,6,6,8,9),ills=c(1,0,1,1,0,1),
         dt=c(5,1,9,7,8,12),ds=c(1,1,1,1,1,1),
         x1=c(1,1,1,0,0,0),x2=c(6:1))
@@ -107,7 +121,7 @@ cx <- coxph(Surv(Tstart,Tstop,status)~x1.1+x2.2+strata(trans),
 	data=tglong,method="breslow")
 summary(cx)
 # new data, to check whether results are the same for transition 1 as
-# those in appendix E.1 of Therneau & Grambsch (2000)
+# those in appendix E.1 of Therneau and Grambsch (2000)
 newdata <- data.frame(trans=1:3,x1.1=c(0,0,0),x2.2=c(0,1,0),strata=1:3)
 msf <- msfit(cx,newdata,trans=tmat)
 # probtrans

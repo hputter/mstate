@@ -1,5 +1,6 @@
 #' @import survival
 #' @import data.table
+#' @importFrom magrittr `%>%`
 #' @importFrom RColorBrewer brewer.pal
 #' @importFrom rlang .data
 #' @importFrom graphics box lines par plot polygon text title
