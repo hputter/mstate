@@ -8,3 +8,4 @@ src/*.dll
 old
 doc
 Meta
+inst/doc

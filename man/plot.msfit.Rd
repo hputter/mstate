@@ -16,7 +16,7 @@
   legend,
   legend.pos = "right",
   bty = "n",
-  use_ggplot = F,
+  use.ggplot = F,
   xlim,
   scale_type = "fixed",
   ...
@@ -56,7 +56,7 @@ default is \code{"topleft"}}
 
 \item{bty}{The box type of the legend, see \code{\link{legend}}}
 
-\item{use_ggplot}{Default FALSE, set TRUE for ggplot version of plot}
+\item{use.ggplot}{Default FALSE, set TRUE for ggplot version of plot}
 
 \item{xlim}{Limits of x axis, relevant if use_ggplot = T}
 

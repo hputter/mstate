@@ -25,12 +25,13 @@
 #' @keywords hplot
 #' @examples
 #' 
+#' \dontrun{
 #' # Example provided by the prothrombin data
 #' data("prothr")
 #' # Apply Markov test to grid of monthly time points over the first 7.5 years
 #' year <- 365.25
 #' month <- year / 12
-#' grid <- month * (1 : 90)
+#' grid <- month * (1:90)
 #' # Markov test for transition 1 (wild bootstrap based on 100 replications)
 #' MT <- MarkovTest(prothr, id = "id", transition = 1,
 #'                  grid = grid, B = 100)
@@ -50,6 +51,8 @@
 #' plot(MT, grid, what="overall", quantiles=FALSE) # only trace
 #' plot(MT, grid, what="overall") # trace plus quantiles (default)
 #' plot(MT, grid, what="overall", idx=1:10) # trace plus quantiles, plus first 10 bootstrap traces
+#' 
+#' }
 #' 
 #' @export
 plot.MarkovTest <- function(x, y, what=c("states", "overall"), idx=NULL, quantiles=TRUE, qsup, states,

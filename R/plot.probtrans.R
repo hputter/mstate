@@ -51,7 +51,7 @@ fillplot <- function(x,y1,y2,col,lwd)
 #' @param bty The box type of the legend, see \code{\link{legend}}
 #' @param xaxs See \code{\link{par}}, default is "i", for type=\code{"stacked"}
 #' @param yaxs See \code{\link{par}}, default is "i", for type=\code{"stacked"}
-#' @param use_ggplot Default FALSE, set TRUE for ggplot version of plot
+#' @param use.ggplot Default FALSE, set TRUE for ggplot version of plot
 #' @param conf.int Confidence level (\%) from 0-1 for probabilities, 
 #' default is 0.95 (95\% CI). Setting to 0 removes the CIs.
 #' @param conf.type Type of confidence interval - either "log" or "plain" 
@@ -120,7 +120,7 @@ plot.probtrans <- function(x,
                            bty = "n", 
                            xaxs = "i", 
                            yaxs = "i", 
-                           use_ggplot = F,
+                           use.ggplot = F,
                            
                            # Ggplot args here
                            conf.int = 0.95,
@@ -134,7 +134,7 @@ plot.probtrans <- function(x,
     stop("'x' must be a 'probtrans' object")
   
   # Ggplot version
-  if (use_ggplot) {
+  if (use.ggplot) {
     conf.type <- match.arg(conf.type)
     
     p <- ggplot.probtrans(

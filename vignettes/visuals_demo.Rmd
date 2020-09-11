@@ -1,0 +1,135 @@
+---
+title: "Visualising multi-state models using mstate"
+author: "Edouard F. Bonneville"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Visualising multi-state models using mstate}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.width = 7,
+  fig.height = 6,
+  fig.align = 'center'
+)
+```
+
+```{r setup, echo=TRUE}
+# Load libraries
+library(mstate)
+library(ggplot2)
+
+# Set general ggplot2 theme
+theme_set(theme_bw(base_size = 14))
+```
+
+# Preamble
+
+```{r load_dat}
+# Load data
+data("aidssi")
+head(aidssi)
+si <- aidssi
+
+# Prepare matrices
+tmat <- trans.comprisk(2, names = c("event-free", "AIDS", "SI"))
+tmat
+
+# Run msprep
+si$stat1 <- as.numeric(si$status == 1)
+si$stat2 <- as.numeric(si$status == 2)
+
+silong <- msprep(time = c(NA, "time", "time"), 
+                 status = c(NA, "stat1", "stat2"), 
+                 data = si, keep = "ccr5", trans = tmat)
+
+# Run cox model
+silong <- expand.covs(silong, "ccr5")
+
+c1 <- coxph(Surv(time, status) ~ ccr5WM.1 + ccr5WM.2 + strata(trans),
+            data = silong)
+```
+
+# Visualising cumulative hazards (plot.msfit)
+
+```{r msfit_prep}
+# Data to predict
+WW <- data.frame(ccr5WM.1 = c(0, 0), ccr5WM.2 = c(0, 0), trans = c(1, 2), 
+                 strata = c(1, 2))
+
+# Make msfit object
+msf.WW <- msfit(c1, WW, trans = tmat)
+
+# Default plot
+plot(msf.WW)
+
+# With ggplot
+plot(msf.WW, use.ggplot = T)
+```
+
+
+# Visualising transition probabilities (plot.probtrans)
+
+```{r}
+# Run probtrans
+pt.WW <- probtrans(msf.WW, predt = 0)
+
+# Default
+plot(pt.WW)
+
+# Ggplot default
+plot(pt.WW, use.ggplot = T)
+
+# Other examples
+plot(pt.WW, use.ggplot = T, ord = c(2, 3, 1))
+plot(pt.WW, use.ggplot = T, type = "stacked")
+plot(pt.WW, use.ggplot = T, type = "separate")
+plot(pt.WW, use.ggplot = T, type = "separate", conf.type = "none")
+plot(pt.WW, use.ggplot = T, type = "separate", conf.int = 0.9,
+     legend.pos = "bottom")
+```
+
+
+# Visualising multiple probtrans objects
+
+
+```{r vis_multiple}
+# 1. patients
+WW <- data.frame(
+  ccr5WM.1 = c(0, 0), 
+  ccr5WM.2 = c(0, 0), 
+  trans = c(1, 2), 
+  strata = c(1, 2)
+)
+
+WM <- data.frame(
+  ccr5WM.1 = c(1, 0), 
+  ccr5WM.2 = c(0, 1),
+  trans = c(1, 2), 
+  strata = c(1, 2)
+)
+
+# 2. Make msfit objects
+msf.WW <- msfit(c1, WW, trans = tmat)
+msf.WM <- msfit(c1, WM, trans = tmat)
+
+# 3. Make probtrans objects
+pt.WW <- probtrans(msf.WW, predt = 0)
+pt.WM <- probtrans(msf.WM, predt = 0)
+
+# 4.
+vis.multiple.pt(
+  x = list(pt.WW, pt.WM), 
+  from = 1,
+  to = 2, 
+  conf.type = "log",
+  cols = c(1, 2),
+  labels = c("Pat WW", "Pat WM"),
+  legend.title = "Ref patients"
+)
+```
+

@@ -26,7 +26,7 @@
 #' @param legend.pos The position of the legend, see \code{\link{legend}};
 #' default is \code{"topleft"}
 #' @param bty The box type of the legend, see \code{\link{legend}}
-#' @param use_ggplot Default FALSE, set TRUE for ggplot version of plot
+#' @param use.ggplot Default FALSE, set TRUE for ggplot version of plot
 #' @param xlim Limits of x axis, relevant if use_ggplot = T
 #' @param scale_type "fixed", "free", "free_x" or "free_y", see scales argument
 #' of facet_wrap(). Only relevant for use_ggplot = T.
@@ -82,7 +82,7 @@ plot.msfit <- function(x,
                        legend, 
                        legend.pos = "right", 
                        bty = "n", 
-                       use_ggplot = F,
+                       use.ggplot = F,
                        
                        # Possible ggplot args here
                        xlim,
@@ -95,7 +95,7 @@ plot.msfit <- function(x,
     stop("'x' must be a 'msfit' object")
   
   # Use ggplot or not?
-  if (use_ggplot) {
+  if (use.ggplot) {
     p <- ggplot.msfit(
       x = x,
       type = type,

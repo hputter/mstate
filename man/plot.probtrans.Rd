@@ -22,7 +22,7 @@
   bty = "n",
   xaxs = "i",
   yaxs = "i",
-  use_ggplot = F,
+  use.ggplot = F,
   conf.int = 0.95,
   conf.type = c("log", "plain", "none"),
   label,
@@ -80,7 +80,7 @@ default is \code{"topleft"}}
 
 \item{yaxs}{See \code{\link{par}}, default is "i", for type=\code{"stacked"}}
 
-\item{use_ggplot}{Default FALSE, set TRUE for ggplot version of plot}
+\item{use.ggplot}{Default FALSE, set TRUE for ggplot version of plot}
 
 \item{conf.int}{Confidence level (\%) from 0-1 for probabilities, 
 default is 0.95 (95\% CI). Setting to 0 removes the CIs.}

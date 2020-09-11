@@ -4,15 +4,51 @@
 \alias{vis.multiple.pt}
 \title{Visualise multiple probtrans objects}
 \usage{
-vis.multiple.pt(x, to, labels, legend.title)
+vis.multiple.pt(
+  x,
+  from = 1,
+  to,
+  xlab = "Time",
+  ylab,
+  xlim = NULL,
+  ylim = NULL,
+  cols,
+  labels,
+  conf.int = 0.95,
+  conf.type = c("log", "plain", "none"),
+  legend.title
+)
 }
 \arguments{
 \item{x}{A list of plots as returned by plot(pt, use_ggplot = T)}
 
-\item{to}{Character; destination state}
+\item{from}{The starting state from which the probabilities are used to plot
+Numeric, as in plot.probtrans}
+
+\item{to}{(Numeric) destination state}
+
+\item{xlab}{A title for the x-axis; default is \code{"Time"}}
+
+\item{ylab}{A title for the y-axis; default is \code{"Probability"}}
+
+\item{xlim}{The x limits of the plot(s), default is range of time}
+
+\item{ylim}{The y limits of the plot(s); if ylim is specified for
+type="separate", then all plots use the same ylim for y limits}
+
+\item{cols}{A vector specifying colors for the different transitions;
+default is a palette from green to red, when type=\code{"filled"} (reordered
+according to \code{ord}, and 1 (black), otherwise}
 
 \item{labels}{Character vector labelling each element of x (e.g. label
 for a reference patient) - so labels = c("Patient 1", "Patient 2")}
+
+\item{conf.int}{Confidence level (\%) from 0-1 for probabilities, 
+default is 0.95 (95\% CI). Setting to 0 removes the CIs.}
+
+\item{conf.type}{Type of confidence interval - either "log" or "plain"}
+
+\item{legend.title}{Character - title of legend}
 }
 \value{
 A plot visualising

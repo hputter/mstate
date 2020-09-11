@@ -20,16 +20,18 @@ Print method for an object of class 'MarkovTest'
 }
 \examples{
 
+\dontrun{
 # Example provided by the prothrombin data
 data("prothr")
 # Apply Markov test to grid of monthly time points over the first 7.5 years
 year <- 365.25
 month <- year / 12
-grid <- month * (1 : 90)
+grid <- month * (1:90)
 # Markov test for transition 1 (wild bootstrap based on 25 replications for brevity)
 MT <- MarkovTest(prothr, id = "id", transition = 1,
                  grid = grid, B = 25)
 MT
+}
 
 }
 \seealso{
