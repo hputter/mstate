@@ -13,6 +13,7 @@ vis.multiple.pt(
   xlim = NULL,
   ylim = NULL,
   cols,
+  lwd,
   labels,
   conf.int = 0.95,
   conf.type = c("log", "plain", "none"),
@@ -40,6 +41,8 @@ type="separate", then all plots use the same ylim for y limits}
 default is a palette from green to red, when type=\code{"filled"} (reordered
 according to \code{ord}, and 1 (black), otherwise}
 
+\item{lwd}{The line width, see \code{\link{par}}; default is 1}
+
 \item{labels}{Character vector labelling each element of x (e.g. label
 for a reference patient) - so labels = c("Patient 1", "Patient 2")}
 
@@ -54,5 +57,7 @@ default is 0.95 (95\% CI). Setting to 0 removes the CIs.}
 A plot visualising
 }
 \description{
-Description here.
+Helper function allow to visualise state probabilities for 
+different reference patients/covariates. Multiple probtrans objects
+are thus needed.
 }

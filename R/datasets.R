@@ -1,4 +1,4 @@
-#' @title Data from the Amsterdam Cohort Studies on HIV infection and AIDS
+#' Data from the Amsterdam Cohort Studies on HIV infection and AIDS
 #' 
 #' These data sets give the times (in years) from HIV infection to AIDS, SI
 #' switch and death in 329 men who have sex with men (MSM). Data are from the

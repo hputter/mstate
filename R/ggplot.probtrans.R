@@ -150,10 +150,19 @@ ggplot.probtrans <- function(x,
     
   } else if (type == "single") {
     
+    # Colour of ribbon
+    col_ribb <- "grey70"
+    if (conf.type == "none") col_ribb <- NA
+    
     p <- ggplot2::ggplot(data = df_steps,
-                         ggplot2::aes(time, prob, col = state,
+                         ggplot2::aes(time, prob, 
+                                      col = state, 
                                       linetype = state)) +
-      ggplot2::geom_line(size = lwd, na.rm = T) + # colour boundaries
+      ggplot2::geom_ribbon(ggplot2::aes(ymin = CI_low, 
+                                        ymax = CI_upp,), 
+                           alpha = 0.5, fill = col_ribb,
+                           col = NA) +
+      ggplot2::geom_line(size = lwd) + # colour boundaries
       ggplot2::guides(col = ggplot2::guide_legend("State", reverse = T)) +
       ggplot2::theme(legend.position = legend.pos) +
       ggplot2::coord_cartesian(xlim = xlim, ylim = ylim, expand = 0) +
@@ -180,7 +189,7 @@ ggplot.probtrans <- function(x,
                    col = state, 
                    linetype = state)
     ) +
-      ggplot2::geom_ribbon(alpha = 0.75, fill = col_ribb,
+      ggplot2::geom_ribbon(alpha = 0.5, fill = col_ribb,
                            col = NA, na.rm = T) +
       ggplot2::geom_line(size = lwd, na.rm = T) +
       ggplot2::facet_wrap(. ~ state) +

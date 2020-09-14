@@ -1,6 +1,8 @@
 #' Visualise multiple probtrans objects
 #' 
-#' Description here.
+#' Helper function allow to visualise state probabilities for 
+#' different reference patients/covariates. Multiple probtrans objects
+#' are thus needed.
 #'
 #' @param x A list of plots as returned by plot(pt, use_ggplot = T)
 #' @param from The starting state from which the probabilities are used to plot
@@ -22,6 +24,7 @@ vis.multiple.pt <- function(x,
                             xlim = NULL,
                             ylim = NULL,
                             cols,
+                            lwd,
                             labels,
                             conf.int = 0.95,
                             conf.type = c("log", "plain", "none"),
@@ -41,6 +44,7 @@ vis.multiple.pt <- function(x,
   if (missing(labels)) labels <- paste0("pt_", 1:length(x))
   if (missing(legend.title)) legend.title <- "PT"
   if (missing(to)) stop("Please specify destination state in 'to'!")
+  if (missing(lwd)) lwd <- 1
   
   # Check feasability of trans + get laveks
   tmat <- x[[1]]$trans
@@ -99,10 +103,10 @@ vis.multiple.pt <- function(x,
       ymax = CI_upp,
       group = PT
     )) +
-    ggplot2::geom_line(ggplot2::aes(col = PT), size = 2) +
-    ggplot2::geom_ribbon(alpha = 0.5, fill = "lightgray") +
+    ggplot2::geom_ribbon(alpha = 0.5, fill = "grey70", col = NA) +
+    ggplot2::geom_line(ggplot2::aes(col = PT), size = lwd) +
     ggplot2::scale_colour_manual(values = cols) +
-    ggplot2::coord_cartesian(xlim = xlim, ylim = ylim) +
+    ggplot2::coord_cartesian(xlim = xlim, ylim = ylim, expand = 0) +
     ggplot2::labs(x = xlab, y = ylab) +
     ggplot2::guides(colour = ggplot2::guide_legend(title = legend.title))
   
