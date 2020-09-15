@@ -1,3 +1,4 @@
+#' @export
 `to.trans2` <- function(trans)
 {
   dm <- dim(trans)
@@ -24,6 +25,7 @@
   return(res)
 }
 
+#' @export
 `trans2Q` <- function(trans)
 {
   K <- nrow(trans)
@@ -51,6 +53,7 @@
   Q
 }
 
+#' @export
 `absorbing` <- function(trans)
 {
   Q <- trans2Q(trans)
@@ -58,6 +61,7 @@
   wh
 }
 
+#' @export
 `is.circular` <- function(trans)
 {
   Q <- trans2Q(trans)
