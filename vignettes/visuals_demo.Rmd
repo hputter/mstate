@@ -5,8 +5,10 @@ output: rmarkdown::html_vignette
 bibliography: Tutorial.bib
 vignette: >
   %\VignetteIndexEntry{Visualising multi-state models using mstate}
-  %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
+  %\VignetteEngine{knitr::rmarkdown}
+editor_options: 
+  chunk_output_type: console
 ---
 
 ```{r, include = FALSE}
@@ -283,6 +285,29 @@ ggplot(data = dat_plot[state != "event-free", ], aes(
   coord_cartesian(ylim = c(0, 1), xlim = c(0, 14), expand = 0)
 ```
 
+## Plotting non-parametric cumulative incidence functions
+
+```{r plot.Cuminc}
+cum_incid <- Cuminc(
+  time = "time",
+  status = "status",
+  data = si
+)
+
+cum_incid_grp <- Cuminc(
+  time = "time",
+  status = "status",
+  group = "ccr5",
+  data = si
+)
+
+plot(
+  x = cum_incid_grp,
+  use.ggplot = T,
+  conf.type = "none"
+)
+```
+
 
 # Visualising multiple probtrans objects
 
@@ -331,5 +356,11 @@ vis.multiple.pt(
 ```
 
 Note this function is only available in the ggplot format.
+
+## A mirrored plot
+
+```{r mirror1}
+
+```
 
 # References

@@ -4,10 +4,55 @@
 \alias{plot.Cuminc}
 \title{Plot method for cuminc objects}
 \usage{
-\method{plot}{Cuminc}(x, ...)
+\method{plot}{Cuminc}(
+  x,
+  use.ggplot = F,
+  xlab = "Time",
+  ylab = "Probability",
+  xlim,
+  ylim,
+  lty,
+  legend,
+  cols,
+  conf.type = c("log", "plain", "none"),
+  conf.int = 0.95,
+  legend.pos = "right",
+  facet = F,
+  ...
+)
 }
 \arguments{
 \item{x}{Object of class \code{"Cuminc"} to be printed or plotted}
+
+\item{use.ggplot}{Default FALSE, set TRUE for ggplot version of plot}
+
+\item{xlab}{A title for the x-axis; default is \code{"Time"}}
+
+\item{ylab}{A title for the y-axis; default is \code{"Probability"}}
+
+\item{xlim}{The x limits of the plot(s), default is range of time}
+
+\item{ylim}{The y limits of the plot(s); if ylim is specified for
+type="separate", then all plots use the same ylim for y limits}
+
+\item{lty}{The line type, see \code{\link{par}}; default is 1}
+
+\item{legend}{Character vector corresponding to number of absorbing states.
+In case of a grouped Cuminc() object, with facet = F the length of the vector
+is number absorbing states * group levels. Only relevant when use.ggplot = T}
+
+\item{cols}{Vector (numeric or character) specifying colours of the lines}
+
+\item{conf.type}{Type of confidence interval - either "log" or "plain"}
+
+\item{conf.int}{Confidence level (\%) from 0-1 for probabilities, 
+default is 0.95 (95\% CI). Setting to 0 removes the CIs.}
+
+\item{legend.pos}{The position of the legend, see \code{\link{legend}};
+default is \code{"topleft"}}
+
+\item{facet}{In case of group used for Cuminc, facet by it - 
+only relevant when use.ggplot = T}
 
 \item{\dots}{Further arguments to plot or print method}
 }
