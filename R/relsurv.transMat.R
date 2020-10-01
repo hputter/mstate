@@ -1,10 +1,23 @@
-# A function that upgrades the transMat so that
-# the pop. and excess transitions 
-# are included in the matrix (where needed)
+#' Upgrade the transMat object for the multi-state/relsurv setting.
+#' 
+#' A function that upgrades the transMat object so that the population
+#' and excess-related transitions are included in the transition matrix.
+#' @param trans The original transition matrix (usually generated using function
+#' transMat from mstate). Also often present in the msfit object.
+#' @param split.transitions The transitions that should be split.
+#' @return An upgraded transition matrix that contains the population and
+#' excess transitions.
+#' @seealso \code{\link{transMat}}
+#' @examples
+#' 
+#' # transition matrix for illness-death model
+#' trans <- transMat(list(c(2,3),c(4), c(), c()), 
+#'       names = c("Alive", "Relapse","Non-relapse mortality", "Death after relapse"))
+#' split.transitions <- c(2,3)
+#' modify_transMat(trans, split.transitions) 
+#' 
+#' @export 
 modify_transMat <- function(trans, split.transitions){
-  
-  # trans: The original transition matrix from the msfit object
-  # split.transitions: The transitions that should be split
   
   # Define objects:
   trans_tmp <- trans
