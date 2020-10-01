@@ -17,7 +17,7 @@
 #' modify_transMat(trans, split.transitions) 
 #' 
 #' @export 
-modify_transMat <- function(trans, split.transitions){
+`modify_transMat` <- function(trans, split.transitions){
   
   # Define objects:
   trans_tmp <- trans
