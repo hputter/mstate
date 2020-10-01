@@ -362,7 +362,13 @@ Note this function is only available in the ggplot format.
 ## A mirrored plot
 
 ```{r mirror1}
+p1 <- plot(pt.WW, use.ggplot = T, xlim = c(0, 3))
+p2 <- plot(pt.WM, use.ggplot = T, xlim = c(0, 3))
 
+vis.mirror.pt(
+  x = list(p1, p2),
+  titles = c("WW", "WM")
+)
 ```
 
 # References

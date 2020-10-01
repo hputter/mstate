@@ -15,7 +15,6 @@
 #'
 #' @return A plot visualising 
 #' @export
-#'
 vis.multiple.pt <- function(x, 
                             from = 1,
                             to,

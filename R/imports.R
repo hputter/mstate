@@ -1,5 +1,5 @@
 #' @import survival
-#' @importFrom data.table .N `:=` .SD melt.data.table data.table setDT
+#' @importFrom data.table .N `:=` .SD melt.data.table data.table 
 #' @importFrom magrittr `%>%`
 #' @importFrom RColorBrewer brewer.pal
 #' @importFrom rlang .data

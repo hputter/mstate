@@ -1,24 +1,36 @@
+#' Mirror plot comparing two probtrans objects
+#' 
+#' A mirror plot for comparing two different probtrans objects. Useful
+#' for comparing predicted probabilities for different levels of a covariate,
+#' or for different subgroups.
+#'
+#' @param x A list of two plots as returned by plot.probtrans with
+#' use.ggplot = T. The first element will be on the left of the mirror plot,
+#'  and the second on the right
+#' @param titles A character vector c("Title for left", "Title for right")
+#' @param size_titles Numeric, size of the title text
+#' @param breaks_x_left Numeric vector specifying axis breaks on the left plot
+#' @param breaks_x_right Numeric vector specifying axis breaks on the right plot
+#' @param ylim Numeric vector, limits of the y-axis. Default is c(0, 1)
+#' @param xlab A title for the x-axis, default is "Time"
+#' @param ylab A title for the y-axis, default is "Probability"
+#' @param legend.pos Position of the legend, default is "right"
+#'
+#' @return
+#' @export
 vis.mirror.pt <- function(x, 
-                          from = 1,
                           titles,
                           size_titles = 15,
                           breaks_x_left,
                           breaks_x_right,
-                          xlim,
                           ylim,
                           xlab = "Time",
                           ylab = "Probability",
                           legend.pos = "right") {
   
-  # Check inputs 
-  if (length(x) == 1) x <- list(x, x)
-  if (length(from) == 1) from <- rep(from, 2)
-  
-  # First build the plots 
-  p_left <- plot(x[[1]], from = from[1], use.ggplot = T, xlim = xlim)
-  p_right <- plot(x[[2]], from = from[2], use.ggplot = T, xlim = xlim)
-  
-  # Inherit colours from first plot
+   # First build plot and inherit colours from left
+  p_left <- x[[1]]
+  p_right <- x[[2]]
   build_p1 <- ggplot2::ggplot_build(p_left)
   fill_cols <- unique(build_p1$data[[1]]$fill)
   
@@ -51,27 +63,6 @@ vis.mirror.pt <- function(x,
   max_t <- main$max_t
   diff <- main$diff
   
-  # If froms are diff
-  from_left <- levels(droplevels(dat_left$state))[1]
-  from_right <- levels(droplevels(dat_right$state))[1]
-  
-  
-  if (from_left != from_right) {
-    #from_lab <- paste(c(from_left, from_right), collapse = "|")
-    from_lab <- "From"
-    dat_main[, state := droplevels(state)]
-    
-    # Collapse
-    orig_levels <- levels(dat_main$state)
-    
-    # New levels
-    orig_levels[orig_levels %in% c(from_left, from_right)] <- from_lab
-    levels(dat_main$state) <- orig_levels
-  }
-    
-  #return(dat_main)
-  
-  
   # Prep labels
   if (missing(breaks_x_left)) breaks_x_left <- seq(
     from = 0, to = max_t, by = floor(max_t / 3)
@@ -96,14 +87,17 @@ vis.mirror.pt <- function(x,
   
   # Position of titles - divide by max time for grob
   pos_title_left <- (max_t / 2) / max(dat_main$time)
-  pos_title_right <- (max(dat_main$time) - max(dat_right$time) /2) / 
+  pos_title_right <- (max(dat_main$time) - max(dat_right$time) / 2) / 
     max(dat_main$time)
   
   
   # Build basic plot
   p_main <-  dat_main %>% 
-    ggplot2::ggplot(aes(x= time, ymin = low, ymax = upp, 
-                        fill = state)) + 
+    ggplot2::ggplot(
+      ggplot2::aes(x = .data$time, 
+                   ymin = .data$low, 
+                   ymax = .data$upp,
+                   fill = .data$state)) + 
     ggplot2::geom_ribbon(col = "black", na.rm = T) +
     
     # Add divider segment
@@ -122,20 +116,27 @@ vis.mirror.pt <- function(x,
     ) +
     ggplot2::ylab(ylab) +
     ggplot2::scale_fill_manual(values = fill_cols) +
-    ggplot2::guides(fill = guide_legend(reverse = T))
+    ggplot2::guides(fill = ggplot2::guide_legend(reverse = T))
   
   if (missing(titles)) {
     
     p <- p_main +
-      theme(legend.position = legend.pos)
+      ggplot2::theme(
+        legend.position = legend.pos, 
+        panel.grid = ggplot2::element_blank(),
+        panel.background = ggplot2::element_blank(), 
+        axis.line = ggplot2::element_blank()
+      )
+    
+    return(p)
     
   } else {
     
     base_p <- p_main + 
-      theme(
-        plot.margin = unit(c(30.5, 5.5, 5.5, 5.5), "points"),
+      ggplot2::theme(
+        plot.margin = ggplot2::unit(c(30.5, 5.5, 5.5, 5.5), "points"),
         legend.position = legend.pos,
-        panel.grid = element_blank()
+        panel.grid = ggplot2::element_blank()
       )
     
     # See https://cran.r-project.org/web/packages/gridExtra/vignettes/gtable.html
@@ -144,31 +145,33 @@ vis.mirror.pt <- function(x,
     # Add titles using gtable
     g <- ggplot2::ggplotGrob(base_p) %>% 
       gtable::gtable_add_grob(
-        grobTree(
-          textGrob(titles[1], x = pos_title_left, hjust = 0.5,
-                   gp = gpar(fontsize = size_titles)), 
-          textGrob(titles[2], x = pos_title_right, hjust = 0.5,
-                   gp = gpar(fontsize = size_titles))
-        ), 
-        t = 1, l = 5
+        grid::grobTree(
+          grid::textGrob(
+            label = titles[1], 
+            x = pos_title_left, 
+            hjust = 0.5,
+            gp = grid::gpar(fontsize = size_titles)
+          ), 
+          grid::textGrob(
+            label = titles[2], 
+            x = pos_title_right, 
+            hjust = 0.5,
+            gp = grid::gpar(fontsize = size_titles)
+          )
+        ), t = 1, l = 5
       )
     
-    p <- grid.draw(g)
-    #p <- g
+    grid::grid.draw(g)
+    return(invisible(g))
   }
-  
-  
-  #panel.border = element_blank(),
-  
-  return(p) 
 }
 
 
 
-
-
-prep_compare_df <- function(dat_left, 
-                            dat_right) {
+prep_compare_df <- function(dat_left, dat_right) {
+  
+  # For data.table
+  . <- time <- time_orig <- state <- side <- NULL
   
   # Get maximum times
   p1_maxt <- max(dat_left$time)

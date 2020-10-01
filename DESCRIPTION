@@ -33,17 +33,22 @@ Authors@R: c(
 Depends:
   survival (>= 3.1)
 Imports: 
-  RColorBrewer,
-  viridis,
-  lattice,
+  rlang,
+  utils,
+  graphics,
+  stats,
   data.table,
   magrittr,
-  rlang
-Suggests: 
-    cmprsk,
-    ggplot2,
-    knitr,
-    rmarkdown
+  lattice,
+  grid,
+  gtable,
+  RColorBrewer,
+  viridis,
+Suggests:
+  cmprsk,
+  ggplot2,
+  knitr,
+  rmarkdown
 Description: Contains functions for data preparation, descriptives, hazard estimation and prediction with Aalen-Johansen or simulation in competing risks and multi-state models, see Putter, Fiocco, Geskus (2007) <doi:10.1002/sim.2712>.
 License: GPL (>= 2)
 Encoding: UTF-8
