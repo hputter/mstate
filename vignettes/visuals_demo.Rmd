@@ -304,7 +304,9 @@ cum_incid_grp <- Cuminc(
 plot(
   x = cum_incid_grp,
   use.ggplot = T,
-  conf.type = "none"
+  conf.type = "none",
+  #conf.int = 0.95,
+  lty = 1:4, facet = T
 )
 ```
 

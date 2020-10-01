@@ -98,7 +98,8 @@ ggplot.Cuminc <- function(x,
   if (missing(xlim)) xlim <- c(0, max(df_steps$time))
   if (missing(ylim)) ylim <- c(0, 1)
   if (missing(lty)) lty <- rep(1, n_grps_plotted)
-  if (missing(legend)) { legend <- levels(factor(df_steps[[grp]]))
+  if (missing(legend)) legend <- levels(factor(df_steps[[grp]]))
+  if (conf.type == "none") {
     col_ribb <- NA
   } else col_ribb <- "grey70"
   
