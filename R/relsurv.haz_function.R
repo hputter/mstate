@@ -11,7 +11,8 @@
 #' @param add.times Additional times at which the hazards should be evaluated.
 #' @param rmap An optional list to be used if the variables are not organized and named in the same way as in the ratetable object
 #' @param include.all.times Should hazards be evaluated at all times in seq(minimum time, maximum time, by=1). Default is FALSE
-
+#' @return A list containing the needed hazards.
+#' 
 #' @seealso \code{\link{msfit.relsurv}}
 #' @export 
 `haz_function` <- function(formula = formula(data), data, ratetable = relsurv::slopop,
