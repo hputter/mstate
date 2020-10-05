@@ -1,37 +1,64 @@
-##########################
-
-# The function takes a fitted msfit object and upgrades
-# it with relsurv, where the suggested transitions are split
-# in population and excess transitions. The upgraded msfit object contains
-# the new hazards based on the transition matrix (transMat). 
-# The (co)variance matrix is also upgraded, if provided.
-msfit.relsurv <- function(msfit.obj, 
+#' Extend a multi-state model using relative survival 
+#' 
+#' A function that takes a fitted msfit object and upgrades
+#' it using relative survival, where chosen transitions are
+#' split in population and excess transitions. This upgraded 
+#' msfit object contains the split hazards based on the transition
+#' matrix (transMat). The (co)variance matrix is also upgraded, if provided.
+#' @param msfit.obj The msfit object which has to be upgraded
+#' @param data The dataset used for fitting the msfit model
+#' @param split.transitions An integer vector containing the numbered transitions that should be split. Use same numbering as in the given transition matrix
+#' @param ratetable The population mortality table. A table of event rates, organized as a ratetable object, see for example relsurv::slopop. Default is slopop
+#' @param rmap An optional list to be used if the variables in the dataset are not organized (and named) in the same way as in the ratetable object
+#' @param time.format Define the time format which is used in the dataset Possible options: c('days', 'years', 'months'). Default is 'days'
+#' @param var.pop.haz If 'fixed' (default), one assumes that the variance of the population hazards is zero. If 'bootstrap', one gets boostrapped variances for all transitions.
+#' @param B Number of bootstrap replications. Relevant only if var.pop.haz == 'bootstrap'
+#' @param seed Set seed
+#' @param add.times Additional times at which hazards should be evaluated
+#' @param substitution Whether function substitute should be used for rmap argument
+#' @param link_trans_ind Choose whether the linkage between the old and new transition matrix should be saved. Default is FALSE.
+#' @return Returns a msfit object that now contains hazards and their variances (if provided) 
+#' for the split (population and excess) transitions.
+#' 
+#' @author Damjan Manevski \email{damjan.manevski@@mf.uni-lj.si}
+#' @seealso \code{\link{msfit}}
+#' @example 
+#' 
+#' tmat <- trans.illdeath()
+#' tg <- data.frame(illt=c(1,1,6,6,8,9)*30,ills=c(1,0,1,1,0,1),
+#'                  dt=c(5,1,9,7,8,12)*30,ds=c(1,1,1,1,1,1),
+#'                  x1=c(1,1,1,0,0,0),x2=c(6:1))
+#' # data in long format using msprep
+#' tglong <- msprep(time=c(NA,"illt","dt"),status=c(NA,"ills","ds"),
+#'                  data=tg,keep=c("x1","x2"),trans=tmat)
+#' # expanded covariates
+#' tglong <- expand.covs(tglong,c("x1","x2"))
+#' # generate demographic covariates
+#' set.seed(510)
+#' tglong$sex <- sample(1:2, size = nrow(tglong), replace = TRUE)
+#' tglong$age <- runif(nrow(tglong), min = 30, max=70)
+#' tglong$year <- sample(seq(as.Date('2000/01/01'), as.Date('2010/01/01'), by="day"), nrow(tglong)) 
+#' # Cox model with different covariate
+#' cx <- coxph(Surv(Tstart,Tstop,status)~x1.1+x2.2+strata(trans),
+#'             data=tglong,method="breslow")
+#' newdata <- data.frame(trans=1:3,x1.1=c(0,0,0),x2.2=c(0,1,0),strata=1:3)
+#' mod <- msfit(cx,newdata,trans=tmat)
+#' mod.relsurv <- msfit.relsurv(mod, data=tglong, split.transitions = c(2,3),
+#'                              ratetable = relsurv::slopop, rmap = list(age=age*365.241))
+#' @export
+`msfit.relsurv` <- function(msfit.obj, 
                           data,
                           split.transitions, 
                           ratetable = relsurv::slopop,
                           rmap, 
                           time.format = "days",
-                          link_trans_ind = FALSE,
                           var.pop.haz = c("fixed", "bootstrap", "both"),
                           B = 100,
                           seed = NULL,
                           add.times,
-                          substitution=TRUE
+                          substitution=TRUE,
+                          link_trans_ind = FALSE
 ){
-  
-  # msfit.obj: A fitted msfit object
-  # data: The data used for the coxph object
-  # split.transitions: An integer vector containing the numbered transitions that should be split. Use same numbering as in the given transition matrix.
-  # ratetable: A table of event rates, organized as a ratetable object, such as slopop.
-  # rmap: An optional list to be used if the variables are not organized and named in the same way as in the ratetable object.
-  # time.format: Define in which time format is time saved. Possible options: c('days', 'years', 'months'). Default is 'days'.
-  # link_trans_ind: Logical value - whether the linkage between the old and new transition matrix should be saved. Default is FALSE.
-  # var.pop.haz: Logical value - if 'fixed' (default), one assumes that the variance of the population hazards are fixed. If 'bootstrap', one gets boostrapped variances.
-  # B: Number of bootstrap replications. Relevant only if var.pop.haz == 'bootstrap'.
-  # seed: Set the seed.
-  # add.times: Specific times at which hazards should be evaluated.
-  # substitution: Whether function substitute should be used for rmap argument.
-  
   # NOTE: var.pop.haz="fixed" gives covariances. Bootstrap does not.
   
   ####################

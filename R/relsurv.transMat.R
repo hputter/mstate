@@ -7,6 +7,7 @@
 #' @param split.transitions The transitions that should be split.
 #' @return An upgraded transition matrix that contains the population and
 #' excess transitions.
+#' @author Damjan Manevski \email{damjan.manevski@@mf.uni-lj.si}
 #' @seealso \code{\link{transMat}}
 #' @examples
 #' 

@@ -8,6 +8,7 @@
 #' transition matrix.
 #' @param varHaz_original The original varHaz object from msfit (without the eventual time conversion).
 #' @return Return the upgraded varHaz object containing variances for the split transitions.
+#' @author Damjan Manevski \email{damjan.manevski@@mf.uni-lj.si}
 #' 
 #' @export
 `varHaz.fixed` <- function(varHaz, link_trans, varHaz_original){
