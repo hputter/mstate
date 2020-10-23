@@ -389,7 +389,7 @@
         class(msfit_tmp) <- "msfit"
         
         # save bootstrapped probtrans:
-        pt_tmp <- suppressWarnings(probtrans_new(msfit_tmp, predt=predt, direction=direction, variance = FALSE, covariance = FALSE))
+        pt_tmp <- suppressWarnings(probtrans(msfit_tmp, predt=predt, direction=direction, variance = FALSE, covariance = FALSE))
         
         for(s in absorbing_false){
           pt_list[[s]][[i]] <- pt_tmp[[s]]
