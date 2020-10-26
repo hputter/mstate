@@ -90,7 +90,7 @@
       msfit_tmp <- rbind(msfit_tmp, msfit_tmp_2)
       msfit_tmp <- msfit_tmp[order(msfit_tmp$time),]
       
-      msfit_tmp$Haz <- mstate:::NAfix(msfit_tmp$Haz,0)
+      msfit_tmp$Haz <- NAfix(msfit_tmp$Haz,0)
       
       msfit.new <- rbind(msfit.new, msfit_tmp)
     }
@@ -108,7 +108,7 @@
         msfit_tmp <- rbind(msfit_tmp, msfit_tmp_2)
         msfit_tmp <- msfit_tmp[order(msfit_tmp$time),]
         
-        msfit_tmp$varHaz <- mstate:::NAfix(msfit_tmp$varHaz,0)
+        msfit_tmp$varHaz <- NAfix(msfit_tmp$varHaz,0)
         
         msfit.new <- rbind(msfit.new, msfit_tmp)
       }

@@ -65,7 +65,7 @@
       small_diffs2 <- c(small_diffs[-1], 1)
       
       output_tmp <- output_tmp[!is.na(output_tmp$Haz) | (small_diffs>tolerance & small_diffs2>tolerance),] 
-      output_tmp$Haz <- suppressWarnings({mstate:::NAfix(output_tmp$Haz,0)})
+      output_tmp$Haz <- suppressWarnings({NAfix(output_tmp$Haz,0)})
     }
     
     # Check if there are any unneeded times:
@@ -104,7 +104,7 @@
         output_tmp <- output_tmp[!is.na(output_tmp$Haz) | (small_diffs>tolerance & small_diffs2>tolerance),]
         # output_tmp <- output_tmp[small_diffs>tolerance,]
         
-        output_tmp$Haz <- mstate:::NAfix(output_tmp$Haz,0)
+        output_tmp$Haz <- NAfix(output_tmp$Haz,0)
       }
       output_tmp$trans <- paste0(output_tmp$trans, "old")
       output_updated <- rbind(output_updated, output_tmp)
