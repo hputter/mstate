@@ -38,7 +38,7 @@
   # Prepare res object:
   res <- vector("list", B)
   
-  find_trans <- as.numeric(na.omit(as.vector(transmat)))
+  find_trans <- as.numeric(stats::na.omit(as.vector(transmat)))
   take_values <- rep(TRUE, B)
   
   add.times.ind <- FALSE

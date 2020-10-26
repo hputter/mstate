@@ -64,6 +64,10 @@
   ####################
   # 1. Prepare objects
   ####################
+  trans1 <- NULL
+  trans2 <- NULL
+  b <- NULL
+  
   if(!missing(rmap)){
     if(substitution){
       rmap <- substitute(rmap)
@@ -342,7 +346,7 @@
       # No. of bootstrap samples for every transition:
       no_samples <- table(unique(haz_boot_df[,c("trans", "b")])$trans)
       # If not enough samples for some transition or some transition not present in the end, stop:
-      if(any(no_samples<2) | (!identical(as.integer(names(no_samples)), as.integer(na.omit(as.vector(trans_new)))))){
+      if(any(no_samples<2) | (!identical(as.integer(names(no_samples)), as.integer(stats::na.omit(as.vector(trans_new)))))){
         stop("Not enough bootstrap samples so that the variances can be estimated. Please increase value in argument B.")
       }
       
@@ -356,7 +360,7 @@
       #   theme(legend.position="none")
       # dev.off()
       
-      haz_boot2 <-  aggregate(.~time+trans, data=subset(haz_boot_df, select=-b), FUN = var)
+      haz_boot2 <-  aggregate(.~time+trans, data=subset(haz_boot_df, select=-b), FUN = stats::var)
       colnames(haz_boot2)[3] <- "varHaz"
       
       # browser()
