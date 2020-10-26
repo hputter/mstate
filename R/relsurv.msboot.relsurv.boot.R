@@ -23,6 +23,8 @@
                                 split.transitions, rmap, time.format, boot_orig_msfit=FALSE, ratetable=relsurv::slopop, add.times){
   if(!missing(rmap))  rmap <- as.call(rmap)
   
+  trans <- NULL
+  
   # Round, if needed:
   tolerance <- 1e-15
   # Fit models:
@@ -82,7 +84,7 @@
     # Find transitions that have been splitted:
     splitted_trans <- msf_new$trans[,!(colnames(msf_new$trans) %in% colnames(msf_relsurv$trans))]
     # Save them in a nice format:
-    splitted_trans <- na.omit(as.vector(splitted_trans))
+    splitted_trans <- stats::na.omit(as.vector(splitted_trans))
     
     for(i in splitted_trans){
       output_tmp <- subset(msf_new[[1]], trans ==i)

@@ -404,7 +404,7 @@
         # Calculate SEs:
         # pt_list[[s]] <- na.omit(pt_list[[s]])
         pt_list[[s]] <- do.call(rbind.data.frame, pt_list[[s]])
-        pt_list[[s]] <- aggregate(.~time, data=pt_list[[s]], FUN = sd)
+        pt_list[[s]] <- aggregate(.~time, data=pt_list[[s]], FUN = stats::sd)
         
         # Check times:
         unneeded_times <- which(!(pt_list[[s]]$time %in% res2[[s]]$time))
