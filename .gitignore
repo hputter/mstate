@@ -6,8 +6,6 @@ src/*.o
 src/*.so
 src/*.dll
 old
-doc
 Meta
 inst/doc
-example_vismirror.R
-docs
+
