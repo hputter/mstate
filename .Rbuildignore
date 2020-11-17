@@ -1,7 +1,3 @@
-^.*\.Rproj$
-^\.Rproj\.user$
-.gitignore
-old/
-^doc$
-^Meta$
-example_vismirror.R
+^_pkgdown\.yml$
+^docs$
+^pkgdown$
