@@ -7,19 +7,20 @@
 vis.mirror.pt(
   x,
   titles,
-  size_titles = 15,
+  size_titles = 5,
   breaks_x_left,
   breaks_x_right,
-  ylim,
+  from = 1,
+  cols,
+  ord,
   xlab = "Time",
   ylab = "Probability",
   legend.pos = "right"
 )
 }
 \arguments{
-\item{x}{A list of two plots as returned by plot.probtrans with
-use.ggplot = T. The first element will be on the left of the mirror plot,
- and the second on the right}
+\item{x}{A list of two pt objects. The first element will be on the left of 
+the mirror plot, and the second on the right}
 
 \item{titles}{A character vector c("Title for left", "Title for right")}
 
@@ -29,7 +30,14 @@ use.ggplot = T. The first element will be on the left of the mirror plot,
 
 \item{breaks_x_right}{Numeric vector specifying axis breaks on the right plot}
 
-\item{ylim}{Numeric vector, limits of the y-axis. Default is c(0, 1)}
+\item{from}{The starting state from which the probabilities are used to plot}
+
+\item{cols}{A vector specifying colors for the different transitions;
+default is a palette from green to red, when type=\code{"filled"} (reordered
+according to \code{ord}, and 1 (black), otherwise}
+
+\item{ord}{A vector of length equal to the number of states, specifying the
+order of plotting in case type=\code{"stacked"} or \code{"filled"}}
 
 \item{xlab}{A title for the x-axis, default is "Time"}
 
@@ -38,7 +46,7 @@ use.ggplot = T. The first element will be on the left of the mirror plot,
 \item{legend.pos}{Position of the legend, default is "right"}
 }
 \value{
-
+A ggplot2 object with the mirrored plot.
 }
 \description{
 A mirror plot for comparing two different probtrans objects. Useful

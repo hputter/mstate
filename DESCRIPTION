@@ -28,20 +28,20 @@ Authors@R: c(
     given = "Edouard F.",
     family = "Bonneville",
     role = "ctb"
+  ),
+  person(
+    given = "Damjan",
+    family = "Manevski",
+    role = "ctb"
   )
   ) 
 Depends:
   survival (>= 3.1)
 Imports: 
   rlang,
-  utils,
-  graphics,
-  stats,
   data.table,
   magrittr,
   lattice,
-  grid,
-  gtable,
   RColorBrewer,
   viridis,
 Suggests:
@@ -59,4 +59,6 @@ Repository: CRAN
 Packaged: 2019-12-11 12:02:31 UTC; hputter
   Date/Publication: 2019-12-11 12:30:03 UTC
 RoxygenNote: 7.1.1
+URL: https://hputter.github.io/mstate/
+BugReports: https://github.com/hputter/mstate/issues
 VignetteBuilder: knitr

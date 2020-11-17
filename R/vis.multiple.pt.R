@@ -4,7 +4,7 @@
 #' different reference patients/covariates. Multiple probtrans objects
 #' are thus needed.
 #'
-#' @param x A list of plots as returned by plot(pt, use_ggplot = T)
+#' @param x A list of probtrans objects
 #' @param from The starting state from which the probabilities are used to plot
 #' Numeric, as in plot.probtrans
 #' @param to (Numeric) destination state

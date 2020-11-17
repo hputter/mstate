@@ -68,24 +68,14 @@ ggplot.probtrans <- function(x,
   n_states_plotted <- length(unique(as.character(df_steps$state)))
   
   # check colours
-  if (missing(cols)) cols <- viridis::viridis_pal()(n_states_plotted)
+  if (missing(cols)) cols <- set_colours(n_states_plotted, type = "areas")
   if (length(cols) != n_states_plotted) 
     stop(paste0("Length of col should be ", n_states_plotted))
   
   # Default colours different if line plot
   if (type %in% c("separate", "single")) {
-    
-    # Extend colourbrewer Dark2 palette
-    if (n_states_plotted <= 8) {
-      full_pal <- RColorBrewer::brewer.pal(8, "Dark2")
-      cols <- full_pal[1:n_states_plotted]
-    } else {
-      dark2_extended <- grDevices::colorRampPalette(
-        RColorBrewer::brewer.pal(8, "Dark2")
-      )
-      cols <- dark2_extended(n_states_plotted)
-    }
-  }
+    cols <- set_colours(n_states_plotted, type = "lines")
+  } 
   
   # Check linetype
   if (missing(lty)) lty <- rep(1, n_states_plotted)

@@ -4,37 +4,43 @@
 #' for comparing predicted probabilities for different levels of a covariate,
 #' or for different subgroups.
 #'
-#' @param x A list of two plots as returned by plot.probtrans with
-#' use.ggplot = T. The first element will be on the left of the mirror plot,
-#'  and the second on the right
+#' @param x A list of two pt objects. The first element will be on the left of 
+#' the mirror plot, and the second on the right
 #' @param titles A character vector c("Title for left", "Title for right")
 #' @param size_titles Numeric, size of the title text
 #' @param breaks_x_left Numeric vector specifying axis breaks on the left plot
 #' @param breaks_x_right Numeric vector specifying axis breaks on the right plot
-#' @param ylim Numeric vector, limits of the y-axis. Default is c(0, 1)
 #' @param xlab A title for the x-axis, default is "Time"
 #' @param ylab A title for the y-axis, default is "Probability"
 #' @param legend.pos Position of the legend, default is "right"
+#' 
+#' @inheritParams plot.probtrans
 #'
-#' @return
+#' @return A ggplot2 object with the mirrored plot.
 #' @export
 vis.mirror.pt <- function(x, 
                           titles,
-                          size_titles = 15,
+                          size_titles = 5,
                           breaks_x_left,
                           breaks_x_right,
-                          ylim,
+                          from = 1,
+                          cols,
+                          ord,
                           xlab = "Time",
                           ylab = "Probability",
                           legend.pos = "right") {
   
-   # First build plot and inherit colours from left
-  p_left <- x[[1]]
-  p_right <- x[[2]]
-  build_p1 <- ggplot2::ggplot_build(p_left)
-  fill_cols <- unique(build_p1$data[[1]]$fill)
+  # Check both have the right number of states
+  n_states <- 1 + sum(!is.na(x[[1]][["trans"]][from, ]))
+  if (missing(cols)) cols <- set_colours(n = n_states, type = "fill")
+  if (missing(ord)) ord <- n_states:1
   
-  # Inherit also xlims for symmetry
+  # First build plot and inherit colours from left
+  p_left <- plot.probtrans(x[[1]], use.ggplot = T, ord = ord, cols = cols)
+  p_right <- plot.probtrans(x[[2]], use.ggplot = T, ord = ord, cols = cols)
+  build_p1 <- ggplot2::ggplot_build(p_left)
+
+  # Inherit also xlims for symmetry - edit here for xlim.
   left_xlim <- p_left$coordinates$limits$x
   right_xlim <- p_right$coordinates$limits$x
   
@@ -50,7 +56,7 @@ vis.mirror.pt <- function(x,
     stop("Argument 'ord' must be the same for both plots.")
   
   # Get maximum time and set x axis
-  if (missing(ylim)) ylim <- c(0, 1)
+  ylim <- c(0, 1)
   
   # Prep df, right side needs to lagged
   main <- prep_compare_df(
@@ -67,6 +73,7 @@ vis.mirror.pt <- function(x,
   if (missing(breaks_x_left)) breaks_x_left <- seq(
     from = 0, to = max_t, by = floor(max_t / 3)
   )
+  
   if (missing(breaks_x_right)) breaks_x_right <- seq(
     from = 0, to = max(dat_right$time), by = floor(max_t / 3)
   )
@@ -85,20 +92,14 @@ vis.mirror.pt <- function(x,
   breakos <- c(breaks_x_left, max(dat_main$time) - breaks_x_right)
   labos <- c(breaks_x_left, breaks_x_right)
   
-  # Position of titles - divide by max time for grob
-  pos_title_left <- (max_t / 2) / max(dat_main$time)
-  pos_title_right <- (max(dat_main$time) - max(dat_right$time) / 2) / 
-    max(dat_main$time)
-  
-  
   # Build basic plot
   p_main <-  dat_main %>% 
     ggplot2::ggplot(
-      ggplot2::aes(x = .data$time, 
-                   ymin = .data$low, 
-                   ymax = .data$upp,
-                   fill = .data$state)) + 
-    ggplot2::geom_ribbon(col = "black", na.rm = T) +
+      ggplot2::aes(x = .data$time)) + 
+    ggplot2::geom_ribbon(ggplot2::aes(ymin = .data$low, 
+                             ymax = .data$upp,
+                             fill = .data$state), 
+                         col = "black", na.rm = T) +
     
     # Add divider segment
     ggplot2::geom_segment(
@@ -108,14 +109,13 @@ vis.mirror.pt <- function(x,
       yend = ylim[2], 
       size = 2
     ) +
-    ggplot2::coord_cartesian(expand = 0, ylim = ylim) +
     ggplot2::scale_x_continuous(
       xlab,
       breaks = breakos,
       labels = labos
     ) +
     ggplot2::ylab(ylab) +
-    ggplot2::scale_fill_manual(values = fill_cols) +
+    ggplot2::scale_fill_manual(values = cols) +
     ggplot2::guides(fill = ggplot2::guide_legend(reverse = T))
   
   if (missing(titles)) {
@@ -126,43 +126,40 @@ vis.mirror.pt <- function(x,
         panel.grid = ggplot2::element_blank(),
         panel.background = ggplot2::element_blank(), 
         axis.line = ggplot2::element_blank()
-      )
+      ) +
+      ggplot2::coord_cartesian(expand = 0, ylim = ylim) 
+      
     
     return(p)
     
   } else {
+    
+    # Position of titles - divide by max time for grob
+    pos_title_left <- (max_t / 2) 
+    pos_title_right <- (max(dat_main$time) - max(dat_right$time) / 2)  
+
+    titles_df <- data.frame(
+      labs = c(titles[1], titles[2]),
+      pos_x = c(pos_title_left, pos_title_right),
+      pos_y = rep(1.05, 2)
+    )
     
     base_p <- p_main + 
       ggplot2::theme(
         plot.margin = ggplot2::unit(c(30.5, 5.5, 5.5, 5.5), "points"),
         legend.position = legend.pos,
         panel.grid = ggplot2::element_blank()
+      ) +
+      ggplot2::coord_cartesian(clip = "off", expand = 0, ylim = ylim) +
+      ggplot2::geom_text(
+        data = titles_df, 
+        ggplot2::aes(x = .data$pos_x, y = .data$pos_y, label = .data$labs),
+        hjust = 0.5, 
+        size = 5
       )
     
-    # See https://cran.r-project.org/web/packages/gridExtra/vignettes/gtable.html
-    # https://stackoverflow.com/questions/21997715/add-ggplot-annotation-outside-the-panel-or-two-titles
-    
-    # Add titles using gtable
-    g <- ggplot2::ggplotGrob(base_p) %>% 
-      gtable::gtable_add_grob(
-        grid::grobTree(
-          grid::textGrob(
-            label = titles[1], 
-            x = pos_title_left, 
-            hjust = 0.5,
-            gp = grid::gpar(fontsize = size_titles)
-          ), 
-          grid::textGrob(
-            label = titles[2], 
-            x = pos_title_right, 
-            hjust = 0.5,
-            gp = grid::gpar(fontsize = size_titles)
-          )
-        ), t = 1, l = 5
-      )
-    
-    grid::grid.draw(g)
-    return(invisible(g))
+      
+    return(base_p)
   }
 }
 

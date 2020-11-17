@@ -302,6 +302,22 @@ cum_incid_grp <- Cuminc(
 )
 
 plot(
+  x = cum_incid,
+  use.ggplot = T,
+  conf.type = "none",
+  lty = 1:2,
+  conf.int = 0.95,
+)
+
+plot(
+  x = cum_incid_grp,
+  use.ggplot = T,
+  conf.type = "none",
+  #conf.int = 0.95,
+  lty = 1:4, facet = F
+)
+
+plot(
   x = cum_incid_grp,
   use.ggplot = T,
   conf.type = "none",
@@ -362,11 +378,8 @@ Note this function is only available in the ggplot format.
 ## A mirrored plot
 
 ```{r mirror1}
-p1 <- plot(pt.WW, use.ggplot = T, xlim = c(0, 3))
-p2 <- plot(pt.WM, use.ggplot = T, xlim = c(0, 3))
-
 vis.mirror.pt(
-  x = list(p1, p2),
+  x = list(pt.WW, pt.WM),
   titles = c("WW", "WM")
 )
 ```

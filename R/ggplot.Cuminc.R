@@ -104,19 +104,7 @@ ggplot.Cuminc <- function(x,
   } else col_ribb <- "grey70"
   
   # Colours
-  if (missing(cols)) {
-    
-    # Extend colourbrewer Dark2 palette
-    if (n_grps_plotted <= 8) {
-      full_pal <- RColorBrewer::brewer.pal(8, "Dark2")
-      cols <- full_pal[1:n_grps_plotted]
-    } else {
-      dark2_extended <- grDevices::colorRampPalette(
-        RColorBrewer::brewer.pal(8, "Dark2")
-      )
-      cols <- dark2_extended(n_grps_plotted)
-    }
-  }
+  if (missing(cols)) cols <- set_colours(n_grps_plotted, type = "lines")
 
   # Start plot
   p <- ggplot2::ggplot(
