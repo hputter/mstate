@@ -21,7 +21,7 @@ vis.multiple.pt(
 )
 }
 \arguments{
-\item{x}{A list of plots as returned by plot(pt, use_ggplot = T)}
+\item{x}{A list of probtrans objects}
 
 \item{from}{The starting state from which the probabilities are used to plot
 Numeric, as in plot.probtrans}

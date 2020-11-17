@@ -28,22 +28,27 @@ Authors@R: c(
     given = "Edouard F.",
     family = "Bonneville",
     role = "ctb"
+  ),
+  person(
+    given = "Damjan",
+    family = "Manevski",
+    role = "ctb"
   )
   ) 
 Depends:
   survival (>= 3.1)
 Imports: 
-  RColorBrewer,
-  viridis,
-  lattice,
+  rlang,
   data.table,
   magrittr,
-  rlang
-Suggests: 
-    cmprsk,
-    ggplot2,
-    knitr,
-    rmarkdown
+  lattice,
+  RColorBrewer,
+  viridis,
+Suggests:
+  cmprsk,
+  ggplot2,
+  knitr,
+  rmarkdown
 Description: Contains functions for data preparation, descriptives, hazard estimation and prediction with Aalen-Johansen or simulation in competing risks and multi-state models, see Putter, Fiocco, Geskus (2007) <doi:10.1002/sim.2712>.
 License: GPL (>= 2)
 Encoding: UTF-8
@@ -54,4 +59,6 @@ Repository: CRAN
 Packaged: 2019-12-11 12:02:31 UTC; hputter
   Date/Publication: 2019-12-11 12:30:03 UTC
 RoxygenNote: 7.1.1
+URL: https://hputter.github.io/mstate/
+BugReports: https://github.com/hputter/mstate/issues
 VignetteBuilder: knitr
