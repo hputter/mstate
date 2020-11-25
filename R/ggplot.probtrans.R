@@ -184,7 +184,6 @@ ggplot.probtrans <- function(x,
       ggplot2::geom_line(size = lwd, na.rm = T) +
       ggplot2::facet_wrap(. ~ state) +
       ggplot2::guides(col = ggplot2::guide_legend("State", reverse = T)) +
-      ggplot2::theme(legend.position = legend.pos) +
       ggplot2::coord_cartesian(xlim = xlim, ylim = ylim, expand = 0) +
       ggplot2::xlab(xlab) +
       ggplot2::ylab(ylab) +
@@ -193,7 +192,10 @@ ggplot.probtrans <- function(x,
       ggplot2::guides(
         col = ggplot2::guide_legend("State", reverse = T),
         linetype = ggplot2::guide_legend("State", reverse = T)
-      )
+      ) +
+      # Facet titles are already the labels
+      ggplot2::theme(legend.position = "none") 
+      
     
   } else stop("Pick a valid plot type!")
   

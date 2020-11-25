@@ -78,7 +78,8 @@ ggplot.msfit <- function(x,
                              linetype = .data$trans_name)) +
       ggplot2::geom_step(size = lwd) +
       ggplot2::coord_cartesian(expand = 0, xlim = xlim, ylim = ylim) +
-      ggplot2::ylab(ylab) 
+      ggplot2::ylab(ylab) +
+      ggplot2::theme(legend.position = legend.pos) 
       
   } else if (type == "separate") {
     
@@ -89,12 +90,12 @@ ggplot.msfit <- function(x,
       ggplot2::geom_step(size = lwd) +
       ggplot2::ylab(ylab) +
       ggplot2::coord_cartesian(expand = 0, xlim = xlim) +
-      ggplot2::facet_wrap(. ~ trans_name, scales = scale_type)
+      ggplot2::facet_wrap(. ~ trans_name, scales = scale_type) +
+      ggplot2::theme(legend.position = "none") 
      
   } else stop("Invalid plot type!")
  
   p <- p +
-    ggplot2::theme(legend.position = legend.pos) +
     ggplot2::scale_colour_manual("Transition", values = cols) +
     ggplot2::scale_linetype_manual("Transition", values = lty) +
     ggplot2::xlab(xlab) 

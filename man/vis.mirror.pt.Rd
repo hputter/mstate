@@ -8,6 +8,7 @@ vis.mirror.pt(
   x,
   titles,
   size_titles = 5,
+  horizon = NULL,
   breaks_x_left,
   breaks_x_right,
   from = 1,
@@ -19,12 +20,16 @@ vis.mirror.pt(
 )
 }
 \arguments{
-\item{x}{A list of two pt objects. The first element will be on the left of 
-the mirror plot, and the second on the right}
+\item{x}{A list of two \code{"probtrans"} objects. 
+The first element will be on the left of the mirror plot, 
+and the second on the right}
 
 \item{titles}{A character vector c("Title for left", "Title for right")}
 
 \item{size_titles}{Numeric, size of the title text}
+
+\item{horizon}{Numeric, position denoting (in time) where to symmetrically 
+mirror the plots. Default is maximum follow-up of from both plots.}
 
 \item{breaks_x_left}{Numeric vector specifying axis breaks on the left plot}
 
@@ -46,10 +51,73 @@ order of plotting in case type=\code{"stacked"} or \code{"filled"}}
 \item{legend.pos}{Position of the legend, default is "right"}
 }
 \value{
-A ggplot2 object with the mirrored plot.
+A ggplot2 object.
 }
 \description{
-A mirror plot for comparing two different probtrans objects. Useful
+A mirror plot for comparing two different \code{"probtrans"} objects. Useful
 for comparing predicted probabilities for different levels of a covariate,
 or for different subgroups.
+}
+\examples{
+
+library(ggplot2)
+
+data("aidssi")
+head(aidssi)
+si <- aidssi
+
+# Prepare transition matrix
+tmat <- trans.comprisk(2, names = c("event-free", "AIDS", "SI"))
+
+# Run msprep
+si$stat1 <- as.numeric(si$status == 1)
+si$stat2 <- as.numeric(si$status == 2)
+
+silong <- msprep(
+time = c(NA, "time", "time"), 
+status = c(NA, "stat1", "stat2"), 
+data = si, keep = "ccr5", trans = tmat
+)
+
+# Run cox model
+silong <- expand.covs(silong, "ccr5")
+c1 <- coxph(Surv(time, status) ~ ccr5WM.1 + ccr5WM.2 + strata(trans),
+            data = silong)
+            
+# 1. Prepare reference patient data - both CCR5 genotypes
+WW <- data.frame(
+ccr5WM.1 = c(0, 0), 
+ccr5WM.2 = c(0, 0), 
+trans = c(1, 2), 
+strata = c(1, 2)
+)
+
+WM <- data.frame(
+ccr5WM.1 = c(1, 0), 
+ccr5WM.2 = c(0, 1),
+trans = c(1, 2), 
+strata = c(1, 2)
+)
+
+# 2. Make msfit objects
+msf.WW <- msfit(c1, WW, trans = tmat)
+msf.WM <- msfit(c1, WM, trans = tmat)
+
+# 3. Make probtrans objects
+pt.WW <- probtrans(msf.WW, predt = 0)
+pt.WM <- probtrans(msf.WM, predt = 0)           
+
+# Mirror plot split at 10 years - see vignette for more details
+vis.mirror.pt(
+x = list(pt.WW, pt.WM),
+titles = c("WW", "WM"),
+horizon = 10
+)
+
+}
+\seealso{
+\code{\link{plot.probtrans}}
+}
+\author{
+Edouard F. Bonneville \email{e.f.bonneville@lumc.nl}
 }

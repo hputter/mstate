@@ -1,10 +1,9 @@
 #' Plot method for an msfit object
 #' 
-#' Plot method for an object of class 'msfit'. It plots the estimated
+#' Plot method for an object of class \code{"msfit"}. It plots the estimated
 #' cumulative transition intensities in the multi-state model.
 #' 
-#' 
-#' @param x Object of class 'msfit', containing estimated cumulative transition
+#' @param x Object of class \code{"msfit"}, containing estimated cumulative transition
 #' intensities for all transitions in a multi-state model
 #' @param type One of \code{"single"} (default) or \code{"separate"}; in case
 #' of \code{"single"}, all estimated cumulative hazards are drawn in a single
@@ -33,7 +32,10 @@
 #' @param \dots Further arguments to plot
 #' 
 #' @return No return value
+#' 
 #' @author Hein Putter \email{H.Putter@@lumc.nl}
+#' @author Edouard F. Bonneville \email{e.f.bonneville@@lumc.nl}
+
 #' @seealso \code{\link{msfit}}
 #' @keywords hplot
 #' @examples
@@ -70,6 +72,10 @@
 #' plot(msf,type="separate",lwd=2)
 #' par(mfrow=c(1,1))
 #' 
+#' # ggplot version - see vignette for details
+#' library(ggplot2)
+#' plot(msf, use.ggplot = TRUE)
+#' 
 #' @export 
 plot.msfit <- function(x, 
                        type = c("single", "separate"), 
@@ -82,7 +88,7 @@ plot.msfit <- function(x,
                        legend, 
                        legend.pos = "right", 
                        bty = "n", 
-                       use.ggplot = F,
+                       use.ggplot = FALSE,
                        
                        # Possible ggplot args here
                        xlim,

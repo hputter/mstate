@@ -2,11 +2,11 @@
 % Please edit documentation in R/plot.Cuminc.R
 \name{plot.Cuminc}
 \alias{plot.Cuminc}
-\title{Plot method for cuminc objects}
+\title{Plot method for Cuminc objects}
 \usage{
 \method{plot}{Cuminc}(
   x,
-  use.ggplot = F,
+  use.ggplot = FALSE,
   xlab = "Time",
   ylab = "Probability",
   xlim,
@@ -17,7 +17,7 @@
   conf.type = c("log", "plain", "none"),
   conf.int = 0.95,
   legend.pos = "right",
-  facet = F,
+  facet = FALSE,
   ...
 )
 }
@@ -38,12 +38,14 @@ type="separate", then all plots use the same ylim for y limits}
 \item{lty}{The line type, see \code{\link{par}}; default is 1}
 
 \item{legend}{Character vector corresponding to number of absorbing states.
-In case of a grouped Cuminc() object, with facet = F the length of the vector
-is number absorbing states * group levels. Only relevant when use.ggplot = T}
+In case of a grouped \code{"Cuminc"} object, with facet = FALSE the 
+length of the vector is number absorbing states * group levels. 
+Only relevant when use.ggplot = TRUE}
 
 \item{cols}{Vector (numeric or character) specifying colours of the lines}
 
-\item{conf.type}{Type of confidence interval - either "log" or "plain"}
+\item{conf.type}{Type of confidence interval - either "log" or "plain" . See
+function details for details.}
 
 \item{conf.int}{Confidence level (\%) from 0-1 for probabilities, 
 default is 0.95 (95\% CI). Setting to 0 removes the CIs.}
@@ -51,11 +53,63 @@ default is 0.95 (95\% CI). Setting to 0 removes the CIs.}
 \item{legend.pos}{The position of the legend, see \code{\link{legend}};
 default is \code{"topleft"}}
 
-\item{facet}{In case of group used for Cuminc, facet by it - 
-only relevant when use.ggplot = T}
+\item{facet}{Logical, in case of group used for \code{"Cuminc"}, facet by it - 
+only relevant when use.ggplot = TRUE}
 
 \item{\dots}{Further arguments to plot or print method}
 }
+\value{
+A ggplot object if use.ggplot = T used, otherwise NULL.
+}
 \description{
-Plot method for cuminc objects
+Plot the estimates of the non-parametric Aalen-Johansen estimate of the 
+cumulative incidence functions (competing risks data). Note this is a method
+for \code{mstate::Cuminc} and not \code{cmprsk::cuminc}. Both return the same 
+estimates, though the former does so in a dataframe, and the latter in the list.
+}
+\details{
+Grouped cumulative incidences can be plotted either in the same plot or in facets,
+see the \code{facet} argument.
+}
+\examples{
+library(ggplot2)
+
+data("aidssi")
+head(aidssi)
+si <- aidssi
+
+# No grouping
+cum_incid <- Cuminc(
+time = "time",
+status = "status",
+data = si
+)
+
+plot(
+x = cum_incid,
+use.ggplot = TRUE,
+conf.type = "none",
+lty = 1:2,
+conf.int = 0.95
+)
+
+# With grouping
+cum_incid_grp <- Cuminc(
+time = "time",
+status = "status",
+group = "ccr5",
+data = si
+)
+
+plot(
+ x = cum_incid_grp,
+ use.ggplot = TRUE,
+ conf.type = "none",
+ lty = 1:4, 
+ facet = TRUE 
+)
+  
+}
+\author{
+Edouard F. Bonneville \email{e.f.bonneville@lumc.nl}
 }

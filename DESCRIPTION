@@ -43,7 +43,7 @@ Imports:
   magrittr,
   lattice,
   RColorBrewer,
-  viridis,
+  viridis
 Suggests:
   cmprsk,
   ggplot2,

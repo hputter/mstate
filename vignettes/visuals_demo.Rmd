@@ -1,14 +1,13 @@
 ---
 title: "Visualising multi-state models using mstate"
 author: "Edouard F. Bonneville"
+date: "`r Sys.setenv(LANG = 'en_US.UTF-8'); format(Sys.Date(), '%d %B %Y')`"
 output: rmarkdown::html_vignette
 bibliography: Tutorial.bib
 vignette: >
   %\VignetteIndexEntry{Visualising multi-state models using mstate}
   %\VignetteEncoding{UTF-8}
   %\VignetteEngine{knitr::rmarkdown}
-editor_options: 
-  chunk_output_type: console
 ---
 
 ```{r, include = FALSE}
@@ -23,7 +22,7 @@ knitr::opts_chunk$set(
 
 # Preamble
 
-The purpose of the present vignette is to demonstrate the visualisation capacities of *mstate*, using both base R graphics and the *ggplot2* package [@ggplot]. To do so, we will use the dataset used to illustrate competing risks analyses in Section 3 of the Tutorial by @Tut . It is available in *mstate* under the object name `aidssi`.
+The purpose of the present vignette is to demonstrate the visualisation capacities of *mstate*, using both base R graphics and the *ggplot2* package [@ggplot]. To do so, we will use the dataset used to illustrate competing risks analyses in Section 3 of the Tutorial by @Tut . The dataset is available in *mstate* under the object name `aidssi`.
 
 We can begin by loading both the *mstate* and *ggplot2* libraries, and set a general theme for our plots:
 
@@ -36,7 +35,7 @@ library(ggplot2)
 theme_set(theme_bw(base_size = 14))
 ```
 
-We can then proceed to load the data, and prepare it for a competing risks analysis using `msprep()`. The steps are described in more detail in the [main vignette](Tutorial.pdf).
+We can then proceed to load the dataset, and prepare it for a competing risks analysis using `msprep()`. The steps are described in more detail in the [main vignette](https://cran.r-project.org/web/packages/mstate/vignettes/Tutorial.pdf).
 
 ```{r load_dat}
 # Load data
@@ -54,9 +53,13 @@ tmat
 si$stat1 <- as.numeric(si$status == 1)
 si$stat2 <- as.numeric(si$status == 2)
 
-silong <- msprep(time = c(NA, "time", "time"), 
-                 status = c(NA, "stat1", "stat2"), 
-                 data = si, keep = "ccr5", trans = tmat)
+silong <- msprep(
+  time = c(NA, "time", "time"), 
+  status = c(NA, "stat1", "stat2"), 
+  data = si, 
+  keep = "ccr5", 
+  trans = tmat
+)
 
 # Run cox model
 silong <- expand.covs(silong, "ccr5")
@@ -92,10 +95,10 @@ The cumulative baseline hazards can be plotted simply by using:
 plot(msf.WW)
 ```
 
-If we specify the argument `use.ggplot = T`, the `plot` method will return a ggplot object.
+If we specify the argument `use.ggplot = TRUE`, the `plot` method will return a ggplot object.
 
 ```{r msfitplot_ggplot2_1}
-plot(msf.WW, use.ggplot = T)
+plot(msf.WW, use.ggplot = TRUE)
 ```
 
 When using the argument `type = "separate"`, the base R plot will return a separate plot for each transition:
@@ -109,15 +112,16 @@ The *ggplot2* version will return a facetted plot, where the axis scales can eit
 
 ```{r msfitplot_ggplot_2}
 # Fixed scales
-plot(msf.WW, type = "separate", use.ggplot = T, scale_type = "fixed")
+plot(msf.WW, type = "separate", use.ggplot = TRUE, scale_type = "fixed")
 
 # Free scales
-plot(msf.WW, type = "separate", use.ggplot = T, scale_type = "free")
+plot(msf.WW, type = "separate", use.ggplot = TRUE, scale_type = "free", xlim = c(0, 15))
 ```
 
 The remaining arguments are standard plotting adjustments, which will work for both the *ggplot2* and base R version of the plots. For details, see `?mstate::plot.msfit`. Any further adjustments that are not available through the function arguments (such as plot title) can simply be added using standard *ggplot2* syntax using `+`, or graphics functions such as `title()`. The following is a customised example:
 
 ```{r msfitplot_customs}
+par(mfrow = c(1, 1))
 # A base R customised plot
 plot(
   msf.WW, 
@@ -126,7 +130,7 @@ plot(
   xlim = c(0, 15),
   legend.pos = "top",
   lty = c("dashed", "solid"),
-  use.ggplot = F
+  use.ggplot = FALSE
 )
 title("Cumulative baseline hazards")
 
@@ -138,7 +142,7 @@ plot(
   xlim = c(0, 15),
   lty = c("dashed", "solid"),
   legend.pos = "bottom",
-  use.ggplot = T
+  use.ggplot = TRUE
 ) +
   
   # Add title and center
@@ -168,17 +172,17 @@ The default is a so-called "filled" plot, where the transition probabilities are
 plot(pt.WW, from = 1)
 ```
 
-Again, the `use.ggplot = T` argument can be used to return a ggplot object instead:
+Again, the `use.ggplot = TRUE` argument can be used to return a ggplot object instead:
 
 ```{r plot_pt_filled2}
 # from = 1 implied
-plot(pt.WW, use.ggplot = T)
+plot(pt.WW, use.ggplot = TRUE)
 ```
 
-Note that the *ggplot2* version of the plot places the state labels in a legend rather than labels in the plot itself. If we prefer the latter, we can specify `label = annotate` instead.
+Note that the *ggplot2* version of the plot places the state labels in a legend rather than labels in the plot itself. If we prefer the latter, we can specify `label = annotate` instead - and change the size of the labels with cex.
 
 ```{r plot_pt_filled3}
-plot(pt.WW, use.ggplot = T, label = "annotate")   
+plot(pt.WW, use.ggplot = TRUE, label = "annotate", cex = 6)   
 ```
 
 More generally, we can also adjust the stacking order using the `ord` argument, which takes a numeric vector equal to the number of states, in the desired stacking order (bottom to top).
@@ -188,13 +192,13 @@ More generally, we can also adjust the stacking order using the `ord` argument, 
 tmat
 
 # Plot aids (state 2), then event-free (state 1), and SI on top (state 3)
-plot(pt.WW, use.ggplot = T, ord = c(2, 1, 3))   
+plot(pt.WW, use.ggplot = TRUE, ord = c(2, 1, 3))   
 ```
 
 You can also choose to forgo the colour, and specify `type = "stacked"` instead:
 
 ```{r plot_pt_stacked}
-plot(pt.WW, use.ggplot = T, type = "stacked")   
+plot(pt.WW, use.ggplot = TRUE, type = "stacked")   
 ```
 
 ## Single and separate plots, confidence intervals
@@ -213,33 +217,21 @@ The *ggplot2* version will return a facetted plot, with one state per facet. It 
 ```{r plot_pt_separate2}
 plot(
   pt.WW, 
-  use.ggplot = T, 
+  use.ggplot = TRUE, 
   type = "separate",
   conf.int = 0.95, # 95% level
   conf.type = "log"
 )   
 ```
 
-These confidence intervals can be ommited using `conf.type = "none"`. Additionally, since the legend is superfluous given the facet titles, we can remove it.
-
-```{r plot_pt_separate3}
-plot(
-  pt.WW, 
-  use.ggplot = T, 
-  type = "separate",
-  conf.type = "none"
-) +
-  
-  # Remove legend
-  theme(legend.position = "none")
-```
+These confidence intervals can be ommited using `conf.type = "none"`. 
 
 What if we wanted all of these in one plot? For that, we can use the `type = single` option:
 
 ```{r plot_pt_single1}
 plot(
   pt.WW, 
-  use.ggplot = T, 
+  use.ggplot = TRUE, 
   type = "single",
   conf.int = 0.95, # 95% level
   conf.type = "log"
@@ -251,7 +243,7 @@ As before, the confidence intervals can be ommitted.
 ```{r plot_pt_single2}
 plot(
   pt.WW, 
-  use.ggplot = T, 
+  use.ggplot = TRUE, 
   type = "single",
   conf.type = "none",
   lty = c(1, 2, 3), # change the linetype
@@ -259,11 +251,11 @@ plot(
 )   
 ```
 
-Since we are in a competing risks setting, maybe we are only interested in plotting the probabilities for the two absorbing states SI and AIDS (i.e. the cumulative incidences). There is no set function to do this, but it can be done by extracting the data from a plot.probtrans-based ggplot object as follows:
+If the multi-state model is large, we may be only interested in plotting the probabilities for a subset of states together. This subset will not sum up to 1, so the the stacked/filled plots are not appropriate. There is no set function to do this, but it can be done by extracting the data from a `plot.probtrans()`-based ggplot object as follows:
 
 ```{r plot_pt_single3}
 # Run plot and extract data using $data
-dat_plot <- plot(x = pt.WW, use.ggplot = T, type = "single")$data
+dat_plot <- plot(x = pt.WW, use.ggplot = TRUE, type = "single")$data
   
 # Begin new plot - Exclude or select states to be plotted
 ggplot(data = dat_plot[state != "event-free", ], aes(
@@ -285,15 +277,35 @@ ggplot(data = dat_plot[state != "event-free", ], aes(
   coord_cartesian(ylim = c(0, 1), xlim = c(0, 14), expand = 0)
 ```
 
-## Plotting non-parametric cumulative incidence functions
+If interest lies in plotting the probability of a *single* state, the procedure above can be used, or the `vis.multiple.pt()` function presented further could be used directly.
 
-```{r plot.Cuminc}
+# Plotting non-parametric cumulative incidence functions
+
+The `Cuminc()` function in *mstate* produces (for competing risks data) the non-parametric Aalen-Johansen estimates of the cumulative incidence functions. This is the same as is obtained in the *cmrpsk* package with the function `cuminc()`.
+
+In *mstate*, an object of class "Cuminc" can also be plotted as follows:
+
+```{r plot.Cuminc1}
 cum_incid <- Cuminc(
   time = "time",
   status = "status",
   data = si
 )
 
+plot(
+  x = cum_incid,
+  use.ggplot = TRUE,
+  conf.type = "none",
+  lty = 1:2,
+  conf.int = 0.95,
+)
+
+
+```
+
+In the case where this a grouping variable:
+
+```{r plot.cuminc_x}
 cum_incid_grp <- Cuminc(
   time = "time",
   status = "status",
@@ -302,35 +314,27 @@ cum_incid_grp <- Cuminc(
 )
 
 plot(
-  x = cum_incid,
-  use.ggplot = T,
+  x = cum_incid_grp,
+  use.ggplot = TRUE,
   conf.type = "none",
-  lty = 1:2,
-  conf.int = 0.95,
+  lty = 1:4, 
+  facet = FALSE
 )
 
 plot(
   x = cum_incid_grp,
-  use.ggplot = T,
+  use.ggplot = TRUE,
   conf.type = "none",
-  #conf.int = 0.95,
-  lty = 1:4, facet = F
-)
-
-plot(
-  x = cum_incid_grp,
-  use.ggplot = T,
-  conf.type = "none",
-  #conf.int = 0.95,
-  lty = 1:4, facet = T
+  lty = 1:4, 
+  facet = TRUE
 )
 ```
+
 
 
 # Visualising multiple probtrans objects
 
 We may also be interested in comparing the predicted probabilities for *multiple* reference patients. First, we need to create as many msfit/probtrans objects as there are reference patients of interest:
-
 
 ```{r vis_multiple_prep}
 # 1. Prepare patient data - both CCR5 genotypes
@@ -373,15 +377,82 @@ vis.multiple.pt(
 )
 ```
 
+This function could just as well be used for a single probtrans object:
+
+```{r vis_multiple_plot2}
+vis.multiple.pt(
+  x = list(pt.WW), 
+  from = 1,
+  to = 2, 
+  conf.type = "log",
+  cols = c(1, 2),
+  labels = c("Pat WW", "Pat WM"),
+  legend.title = "Ref patients"
+)
+```
+
 Note this function is only available in the ggplot format.
 
 ## A mirrored plot
 
+Multiple probtrans objects can also be compared by means of a mirrored plot. The idea is to compare the probabilities of being in (all) states between two references patients at a particular horizon. In addition to reference patients, different subsets of the data could equally be compared.
+
 ```{r mirror1}
 vis.mirror.pt(
   x = list(pt.WW, pt.WM),
-  titles = c("WW", "WM")
+  titles = c("WW", "WM"),
+  horizon = 10
 )
 ```
 
+Omitting the `horizon` argument will default to plotting both sides with their respective maximum follow-up time, so it may be asymmetric. We thus recomment to always use the `horizon` argument.
+
+If for example time is in years, and follow-up is extremely short, you may want to override the breaks on the x-axis. This can be done using the `breaks_x_left` and `breaks_x_right` arguments. 
+
+```{r mirror2}
+vis.mirror.pt(
+  x = list(pt.WW, pt.WM),
+  titles = c("WW", "WM"),
+  size_titles = 8,
+  horizon = 3,
+  breaks_x_left = c(0, 1, 2, 3),
+  breaks_x_right = c(0, 1, 2),
+  ord = c(3, 2, 1)
+)
+```
+
+# Saving outputs
+
+Any plots made with *mstate* using the `use.ggplot = TRUE` will return a ggplot objects, which can be saved to a desired format by using `ggplot2::ggsave()`. 
+Please refer to the [article](https://ggplot2.tidyverse.org/reference/ggsave.html#saving-images-without-ggsave-) written by the *ggplot2* team on using `ggplot2::ggsave()`. 
+
+```{r saving, eval=FALSE}
+# Saving a ggplot2 plot
+p <- plot(pt.WW, use.ggplot = TRUE)
+ggplot2::ggsave("my_ggplot2_plot.png")
+
+# Standard graphics plot
+png("my_standard_plot.png")
+plot(pt.WW, use.ggplot = FALSE)
+dev.off()
+```
+
+# Reproducibility
+
+<details><summary>Reproducibility receipt</summary>
+
+```{r session-info, include=TRUE, echo=TRUE, results='markup'}
+# Date/time
+Sys.time()
+
+# Git repo
+git2r::repository()
+
+# Environment
+devtools::session_info()
+```
+
+</details>
+
 # References
+

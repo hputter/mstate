@@ -150,7 +150,7 @@ probabilities as estimated by <code><a href='probtrans.html'>probtrans</a></code
   bty <span class='op'>=</span> <span class='st'>"n"</span>,
   xaxs <span class='op'>=</span> <span class='st'>"i"</span>,
   yaxs <span class='op'>=</span> <span class='st'>"i"</span>,
-  use.ggplot <span class='op'>=</span> <span class='cn'>F</span>,
+  use.ggplot <span class='op'>=</span> <span class='cn'>FALSE</span>,
   conf.int <span class='op'>=</span> <span class='fl'>0.95</span>,
   conf.type <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"log"</span>, <span class='st'>"plain"</span>, <span class='st'>"none"</span><span class='op'>)</span>,
   <span class='va'>label</span>,
@@ -255,7 +255,8 @@ default is 0.95 (95% CI). Setting to 0 removes the CIs.</p></td>
     </tr>
     <tr>
       <th>conf.type</th>
-      <td><p>Type of confidence interval - either "log" or "plain"</p></td>
+      <td><p>Type of confidence interval - either "log" or "plain" . See
+function details for details.</p></td>
     </tr>
     <tr>
       <th>label</th>
@@ -271,12 +272,23 @@ default is 0.95 (95% CI). Setting to 0 removes the CIs.</p></td>
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
     <p>No return value</p>
+    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
+
+    <p>Regarding confidence intervals: let \(p\) denote a predicted probability,
+\(\sigma\) its estimated standard error,
+and \(z_{\alpha/2}\) denote the critical value of the standard normal 
+distribution at confidence level \(1 - \alpha\).</p>
+<p>The confidence interval of type "plain" is then
+$$p \pm z_{\alpha/2} * \sigma$$</p>
+<p>The confidence interval of type "log", based on the Delta method, is then
+$$\exp(\log(p) \pm z_{\alpha/2} * \sigma / p)$$</p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
     <div class='dont-index'><p><code><a href='probtrans.html'>probtrans</a></code></p></div>
     <h2 class="hasAnchor" id="author"><a class="anchor" href="#author"></a>Author</h2>
 
     <p>Hein Putter <a href='mailto:H.Putter@lumc.nl'>H.Putter@lumc.nl</a></p>
+<p>Edouard F. Bonneville <a href='mailto:e.f.bonneville@lumc.nl'>e.f.bonneville@lumc.nl</a></p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'>
@@ -360,6 +372,10 @@ default is 0.95 (95% CI). Setting to 0 removes the CIs.</p></td>
 <span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span><span class='op'>(</span><span class='va'>pt</span>,type<span class='op'>=</span><span class='st'>"sep"</span>,lwd<span class='op'>=</span><span class='fl'>2</span><span class='op'>)</span>
 <span class='fu'><a href='https://rdrr.io/r/graphics/par.html'>par</a></span><span class='op'>(</span>mfrow<span class='op'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>,<span class='fl'>1</span><span class='op'>)</span><span class='op'>)</span>
 </div><div class='img'><img src='plot.probtrans-3.png' alt='' width='700' height='433' /></div><div class='input'>
+<span class='co'># ggplot version - see vignette for details</span>
+<span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='http://ggplot2.tidyverse.org'>ggplot2</a></span><span class='op'>)</span>
+<span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span><span class='op'>(</span><span class='va'>pt</span>, ord<span class='op'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>2</span>,<span class='fl'>3</span>,<span class='fl'>1</span><span class='op'>)</span>, use.ggplot <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
+</div><div class='img'><img src='plot.probtrans-4.png' alt='' width='700' height='433' /></div><div class='input'>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

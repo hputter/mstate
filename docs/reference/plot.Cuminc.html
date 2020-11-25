@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Plot method for cuminc objects — plot.Cuminc • mstate</title>
+<title>Plot method for Cuminc objects — plot.Cuminc • mstate</title>
 
 
 <!-- jquery -->
@@ -39,8 +39,11 @@
 
 
 
-<meta property="og:title" content="Plot method for cuminc objects — plot.Cuminc" />
-<meta property="og:description" content="Plot method for cuminc objects" />
+<meta property="og:title" content="Plot method for Cuminc objects — plot.Cuminc" />
+<meta property="og:description" content="Plot the estimates of the non-parametric Aalen-Johansen estimate of the 
+cumulative incidence functions (competing risks data). Note this is a method
+for mstate::Cuminc and not cmprsk::cuminc. Both return the same 
+estimates, though the former does so in a dataframe, and the latter in the list." />
 
 
 
@@ -120,19 +123,22 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Plot method for cuminc objects</h1>
+    <h1>Plot method for Cuminc objects</h1>
     <small class="dont-index">Source: <a href='https://github.com/hputter/mstate/blob/master/R/plot.Cuminc.R'><code>R/plot.Cuminc.R</code></a></small>
     <div class="hidden name"><code>plot.Cuminc.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Plot method for cuminc objects</p>
+    <p>Plot the estimates of the non-parametric Aalen-Johansen estimate of the 
+cumulative incidence functions (competing risks data). Note this is a method
+for <code><a href='Cuminc.html'>mstate::Cuminc</a></code> and not <code><a href='https://rdrr.io/pkg/cmprsk/man/cuminc.html'>cmprsk::cuminc</a></code>. Both return the same 
+estimates, though the former does so in a dataframe, and the latter in the list.</p>
     </div>
 
     <pre class="usage"><span class='co'># S3 method for Cuminc</span>
 <span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span><span class='op'>(</span>
   <span class='va'>x</span>,
-  use.ggplot <span class='op'>=</span> <span class='cn'>F</span>,
+  use.ggplot <span class='op'>=</span> <span class='cn'>FALSE</span>,
   xlab <span class='op'>=</span> <span class='st'>"Time"</span>,
   ylab <span class='op'>=</span> <span class='st'>"Probability"</span>,
   <span class='va'>xlim</span>,
@@ -143,7 +149,7 @@
   conf.type <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"log"</span>, <span class='st'>"plain"</span>, <span class='st'>"none"</span><span class='op'>)</span>,
   conf.int <span class='op'>=</span> <span class='fl'>0.95</span>,
   legend.pos <span class='op'>=</span> <span class='st'>"right"</span>,
-  facet <span class='op'>=</span> <span class='cn'>F</span>,
+  facet <span class='op'>=</span> <span class='cn'>FALSE</span>,
   <span class='va'>...</span>
 <span class='op'>)</span></pre>
 
@@ -182,8 +188,9 @@ type="separate", then all plots use the same ylim for y limits</p></td>
     <tr>
       <th>legend</th>
       <td><p>Character vector corresponding to number of absorbing states.
-In case of a grouped Cuminc() object, with facet = F the length of the vector
-is number absorbing states * group levels. Only relevant when use.ggplot = T</p></td>
+In case of a grouped <code>"Cuminc"</code> object, with facet = FALSE the 
+length of the vector is number absorbing states * group levels. 
+Only relevant when use.ggplot = TRUE</p></td>
     </tr>
     <tr>
       <th>cols</th>
@@ -191,7 +198,8 @@ is number absorbing states * group levels. Only relevant when use.ggplot = T</p>
     </tr>
     <tr>
       <th>conf.type</th>
-      <td><p>Type of confidence interval - either "log" or "plain"</p></td>
+      <td><p>Type of confidence interval - either "log" or "plain" . See
+function details for details.</p></td>
     </tr>
     <tr>
       <th>conf.int</th>
@@ -205,8 +213,8 @@ default is <code>"topleft"</code></p></td>
     </tr>
     <tr>
       <th>facet</th>
-      <td><p>In case of group used for Cuminc, facet by it - 
-only relevant when use.ggplot = T</p></td>
+      <td><p>Logical, in case of group used for <code>"Cuminc"</code>, facet by it - 
+only relevant when use.ggplot = TRUE</p></td>
     </tr>
     <tr>
       <th>...</th>
@@ -214,7 +222,62 @@ only relevant when use.ggplot = T</p></td>
     </tr>
     </table>
 
+    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
+    <p>A ggplot object if use.ggplot = T used, otherwise NULL.</p>
+    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
+
+    <p>Grouped cumulative incidences can be plotted either in the same plot or in facets,
+see the <code>facet</code> argument.</p>
+    <h2 class="hasAnchor" id="author"><a class="anchor" href="#author"></a>Author</h2>
+
+    <p>Edouard F. Bonneville <a href='mailto:e.f.bonneville@lumc.nl'>e.f.bonneville@lumc.nl</a></p>
+
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><div class='input'><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='http://ggplot2.tidyverse.org'>ggplot2</a></span><span class='op'>)</span>
+
+<span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='st'>"aidssi"</span><span class='op'>)</span>
+<span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span><span class='op'>(</span><span class='va'>aidssi</span><span class='op'>)</span>
+</div><div class='output co'>#&gt;   patnr   time status      cause ccr5
+#&gt; 1     1  9.106      1       AIDS   WW
+#&gt; 2     2 11.039      0 event-free   WM
+#&gt; 3     3  2.234      1       AIDS   WW
+#&gt; 4     4  9.878      2         SI   WM
+#&gt; 5     5  3.819      1       AIDS   WW
+#&gt; 6     6  6.801      1       AIDS   WW</div><div class='input'><span class='va'>si</span> <span class='op'>&lt;-</span> <span class='va'>aidssi</span>
+
+<span class='co'># No grouping</span>
+<span class='va'>cum_incid</span> <span class='op'>&lt;-</span> <span class='fu'><a href='Cuminc.html'>Cuminc</a></span><span class='op'>(</span>
+time <span class='op'>=</span> <span class='st'>"time"</span>,
+status <span class='op'>=</span> <span class='st'>"status"</span>,
+data <span class='op'>=</span> <span class='va'>si</span>
+<span class='op'>)</span>
+
+<span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span><span class='op'>(</span>
+x <span class='op'>=</span> <span class='va'>cum_incid</span>,
+use.ggplot <span class='op'>=</span> <span class='cn'>TRUE</span>,
+conf.type <span class='op'>=</span> <span class='st'>"none"</span>,
+lty <span class='op'>=</span> <span class='fl'>1</span><span class='op'>:</span><span class='fl'>2</span>,
+conf.int <span class='op'>=</span> <span class='fl'>0.95</span>
+<span class='op'>)</span>
+</div><div class='img'><img src='plot.Cuminc-1.png' alt='' width='700' height='433' /></div><div class='input'>
+<span class='co'># With grouping</span>
+<span class='va'>cum_incid_grp</span> <span class='op'>&lt;-</span> <span class='fu'><a href='Cuminc.html'>Cuminc</a></span><span class='op'>(</span>
+time <span class='op'>=</span> <span class='st'>"time"</span>,
+status <span class='op'>=</span> <span class='st'>"status"</span>,
+group <span class='op'>=</span> <span class='st'>"ccr5"</span>,
+data <span class='op'>=</span> <span class='va'>si</span>
+<span class='op'>)</span>
+
+<span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span><span class='op'>(</span>
+ x <span class='op'>=</span> <span class='va'>cum_incid_grp</span>,
+ use.ggplot <span class='op'>=</span> <span class='cn'>TRUE</span>,
+ conf.type <span class='op'>=</span> <span class='st'>"none"</span>,
+ lty <span class='op'>=</span> <span class='fl'>1</span><span class='op'>:</span><span class='fl'>4</span>, 
+ facet <span class='op'>=</span> <span class='cn'>TRUE</span> 
+<span class='op'>)</span>
+</div><div class='img'><img src='plot.Cuminc-2.png' alt='' width='700' height='433' /></div><div class='input'>  
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

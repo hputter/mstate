@@ -22,7 +22,7 @@
   bty = "n",
   xaxs = "i",
   yaxs = "i",
-  use.ggplot = F,
+  use.ggplot = FALSE,
   conf.int = 0.95,
   conf.type = c("log", "plain", "none"),
   label,
@@ -85,7 +85,8 @@ default is \code{"topleft"}}
 \item{conf.int}{Confidence level (\%) from 0-1 for probabilities, 
 default is 0.95 (95\% CI). Setting to 0 removes the CIs.}
 
-\item{conf.type}{Type of confidence interval - either "log" or "plain"}
+\item{conf.type}{Type of confidence interval - either "log" or "plain" . See
+function details for details.}
 
 \item{label}{Only relevant for type = "filled" or "stacked", set to 
 "annotate" to have state labels on plot, or leave unspecified.}
@@ -98,6 +99,18 @@ No return value
 \description{
 Plot method for an object of class 'probtrans'. It plots the transition
 probabilities as estimated by \code{\link{probtrans}}.
+}
+\details{
+Regarding confidence intervals: let \eqn{p} denote a predicted probability,
+\eqn{\sigma} its estimated standard error,
+and \eqn{z_{\alpha/2}} denote the critical value of the standard normal 
+distribution at confidence level \eqn{1 - \alpha}.
+
+The confidence interval of type "plain" is then
+\deqn{p \pm z_{\alpha/2} * \sigma}
+
+The confidence interval of type "log", based on the Delta method, is then
+\deqn{\exp(\log(p) \pm z_{\alpha/2} * \sigma / p)}
 }
 \examples{
 
@@ -137,11 +150,17 @@ par(mfrow=c(2,2))
 plot(pt,type="sep",lwd=2)
 par(mfrow=c(1,1))
 
+# ggplot version - see vignette for details
+library(ggplot2)
+plot(pt, ord=c(2,3,1), use.ggplot = TRUE)
+
 }
 \seealso{
 \code{\link{probtrans}}
 }
 \author{
 Hein Putter \email{H.Putter@lumc.nl}
+
+Edouard F. Bonneville \email{e.f.bonneville@lumc.nl}
 }
 \keyword{hplot}

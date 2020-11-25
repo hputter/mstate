@@ -41,7 +41,7 @@
 
 <meta property="og:title" content="Visualise multiple probtrans objects — vis.multiple.pt" />
 <meta property="og:description" content="Helper function allow to visualise state probabilities for 
-different reference patients/covariates. Multiple probtrans objects
+different reference patients/covariates. Multiple &quot;probtrans&quot; objects
 are thus needed." />
 
 
@@ -129,7 +129,7 @@ are thus needed." />
 
     <div class="ref-description">
     <p>Helper function allow to visualise state probabilities for 
-different reference patients/covariates. Multiple probtrans objects
+different reference patients/covariates. Multiple <code>"probtrans"</code> objects
 are thus needed.</p>
     </div>
 
@@ -154,12 +154,12 @@ are thus needed.</p>
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>x</th>
-      <td><p>A list of probtrans objects</p></td>
+      <td><p>A list of <code>"probtrans"</code> objects</p></td>
     </tr>
     <tr>
       <th>from</th>
       <td><p>The starting state from which the probabilities are used to plot
-Numeric, as in plot.probtrans</p></td>
+Numeric, as in <code>plot.probtrans</code></p></td>
     </tr>
     <tr>
       <th>to</th>
@@ -204,7 +204,8 @@ default is 0.95 (95% CI). Setting to 0 removes the CIs.</p></td>
     </tr>
     <tr>
       <th>conf.type</th>
-      <td><p>Type of confidence interval - either "log" or "plain"</p></td>
+      <td><p>Type of confidence interval - either "log" or "plain" . See
+function details for details.</p></td>
     </tr>
     <tr>
       <th>legend.title</th>
@@ -214,8 +215,78 @@ default is 0.95 (95% CI). Setting to 0 removes the CIs.</p></td>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>A plot visualising</p>
+    <p>A ggplot object.</p>
+    <h2 class="hasAnchor" id="author"><a class="anchor" href="#author"></a>Author</h2>
 
+    <p>Edouard F. Bonneville <a href='mailto:e.f.bonneville@lumc.nl'>e.f.bonneville@lumc.nl</a></p>
+
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><div class='input'>
+<span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='http://ggplot2.tidyverse.org'>ggplot2</a></span><span class='op'>)</span>
+
+<span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='st'>"aidssi"</span><span class='op'>)</span>
+<span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span><span class='op'>(</span><span class='va'>aidssi</span><span class='op'>)</span>
+</div><div class='output co'>#&gt;   patnr   time status      cause ccr5
+#&gt; 1     1  9.106      1       AIDS   WW
+#&gt; 2     2 11.039      0 event-free   WM
+#&gt; 3     3  2.234      1       AIDS   WW
+#&gt; 4     4  9.878      2         SI   WM
+#&gt; 5     5  3.819      1       AIDS   WW
+#&gt; 6     6  6.801      1       AIDS   WW</div><div class='input'><span class='va'>si</span> <span class='op'>&lt;-</span> <span class='va'>aidssi</span>
+
+<span class='co'># Prepare transition matrix</span>
+<span class='va'>tmat</span> <span class='op'>&lt;-</span> <span class='fu'><a href='transMat.html'>trans.comprisk</a></span><span class='op'>(</span><span class='fl'>2</span>, names <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"event-free"</span>, <span class='st'>"AIDS"</span>, <span class='st'>"SI"</span><span class='op'>)</span><span class='op'>)</span>
+
+<span class='co'># Run msprep</span>
+<span class='va'>si</span><span class='op'>$</span><span class='va'>stat1</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/numeric.html'>as.numeric</a></span><span class='op'>(</span><span class='va'>si</span><span class='op'>$</span><span class='va'>status</span> <span class='op'>==</span> <span class='fl'>1</span><span class='op'>)</span>
+<span class='va'>si</span><span class='op'>$</span><span class='va'>stat2</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/numeric.html'>as.numeric</a></span><span class='op'>(</span><span class='va'>si</span><span class='op'>$</span><span class='va'>status</span> <span class='op'>==</span> <span class='fl'>2</span><span class='op'>)</span>
+
+<span class='va'>silong</span> <span class='op'>&lt;-</span> <span class='fu'><a href='msprep.html'>msprep</a></span><span class='op'>(</span>
+time <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='cn'>NA</span>, <span class='st'>"time"</span>, <span class='st'>"time"</span><span class='op'>)</span>, 
+status <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='cn'>NA</span>, <span class='st'>"stat1"</span>, <span class='st'>"stat2"</span><span class='op'>)</span>, 
+data <span class='op'>=</span> <span class='va'>si</span>, keep <span class='op'>=</span> <span class='st'>"ccr5"</span>, trans <span class='op'>=</span> <span class='va'>tmat</span>
+<span class='op'>)</span>
+
+<span class='co'># Run cox model</span>
+<span class='va'>silong</span> <span class='op'>&lt;-</span> <span class='fu'><a href='expand.covs.html'>expand.covs</a></span><span class='op'>(</span><span class='va'>silong</span>, <span class='st'>"ccr5"</span><span class='op'>)</span>
+<span class='va'>c1</span> <span class='op'>&lt;-</span> <span class='fu'>coxph</span><span class='op'>(</span><span class='fu'>Surv</span><span class='op'>(</span><span class='va'>time</span>, <span class='va'>status</span><span class='op'>)</span> <span class='op'>~</span> <span class='va'>ccr5WM.1</span> <span class='op'>+</span> <span class='va'>ccr5WM.2</span> <span class='op'>+</span> <span class='fu'>strata</span><span class='op'>(</span><span class='va'>trans</span><span class='op'>)</span>,
+            data <span class='op'>=</span> <span class='va'>silong</span><span class='op'>)</span>
+            
+<span class='co'># 1. Prepare patient data - both CCR5 genotypes</span>
+<span class='va'>WW</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span><span class='op'>(</span>
+ccr5WM.1 <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>0</span>, <span class='fl'>0</span><span class='op'>)</span>, 
+ccr5WM.2 <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>0</span>, <span class='fl'>0</span><span class='op'>)</span>, 
+trans <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>, <span class='fl'>2</span><span class='op'>)</span>, 
+strata <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>, <span class='fl'>2</span><span class='op'>)</span>
+<span class='op'>)</span>
+
+<span class='va'>WM</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span><span class='op'>(</span>
+ccr5WM.1 <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>, <span class='fl'>0</span><span class='op'>)</span>, 
+ccr5WM.2 <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>0</span>, <span class='fl'>1</span><span class='op'>)</span>,
+trans <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>, <span class='fl'>2</span><span class='op'>)</span>, 
+strata <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>, <span class='fl'>2</span><span class='op'>)</span>
+<span class='op'>)</span>
+
+<span class='co'># 2. Make msfit objects</span>
+<span class='va'>msf.WW</span> <span class='op'>&lt;-</span> <span class='fu'><a href='msfit.html'>msfit</a></span><span class='op'>(</span><span class='va'>c1</span>, <span class='va'>WW</span>, trans <span class='op'>=</span> <span class='va'>tmat</span><span class='op'>)</span>
+<span class='va'>msf.WM</span> <span class='op'>&lt;-</span> <span class='fu'><a href='msfit.html'>msfit</a></span><span class='op'>(</span><span class='va'>c1</span>, <span class='va'>WM</span>, trans <span class='op'>=</span> <span class='va'>tmat</span><span class='op'>)</span>
+
+<span class='co'># 3. Make probtrans objects</span>
+<span class='va'>pt.WW</span> <span class='op'>&lt;-</span> <span class='fu'><a href='probtrans.html'>probtrans</a></span><span class='op'>(</span><span class='va'>msf.WW</span>, predt <span class='op'>=</span> <span class='fl'>0</span><span class='op'>)</span>
+<span class='va'>pt.WM</span> <span class='op'>&lt;-</span> <span class='fu'><a href='probtrans.html'>probtrans</a></span><span class='op'>(</span><span class='va'>msf.WM</span>, predt <span class='op'>=</span> <span class='fl'>0</span><span class='op'>)</span>           
+
+<span class='co'># Plot - see vignette for more details</span>
+<span class='fu'>vis.multiple.pt</span><span class='op'>(</span>
+x <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='va'>pt.WW</span>, <span class='va'>pt.WM</span><span class='op'>)</span>, 
+from <span class='op'>=</span> <span class='fl'>1</span>,
+to <span class='op'>=</span> <span class='fl'>2</span>, 
+conf.type <span class='op'>=</span> <span class='st'>"log"</span>,
+cols <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>, <span class='fl'>2</span><span class='op'>)</span>,
+labels <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"Pat WW"</span>, <span class='st'>"Pat WM"</span><span class='op'>)</span>,
+legend.title <span class='op'>=</span> <span class='st'>"Ref patients"</span>
+<span class='op'>)</span>
+</div><div class='img'><img src='vis.multiple.pt-1.png' alt='' width='700' height='433' /></div><div class='input'>
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

@@ -16,14 +16,14 @@
   legend,
   legend.pos = "right",
   bty = "n",
-  use.ggplot = F,
+  use.ggplot = FALSE,
   xlim,
   scale_type = "fixed",
   ...
 )
 }
 \arguments{
-\item{x}{Object of class 'msfit', containing estimated cumulative transition
+\item{x}{Object of class \code{"msfit"}, containing estimated cumulative transition
 intensities for all transitions in a multi-state model}
 
 \item{type}{One of \code{"single"} (default) or \code{"separate"}; in case
@@ -69,7 +69,7 @@ of facet_wrap(). Only relevant for use_ggplot = T.}
 No return value
 }
 \description{
-Plot method for an object of class 'msfit'. It plots the estimated
+Plot method for an object of class \code{"msfit"}. It plots the estimated
 cumulative transition intensities in the multi-state model.
 }
 \examples{
@@ -106,11 +106,17 @@ par(mfrow=c(2,2))
 plot(msf,type="separate",lwd=2)
 par(mfrow=c(1,1))
 
+# ggplot version - see vignette for details
+library(ggplot2)
+plot(msf, use.ggplot = TRUE)
+
 }
 \seealso{
 \code{\link{msfit}}
 }
 \author{
 Hein Putter \email{H.Putter@lumc.nl}
+
+Edouard F. Bonneville \email{e.f.bonneville@lumc.nl}
 }
 \keyword{hplot}

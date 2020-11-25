@@ -18,6 +18,17 @@ fillplot <- function(x,y1,y2,col,lwd)
 #' Plot method for an object of class 'probtrans'. It plots the transition
 #' probabilities as estimated by \code{\link{probtrans}}.
 #' 
+#' Regarding confidence intervals: let \eqn{p} denote a predicted probability,
+#' \eqn{\sigma} its estimated standard error,
+#' and \eqn{z_{\alpha/2}} denote the critical value of the standard normal 
+#' distribution at confidence level \eqn{1 - \alpha}.
+#' 
+#' The confidence interval of type "plain" is then
+#' \deqn{p \pm z_{\alpha/2} * \sigma}
+#' 
+#' The confidence interval of type "log", based on the Delta method, is then
+#' \deqn{\exp(\log(p) \pm z_{\alpha/2} * \sigma / p)}
+#' 
 #' @param x Object of class 'probtrans', containing estimated transition
 #' probabilities
 #' @param from The starting state from which the probabilities are used to plot
@@ -54,7 +65,8 @@ fillplot <- function(x,y1,y2,col,lwd)
 #' @param use.ggplot Default FALSE, set TRUE for ggplot version of plot
 #' @param conf.int Confidence level (\%) from 0-1 for probabilities, 
 #' default is 0.95 (95\% CI). Setting to 0 removes the CIs.
-#' @param conf.type Type of confidence interval - either "log" or "plain" 
+#' @param conf.type Type of confidence interval - either "log" or "plain" . See
+#' function details for details. 
 #' @param label Only relevant for type = "filled" or "stacked", set to 
 #' "annotate" to have state labels on plot, or leave unspecified.
 #' @param \dots Further arguments to plot
@@ -62,6 +74,8 @@ fillplot <- function(x,y1,y2,col,lwd)
 #' @return No return value
 #' 
 #' @author Hein Putter \email{H.Putter@@lumc.nl}
+#' @author Edouard F. Bonneville \email{e.f.bonneville@@lumc.nl}
+#' 
 #' @seealso \code{\link{probtrans}}
 #' @keywords hplot
 #' @examples
@@ -101,7 +115,11 @@ fillplot <- function(x,y1,y2,col,lwd)
 #' par(mfrow=c(2,2))
 #' plot(pt,type="sep",lwd=2)
 #' par(mfrow=c(1,1))
-#'
+#' 
+#' # ggplot version - see vignette for details
+#' library(ggplot2)
+#' plot(pt, ord=c(2,3,1), use.ggplot = TRUE)
+#' 
 #' @export 
 plot.probtrans <- function(x, 
                            from = 1, 
@@ -120,7 +138,7 @@ plot.probtrans <- function(x,
                            bty = "n", 
                            xaxs = "i", 
                            yaxs = "i", 
-                           use.ggplot = F,
+                           use.ggplot = FALSE,
                            
                            # Ggplot args here
                            conf.int = 0.95,

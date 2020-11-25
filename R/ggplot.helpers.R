@@ -1,10 +1,4 @@
-#' Automatic choice of default colours for plot
-#'
-#' @param n Number of groups/lines/areas to be plotted. Generally number
-#' of states or transitions 
-#' @param type Either "line" or "areas"
-#'
-#' @return Vector of colours
+# Helper function to set default plot colours
 set_colours <- function(n, type) {
   
   if (type == "lines") {
@@ -20,10 +14,10 @@ set_colours <- function(n, type) {
       cols <- dark2_extended(n)
     }
     
-  } else {
+  } else if(type == "areas") { # areas
     # Viridis colours, no limit
     cols <- viridis::viridis_pal()(n)
-  }
+  } else stop("Type should be either 'lines' or 'areas'!")
   
   return(cols)
 }
