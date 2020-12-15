@@ -1,3 +1,12 @@
+Version 0.2.13 (2020-11-27)
+- Added test for Markov assumption from Titman & Putter (2020) in
+  Biostatistics
+- Added ggplot versions of plot.msfit and plot.probtrans, as
+  well as visualisation of multiple probtrans objects and mirrored
+  plots, see the vignette on visualisation
+- Improved summary functions for msfit and probtrans objects
+- Added help functions of transition matrices
+
 Version 0.2.12 (2019-12-10)
 - fixed bug in Cuminc caused by new survival (>=3) package
 

@@ -112,6 +112,8 @@
 #' @export msprep
 msprep <- function (time, status, data, trans, start, id, keep) 
 {
+    if (is.circular(trans))
+        stop("msprep cannot be used with a circular transition matrix")
     if (!(is.matrix(time) | (is.data.frame(time)))) {
         if (!is.character(time)) 
             stop("argument \"time\" should be a character vector")

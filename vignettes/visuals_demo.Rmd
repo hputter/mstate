@@ -224,7 +224,7 @@ plot(
 )   
 ```
 
-These confidence intervals can be ommited using `conf.type = "none"`. 
+These confidence intervals can be omitted using `conf.type = "none"`. 
 
 What if we wanted all of these in one plot? For that, we can use the `type = single` option:
 
@@ -238,7 +238,7 @@ plot(
 )   
 ```
 
-As before, the confidence intervals can be ommitted.
+As before, the confidence intervals can be omitted.
 
 ```{r plot_pt_single2}
 plot(
@@ -251,7 +251,7 @@ plot(
 )   
 ```
 
-If the multi-state model is large, we may be only interested in plotting the probabilities for a subset of states together. This subset will not sum up to 1, so the the stacked/filled plots are not appropriate. There is no set function to do this, but it can be done by extracting the data from a `plot.probtrans()`-based ggplot object as follows:
+If the multi-state model is large, we may be only interested in plotting the probabilities for a subset of states together. This subset will not sum up to 1, so the stacked/filled plots are not appropriate. There is no set function to do this, but it can be done by extracting the data from a `plot.probtrans()`-based ggplot object as follows:
 
 ```{r plot_pt_single3}
 # Run plot and extract data using $data
@@ -423,7 +423,7 @@ vis.mirror.pt(
 
 # Saving outputs
 
-Any plots made with *mstate* using the `use.ggplot = TRUE` will return a ggplot objects, which can be saved to a desired format by using `ggplot2::ggsave()`. 
+Any plots made with *mstate* using the `use.ggplot = TRUE` will return a ggplot object, which can be saved to a desired format by using `ggplot2::ggsave()`. 
 Please refer to the [article](https://ggplot2.tidyverse.org/reference/ggsave.html#saving-images-without-ggsave-) written by the *ggplot2* team on using `ggplot2::ggsave()`. 
 
 ```{r saving, eval=FALSE}
@@ -445,11 +445,8 @@ dev.off()
 # Date/time
 Sys.time()
 
-# Git repo
-git2r::repository()
-
 # Environment
-devtools::session_info()
+sessionInfo()
 ```
 
 </details>

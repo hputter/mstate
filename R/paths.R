@@ -41,6 +41,7 @@
     ### Output:
     ###     matrix specifying all possible paths
     ### Details: recursive
+    if (is.circular(trans)) stop("transition matrix is circular, so there will be infinitely many paths")
     nstates <- trans[start,]
     nstates <- which(!is.na(nstates))
     if (length(nstates)==0) ## i.e. in absorbing state
