@@ -75,7 +75,7 @@ associated standard errors for each value of a group variable." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">mstate</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.12</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.1</span>
       </span>
     </div>
 
@@ -126,7 +126,7 @@ associated standard errors for each value of a group variable." />
     <h1>Calculate nonparametric cumulative incidence functions and associated
 standard errors</h1>
     <small class="dont-index">Source: <a href='https://github.com/hputter/mstate/blob/master/R/cuminc.R'><code>R/cuminc.R</code></a></small>
-    <div class="hidden name"><code>Cuminc.Rd</code></div>
+    <div class="hidden name"><code>cuminc.Rd</code></div>
     </div>
 
     <div class="ref-description">
@@ -134,15 +134,15 @@ standard errors</h1>
 associated standard errors for each value of a group variable.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>Cuminc</span><span class='op'>(</span>
-  <span class='va'>time</span>,
-  <span class='va'>status</span>,
-  <span class='va'>data</span>,
-  <span class='va'>group</span>,
-  <span class='va'>failcodes</span>,
-  na.status <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"remove"</span>, <span class='st'>"extra"</span><span class='op'>)</span>,
-  variance <span class='op'>=</span> <span class='cn'>TRUE</span>
-<span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>Cuminc</span>(
+  <span class='kw'>time</span>,
+  <span class='kw'>status</span>,
+  <span class='kw'>data</span>,
+  <span class='kw'>group</span>,
+  <span class='kw'>failcodes</span>,
+  na.status = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"remove"</span>, <span class='st'>"extra"</span>),
+  variance = <span class='fl'>TRUE</span>
+)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -236,9 +236,9 @@ and prediction in non- and semi-parametric multi-state models. Submitted.
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'>
 <span class='co'>### These data were used in Putter, Fiocco &amp; Geskus (2007)</span>
-<span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='va'>aidssi</span><span class='op'>)</span>
-<span class='va'>ci</span> <span class='op'>&lt;-</span> <span class='fu'>Cuminc</span><span class='op'>(</span>time<span class='op'>=</span><span class='va'>aidssi</span><span class='op'>$</span><span class='va'>time</span>, status<span class='op'>=</span><span class='va'>aidssi</span><span class='op'>$</span><span class='va'>status</span><span class='op'>)</span>
-<span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span><span class='op'>(</span><span class='va'>ci</span><span class='op'>)</span>; <span class='fu'><a href='https://rdrr.io/r/utils/head.html'>tail</a></span><span class='op'>(</span><span class='va'>ci</span><span class='op'>)</span>
+<span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span>(<span class='kw'>aidssi</span>)
+<span class='kw'>ci</span> <span class='op'>&lt;-</span> <span class='fu'>Cuminc</span>(time=<span class='kw'>aidssi</span><span class='op'>$</span><span class='kw'>time</span>, status=<span class='kw'>aidssi</span><span class='op'>$</span><span class='kw'>status</span>)
+<span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span>(<span class='kw'>ci</span>); <span class='fu'><a href='https://rdrr.io/r/utils/head.html'>tail</a></span>(<span class='kw'>ci</span>)
 </div><div class='output co'>#&gt;    time      Surv CI.1        CI.2      seSurv seCI.1      seCI.2
 #&gt; 1 0.112 0.9969605    0 0.003039514 0.003034891      0 0.003034891
 #&gt; 2 0.137 0.9939210    0 0.006079027 0.004285436      0 0.004285436
@@ -251,8 +251,8 @@ and prediction in non- and semi-parametric multi-state models. Submitted.
 #&gt; 213 12.400 0.2219845 0.4081954 0.3698201 0.02612382 0.02989297 0.02896110
 #&gt; 214 12.936 0.2165702 0.4081954 0.3752344 0.02604167 0.02989297 0.02919663
 #&gt; 215 13.361 0.2067261 0.4180395 0.3752344 0.02665370 0.03089977 0.02919663
-#&gt; 216 13.936 0.0000000 0.4180395 0.5819605 0.00000000 0.03089977 0.03089977</div><div class='input'><span class='va'>ci</span> <span class='op'>&lt;-</span> <span class='fu'>Cuminc</span><span class='op'>(</span>time<span class='op'>=</span><span class='st'>"time"</span>, status<span class='op'>=</span><span class='st'>"status"</span>, data<span class='op'>=</span><span class='va'>aidssi</span>, group<span class='op'>=</span><span class='st'>"ccr5"</span><span class='op'>)</span>
-<span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span><span class='op'>(</span><span class='va'>ci</span><span class='op'>)</span>; <span class='fu'><a href='https://rdrr.io/r/utils/head.html'>tail</a></span><span class='op'>(</span><span class='va'>ci</span><span class='op'>)</span>
+#&gt; 216 13.936 0.0000000 0.4180395 0.5819605 0.00000000 0.03089977 0.03089977</div><div class='input'><span class='kw'>ci</span> <span class='op'>&lt;-</span> <span class='fu'>Cuminc</span>(time=<span class='st'>"time"</span>, status=<span class='st'>"status"</span>, data=<span class='kw'>aidssi</span>, group=<span class='st'>"ccr5"</span>)
+<span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span>(<span class='kw'>ci</span>); <span class='fu'><a href='https://rdrr.io/r/utils/head.html'>tail</a></span>(<span class='kw'>ci</span>)
 </div><div class='output co'>#&gt;   group  time      Surv CI.1        CI.2      seSurv seCI.1      seCI.2
 #&gt; 1    WW 0.112 0.9961390    0 0.003861004 0.003853543      0 0.003853543
 #&gt; 2    WW 0.137 0.9922780    0 0.007722008 0.005439161      0 0.005439161
@@ -267,11 +267,11 @@ and prediction in non- and semi-parametric multi-state models. Submitted.
 #&gt; 214    WM 12.400 0.4079804 0.1919392 0.4000804 0.06587820 0.05208878 0.06528037
 #&gt; 215    WM 13.361 0.3626492 0.2372703 0.4000804 0.07249604 0.06544637 0.06528037</div><div class='input'>
 <span class='co'>### Some fake data</span>
-<span class='va'>fake</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span><span class='op'>(</span>surv<span class='op'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/seq.html'>seq</a></span><span class='op'>(</span><span class='fl'>2</span>,<span class='fl'>10</span>,by<span class='op'>=</span><span class='fl'>2</span><span class='op'>)</span>,<span class='fu'><a href='https://rdrr.io/r/base/seq.html'>seq</a></span><span class='op'>(</span><span class='fl'>1</span>,<span class='fl'>13</span>,by<span class='op'>=</span><span class='fl'>3</span><span class='op'>)</span>,<span class='fu'><a href='https://rdrr.io/r/base/seq.html'>seq</a></span><span class='op'>(</span><span class='fl'>1</span>,<span class='fl'>9</span>,by<span class='op'>=</span><span class='fl'>2</span><span class='op'>)</span>,<span class='fu'><a href='https://rdrr.io/r/base/seq.html'>seq</a></span><span class='op'>(</span><span class='fl'>1</span>,<span class='fl'>13</span>,by<span class='op'>=</span><span class='fl'>3</span><span class='op'>)</span><span class='op'>)</span>,
-                    stat<span class='op'>=</span><span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span><span class='op'>(</span><span class='fl'>0</span><span class='op'>:</span><span class='fl'>3</span>,<span class='fl'>5</span><span class='op'>)</span>,Tstage<span class='op'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>4</span>,<span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span><span class='op'>(</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>4</span>,<span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span><span class='op'>(</span><span class='fl'>4</span>,<span class='fl'>4</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span>
-<span class='va'>fake</span><span class='op'>$</span><span class='va'>stat</span><span class='op'>[</span><span class='va'>fake</span><span class='op'>$</span><span class='va'>stat</span><span class='op'>==</span><span class='fl'>0</span> <span class='op'>&amp;</span> <span class='va'>fake</span><span class='op'>$</span><span class='va'>Tstage</span><span class='op'>==</span><span class='fl'>2</span><span class='op'>]</span> <span class='op'>&lt;-</span> <span class='fl'>3</span>
-<span class='va'>fake</span><span class='op'>$</span><span class='va'>stat</span><span class='op'>[</span><span class='va'>fake</span><span class='op'>$</span><span class='va'>stat</span><span class='op'>==</span><span class='fl'>3</span> <span class='op'>&amp;</span> <span class='va'>fake</span><span class='op'>$</span><span class='va'>Tstage</span><span class='op'>==</span><span class='fl'>1</span><span class='op'>]</span> <span class='op'>&lt;-</span> <span class='fl'>2</span>
-<span class='va'>fake</span>
+<span class='kw'>fake</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span>(surv=<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/seq.html'>seq</a></span>(<span class='fl'>2</span>,<span class='fl'>10</span>,by=<span class='fl'>2</span>),<span class='fu'><a href='https://rdrr.io/r/base/seq.html'>seq</a></span>(<span class='fl'>1</span>,<span class='fl'>13</span>,by=<span class='fl'>3</span>),<span class='fu'><a href='https://rdrr.io/r/base/seq.html'>seq</a></span>(<span class='fl'>1</span>,<span class='fl'>9</span>,by=<span class='fl'>2</span>),<span class='fu'><a href='https://rdrr.io/r/base/seq.html'>seq</a></span>(<span class='fl'>1</span>,<span class='fl'>13</span>,by=<span class='fl'>3</span>)),
+                    stat=<span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span>(<span class='fl'>0</span><span class='op'>:</span><span class='fl'>3</span>,<span class='fl'>5</span>),Tstage=<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>1</span><span class='op'>:</span><span class='fl'>4</span>,<span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span>(<span class='fl'>1</span><span class='op'>:</span><span class='fl'>4</span>,<span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span>(<span class='fl'>4</span>,<span class='fl'>4</span>))))
+<span class='kw'>fake</span><span class='op'>$</span><span class='kw'>stat</span>[<span class='kw'>fake</span><span class='op'>$</span><span class='kw'>stat</span><span class='op'>==</span><span class='fl'>0</span> <span class='op'>&amp;</span> <span class='kw'>fake</span><span class='op'>$</span><span class='kw'>Tstage</span><span class='op'>==</span><span class='fl'>2</span>] <span class='op'>&lt;-</span> <span class='fl'>3</span>
+<span class='kw'>fake</span><span class='op'>$</span><span class='kw'>stat</span>[<span class='kw'>fake</span><span class='op'>$</span><span class='kw'>stat</span><span class='op'>==</span><span class='fl'>3</span> <span class='op'>&amp;</span> <span class='kw'>fake</span><span class='op'>$</span><span class='kw'>Tstage</span><span class='op'>==</span><span class='fl'>1</span>] <span class='op'>&lt;-</span> <span class='fl'>2</span>
+<span class='kw'>fake</span>
 </div><div class='output co'>#&gt;    surv stat Tstage
 #&gt; 1     2    0      1
 #&gt; 2     4    1      2
@@ -292,7 +292,7 @@ and prediction in non- and semi-parametric multi-state models. Submitted.
 #&gt; 17    4    0      4
 #&gt; 18    7    1      4
 #&gt; 19   10    2      4
-#&gt; 20   13    3      4</div><div class='input'><span class='fu'>Cuminc</span><span class='op'>(</span>time<span class='op'>=</span><span class='st'>"surv"</span>, status<span class='op'>=</span><span class='st'>"stat"</span>, data<span class='op'>=</span><span class='va'>fake</span><span class='op'>)</span>
+#&gt; 20   13    3      4</div><div class='input'><span class='fu'>Cuminc</span>(time=<span class='st'>"surv"</span>, status=<span class='st'>"stat"</span>, data=<span class='kw'>fake</span>)
 </div><div class='output co'>#&gt;   time      Surv      CI.1      CI.2      CI.3     seSurv     seCI.1     seCI.2
 #&gt; 1    1 0.8500000 0.0500000 0.0500000 0.0500000 0.07984360 0.04873397 0.04873397
 #&gt; 2    3 0.7968750 0.0500000 0.0500000 0.1031250 0.09082346 0.04873397 0.04873397
@@ -314,8 +314,8 @@ and prediction in non- and semi-parametric multi-state models. Submitted.
 #&gt; 8 0.10125712
 #&gt; 9 0.12014817</div><div class='input'><span class='co'># If we remove all entries with status=0,</span>
 <span class='co'># we should get binomial sample probabilities and corresponding SEs</span>
-<span class='va'>fake0</span> <span class='op'>&lt;-</span> <span class='va'>fake</span><span class='op'>[</span><span class='va'>fake</span><span class='op'>$</span><span class='va'>stat</span><span class='op'>!=</span><span class='fl'>0</span>,<span class='op'>]</span>
-<span class='fu'>Cuminc</span><span class='op'>(</span>time<span class='op'>=</span><span class='st'>"surv"</span>, status<span class='op'>=</span><span class='st'>"stat"</span>, data<span class='op'>=</span><span class='va'>fake0</span><span class='op'>)</span>
+<span class='kw'>fake0</span> <span class='op'>&lt;-</span> <span class='kw'>fake</span>[<span class='kw'>fake</span><span class='op'>$</span><span class='kw'>stat</span>!=<span class='fl'>0</span>,]
+<span class='fu'>Cuminc</span>(time=<span class='st'>"surv"</span>, status=<span class='st'>"stat"</span>, data=<span class='kw'>fake0</span>)
 </div><div class='output co'>#&gt;   time       Surv      CI.2      CI.3     seSurv     seCI.2     seCI.3
 #&gt; 1    1 0.87500000 0.0625000 0.0625000 0.08267973 0.06051536 0.06051536
 #&gt; 2    3 0.80769231 0.0625000 0.1298077 0.10003271 0.06051536 0.08578203

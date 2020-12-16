@@ -75,7 +75,7 @@ based on the subdistribution hazard can be performed." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">mstate</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.12</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.1</span>
       </span>
     </div>
 
@@ -136,22 +136,22 @@ based on the subdistribution hazard can be performed.</p>
     </div>
 
     <pre class="usage"><span class='co'># S3 method for default</span>
-<span class='fu'>crprep</span><span class='op'>(</span>
-  <span class='va'>Tstop</span>,
-  <span class='va'>status</span>,
-  <span class='va'>data</span>,
-  trans <span class='op'>=</span> <span class='fl'>1</span>,
-  cens <span class='op'>=</span> <span class='fl'>0</span>,
-  Tstart <span class='op'>=</span> <span class='fl'>0</span>,
-  <span class='va'>id</span>,
-  <span class='va'>strata</span>,
-  <span class='va'>keep</span>,
-  shorten <span class='op'>=</span> <span class='cn'>TRUE</span>,
-  rm.na <span class='op'>=</span> <span class='cn'>TRUE</span>,
-  origin <span class='op'>=</span> <span class='fl'>0</span>,
-  prec.factor <span class='op'>=</span> <span class='fl'>1000</span>,
-  <span class='va'>...</span>
-<span class='op'>)</span></pre>
+<span class='fu'>crprep</span>(
+  <span class='kw'>Tstop</span>,
+  <span class='kw'>status</span>,
+  <span class='kw'>data</span>,
+  trans = <span class='fl'>1</span>,
+  cens = <span class='fl'>0</span>,
+  Tstart = <span class='fl'>0</span>,
+  <span class='kw'>id</span>,
+  <span class='kw'>strata</span>,
+  <span class='kw'>keep</span>,
+  shorten = <span class='fl'>TRUE</span>,
+  rm.na = <span class='fl'>TRUE</span>,
+  origin = <span class='fl'>0</span>,
+  prec.factor = <span class='fl'>1000</span>,
+  <span class='kw'>...</span>
+)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -302,26 +302,26 @@ risks and multi-state models. <em>Statistics in Medicine</em> <b>26</b>,
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'>
-<span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='va'>aidssi</span><span class='op'>)</span>
-<span class='va'>aidssi.w</span> <span class='op'>&lt;-</span> <span class='fu'>crprep</span><span class='op'>(</span><span class='st'>"time"</span>, <span class='st'>"cause"</span>, data<span class='op'>=</span><span class='va'>aidssi</span>, trans<span class='op'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"AIDS"</span>,<span class='st'>"SI"</span><span class='op'>)</span>,
-                   cens<span class='op'>=</span><span class='st'>"event-free"</span>, id<span class='op'>=</span><span class='st'>"patnr"</span>, keep<span class='op'>=</span><span class='st'>"ccr5"</span><span class='op'>)</span>
+<span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span>(<span class='kw'>aidssi</span>)
+<span class='kw'>aidssi.w</span> <span class='op'>&lt;-</span> <span class='fu'>crprep</span>(<span class='st'>"time"</span>, <span class='st'>"cause"</span>, data=<span class='kw'>aidssi</span>, trans=<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"AIDS"</span>,<span class='st'>"SI"</span>),
+                   cens=<span class='st'>"event-free"</span>, id=<span class='st'>"patnr"</span>, keep=<span class='st'>"ccr5"</span>)
 
 <span class='co'># calculate cause-specific cumulative incidence, no truncation,</span>
 <span class='co'># compare with Cuminc (also from mstate)</span>
-<span class='va'>ci</span> <span class='op'>&lt;-</span> <span class='fu'><a href='Cuminc.html'>Cuminc</a></span><span class='op'>(</span><span class='va'>aidssi</span><span class='op'>$</span><span class='va'>time</span>, <span class='va'>aidssi</span><span class='op'>$</span><span class='va'>status</span><span class='op'>)</span>
-<span class='va'>sf</span> <span class='op'>&lt;-</span> <span class='fu'>survfit</span><span class='op'>(</span><span class='fu'>Surv</span><span class='op'>(</span><span class='va'>Tstart</span>,<span class='va'>Tstop</span>,<span class='va'>status</span><span class='op'>==</span><span class='st'>"AIDS"</span><span class='op'>)</span><span class='op'>~</span><span class='fl'>1</span>, data<span class='op'>=</span><span class='va'>aidssi.w</span>,
-              weight<span class='op'>=</span><span class='va'>weight.cens</span>, subset<span class='op'>=</span><span class='va'>failcode</span><span class='op'>==</span><span class='st'>"AIDS"</span><span class='op'>)</span>
-<span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span><span class='op'>(</span><span class='va'>sf</span>, fun<span class='op'>=</span><span class='st'>"event"</span>, mark.time<span class='op'>=</span><span class='cn'>FALSE</span><span class='op'>)</span>
-</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/graphics/lines.html'>lines</a></span><span class='op'>(</span><span class='va'>CI.1</span><span class='op'>~</span><span class='va'>time</span>,data<span class='op'>=</span><span class='va'>ci</span>,type<span class='op'>=</span><span class='st'>"s"</span>,col<span class='op'>=</span><span class='st'>"red"</span><span class='op'>)</span>
-</div><div class='img'><img src='crprep.default-1.png' alt='' width='700' height='433' /></div><div class='input'><span class='va'>sf</span> <span class='op'>&lt;-</span> <span class='fu'>survfit</span><span class='op'>(</span><span class='fu'>Surv</span><span class='op'>(</span><span class='va'>Tstart</span>,<span class='va'>Tstop</span>,<span class='va'>status</span><span class='op'>==</span><span class='st'>"SI"</span><span class='op'>)</span><span class='op'>~</span><span class='fl'>1</span>, data<span class='op'>=</span><span class='va'>aidssi.w</span>,
-              weight<span class='op'>=</span><span class='va'>weight.cens</span>, subset<span class='op'>=</span><span class='va'>failcode</span><span class='op'>==</span><span class='st'>"SI"</span><span class='op'>)</span>
-<span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span><span class='op'>(</span><span class='va'>sf</span>, fun<span class='op'>=</span><span class='st'>"event"</span>, mark.time<span class='op'>=</span><span class='cn'>FALSE</span><span class='op'>)</span>
-</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/graphics/lines.html'>lines</a></span><span class='op'>(</span><span class='va'>CI.2</span><span class='op'>~</span><span class='va'>time</span>,data<span class='op'>=</span><span class='va'>ci</span>,type<span class='op'>=</span><span class='st'>"s"</span>,col<span class='op'>=</span><span class='st'>"red"</span><span class='op'>)</span>
+<span class='kw'>ci</span> <span class='op'>&lt;-</span> <span class='fu'><a href='Cuminc.html'>Cuminc</a></span>(<span class='kw'>aidssi</span><span class='op'>$</span><span class='kw'>time</span>, <span class='kw'>aidssi</span><span class='op'>$</span><span class='kw'>status</span>)
+<span class='kw'>sf</span> <span class='op'>&lt;-</span> <span class='fu'>survfit</span>(<span class='fu'>Surv</span>(<span class='kw'>Tstart</span>,<span class='kw'>Tstop</span>,<span class='kw'>status</span><span class='op'>==</span><span class='st'>"AIDS"</span>)<span class='op'>~</span><span class='fl'>1</span>, data=<span class='kw'>aidssi.w</span>,
+              weight=<span class='kw'>weight.cens</span>, subset=<span class='kw'>failcode</span><span class='op'>==</span><span class='st'>"AIDS"</span>)
+<span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span>(<span class='kw'>sf</span>, fun=<span class='st'>"event"</span>, mark.time=<span class='fl'>FALSE</span>)
+</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/graphics/lines.html'>lines</a></span>(<span class='kw'>CI.1</span><span class='op'>~</span><span class='kw'>time</span>,data=<span class='kw'>ci</span>,type=<span class='st'>"s"</span>,col=<span class='st'>"red"</span>)
+</div><div class='img'><img src='crprep.default-1.png' alt='' width='700' height='433' /></div><div class='input'><span class='kw'>sf</span> <span class='op'>&lt;-</span> <span class='fu'>survfit</span>(<span class='fu'>Surv</span>(<span class='kw'>Tstart</span>,<span class='kw'>Tstop</span>,<span class='kw'>status</span><span class='op'>==</span><span class='st'>"SI"</span>)<span class='op'>~</span><span class='fl'>1</span>, data=<span class='kw'>aidssi.w</span>,
+              weight=<span class='kw'>weight.cens</span>, subset=<span class='kw'>failcode</span><span class='op'>==</span><span class='st'>"SI"</span>)
+<span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span>(<span class='kw'>sf</span>, fun=<span class='st'>"event"</span>, mark.time=<span class='fl'>FALSE</span>)
+</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/graphics/lines.html'>lines</a></span>(<span class='kw'>CI.2</span><span class='op'>~</span><span class='kw'>time</span>,data=<span class='kw'>ci</span>,type=<span class='st'>"s"</span>,col=<span class='st'>"red"</span>)
 </div><div class='img'><img src='crprep.default-2.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='co'># Fine and Gray regression for cause 1</span>
-<span class='va'>cw</span> <span class='op'>&lt;-</span> <span class='fu'>coxph</span><span class='op'>(</span><span class='fu'>Surv</span><span class='op'>(</span><span class='va'>Tstart</span>,<span class='va'>Tstop</span>,<span class='va'>status</span><span class='op'>==</span><span class='st'>"AIDS"</span><span class='op'>)</span><span class='op'>~</span><span class='va'>ccr5</span>, data<span class='op'>=</span><span class='va'>aidssi.w</span>,
-      weight<span class='op'>=</span><span class='va'>weight.cens</span>, subset<span class='op'>=</span><span class='va'>failcode</span><span class='op'>==</span><span class='st'>"AIDS"</span><span class='op'>)</span>
-<span class='va'>cw</span>
+<span class='kw'>cw</span> <span class='op'>&lt;-</span> <span class='fu'>coxph</span>(<span class='fu'>Surv</span>(<span class='kw'>Tstart</span>,<span class='kw'>Tstop</span>,<span class='kw'>status</span><span class='op'>==</span><span class='st'>"AIDS"</span>)<span class='op'>~</span><span class='kw'>ccr5</span>, data=<span class='kw'>aidssi.w</span>,
+      weight=<span class='kw'>weight.cens</span>, subset=<span class='kw'>failcode</span><span class='op'>==</span><span class='st'>"AIDS"</span>)
+<span class='kw'>cw</span>
 </div><div class='output co'>#&gt; Call:
 #&gt; coxph(formula = Surv(Tstart, Tstop, status == "AIDS") ~ ccr5, 
 #&gt;     data = aidssi.w, weights = weight.cens, subset = failcode == 
@@ -336,15 +336,15 @@ risks and multi-state models. <em>Statistics in Medicine</em> <b>26</b>,
 <span class='co'># crr(ftime=aidssi$time, fstatus=aidssi$status, cov1=as.numeric(aidssi$ccr5))</span>
 
 <span class='co'># Gray's log-rank test</span>
-<span class='va'>aidssi.wCCR</span> <span class='op'>&lt;-</span> <span class='fu'>crprep</span><span class='op'>(</span><span class='st'>"time"</span>, <span class='st'>"cause"</span>, data<span class='op'>=</span><span class='va'>aidssi</span>, trans<span class='op'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"AIDS"</span>,<span class='st'>"SI"</span><span class='op'>)</span>,
-                      cens<span class='op'>=</span><span class='st'>"event-free"</span>, id<span class='op'>=</span><span class='st'>"patnr"</span>, strata<span class='op'>=</span><span class='st'>"ccr5"</span><span class='op'>)</span>
-<span class='va'>test.AIDS</span> <span class='op'>&lt;-</span> <span class='fu'>coxph</span><span class='op'>(</span><span class='fu'>Surv</span><span class='op'>(</span><span class='va'>Tstart</span>,<span class='va'>Tstop</span>,<span class='va'>status</span><span class='op'>==</span><span class='st'>"AIDS"</span><span class='op'>)</span><span class='op'>~</span><span class='va'>ccr5</span>, data<span class='op'>=</span><span class='va'>aidssi.wCCR</span>,
-                   weights<span class='op'>=</span><span class='va'>weight.cens</span>, subset<span class='op'>=</span><span class='va'>failcode</span><span class='op'>==</span><span class='st'>"AIDS"</span><span class='op'>)</span>
-<span class='va'>test.SI</span> <span class='op'>&lt;-</span> <span class='fu'>coxph</span><span class='op'>(</span><span class='fu'>Surv</span><span class='op'>(</span><span class='va'>Tstart</span>,<span class='va'>Tstop</span>,<span class='va'>status</span><span class='op'>==</span><span class='st'>"SI"</span><span class='op'>)</span><span class='op'>~</span><span class='va'>ccr5</span>, data<span class='op'>=</span><span class='va'>aidssi.wCCR</span>,
-                 weights<span class='op'>=</span><span class='va'>weight.cens</span>, subset<span class='op'>=</span><span class='va'>failcode</span><span class='op'>==</span><span class='st'>"SI"</span><span class='op'>)</span>
+<span class='kw'>aidssi.wCCR</span> <span class='op'>&lt;-</span> <span class='fu'>crprep</span>(<span class='st'>"time"</span>, <span class='st'>"cause"</span>, data=<span class='kw'>aidssi</span>, trans=<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"AIDS"</span>,<span class='st'>"SI"</span>),
+                      cens=<span class='st'>"event-free"</span>, id=<span class='st'>"patnr"</span>, strata=<span class='st'>"ccr5"</span>)
+<span class='kw'>test.AIDS</span> <span class='op'>&lt;-</span> <span class='fu'>coxph</span>(<span class='fu'>Surv</span>(<span class='kw'>Tstart</span>,<span class='kw'>Tstop</span>,<span class='kw'>status</span><span class='op'>==</span><span class='st'>"AIDS"</span>)<span class='op'>~</span><span class='kw'>ccr5</span>, data=<span class='kw'>aidssi.wCCR</span>,
+                   weights=<span class='kw'>weight.cens</span>, subset=<span class='kw'>failcode</span><span class='op'>==</span><span class='st'>"AIDS"</span>)
+<span class='kw'>test.SI</span> <span class='op'>&lt;-</span> <span class='fu'>coxph</span>(<span class='fu'>Surv</span>(<span class='kw'>Tstart</span>,<span class='kw'>Tstop</span>,<span class='kw'>status</span><span class='op'>==</span><span class='st'>"SI"</span>)<span class='op'>~</span><span class='kw'>ccr5</span>, data=<span class='kw'>aidssi.wCCR</span>,
+                 weights=<span class='kw'>weight.cens</span>, subset=<span class='kw'>failcode</span><span class='op'>==</span><span class='st'>"SI"</span>)
 <span class='co'>## score test statistic and p-value</span>
-<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='va'>test.AIDS</span><span class='op'>$</span><span class='va'>score</span>, <span class='fl'>1</span><span class='op'>-</span><span class='fu'><a href='https://rdrr.io/r/stats/Chisquare.html'>pchisq</a></span><span class='op'>(</span><span class='va'>test.AIDS</span><span class='op'>$</span><span class='va'>score</span>,<span class='fl'>1</span><span class='op'>)</span><span class='op'>)</span> <span class='co'># AIDS</span>
-</div><div class='output co'>#&gt; [1] 12.428139562  0.000422913</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='va'>test.SI</span><span class='op'>$</span><span class='va'>score</span>, <span class='fl'>1</span><span class='op'>-</span><span class='fu'><a href='https://rdrr.io/r/stats/Chisquare.html'>pchisq</a></span><span class='op'>(</span><span class='va'>test.SI</span><span class='op'>$</span><span class='va'>score</span>,<span class='fl'>1</span><span class='op'>)</span><span class='op'>)</span>     <span class='co'># SI</span>
+<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='kw'>test.AIDS</span><span class='op'>$</span><span class='kw'>score</span>, <span class='fl'>1</span><span class='op'>-</span><span class='fu'><a href='https://rdrr.io/r/stats/Chisquare.html'>pchisq</a></span>(<span class='kw'>test.AIDS</span><span class='op'>$</span><span class='kw'>score</span>,<span class='fl'>1</span>)) <span class='co'># AIDS</span>
+</div><div class='output co'>#&gt; [1] 12.428139562  0.000422913</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='kw'>test.SI</span><span class='op'>$</span><span class='kw'>score</span>, <span class='fl'>1</span><span class='op'>-</span><span class='fu'><a href='https://rdrr.io/r/stats/Chisquare.html'>pchisq</a></span>(<span class='kw'>test.SI</span><span class='op'>$</span><span class='kw'>score</span>,<span class='fl'>1</span>))     <span class='co'># SI</span>
 </div><div class='output co'>#&gt; [1] 0.007207246 0.932344471</div><div class='input'><span class='co'># This can be compared with the results of cuminc (cmprsk)</span>
 <span class='co'># with(aidssi, cuminc(time, status, group=ccr5)$Tests)</span>
 <span class='co'># Note: results are not exactly the same</span>

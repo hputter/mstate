@@ -75,7 +75,7 @@ applied at time cens, equal for all individuals." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">mstate</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.12</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.1</span>
       </span>
     </div>
 
@@ -135,7 +135,7 @@ type "msdata") at a landmark time point LM. Administrative censoring can be
 applied at time <code>cens</code>, equal for all individuals.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>cutLMms</span><span class='op'>(</span><span class='va'>msdata</span>, <span class='va'>LM</span>, <span class='va'>cens</span><span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>cutLMms</span>(<span class='kw'>msdata</span>, <span class='kw'>LM</span>, <span class='kw'>cens</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -178,12 +178,12 @@ of Statistical Software 38: 7.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'>
-<span class='va'>tmat</span> <span class='op'>&lt;-</span> <span class='fu'><a href='transMat.html'>trans.illdeath</a></span><span class='op'>(</span>names<span class='op'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"Tx"</span>,<span class='st'>"PR"</span>,<span class='st'>"RelDeath"</span><span class='op'>)</span><span class='op'>)</span>
-<span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='va'>ebmt3</span><span class='op'>)</span> <span class='co'># data from Section 4 of Putter, Fiocco &amp; Geskus (2007)</span>
-<span class='va'>msebmt</span> <span class='op'>&lt;-</span> <span class='fu'><a href='msprep.html'>msprep</a></span><span class='op'>(</span>time<span class='op'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='cn'>NA</span>,<span class='st'>"prtime"</span>,<span class='st'>"rfstime"</span><span class='op'>)</span>,status<span class='op'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='cn'>NA</span>,<span class='st'>"prstat"</span>,<span class='st'>"rfsstat"</span><span class='op'>)</span>,
-    data<span class='op'>=</span><span class='va'>ebmt3</span>,trans<span class='op'>=</span><span class='va'>tmat</span><span class='op'>)</span>
+<span class='kw'>tmat</span> <span class='op'>&lt;-</span> <span class='fu'><a href='transMat.html'>trans.illdeath</a></span>(names=<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"Tx"</span>,<span class='st'>"PR"</span>,<span class='st'>"RelDeath"</span>))
+<span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span>(<span class='kw'>ebmt3</span>) <span class='co'># data from Section 4 of Putter, Fiocco &amp; Geskus (2007)</span>
+<span class='kw'>msebmt</span> <span class='op'>&lt;-</span> <span class='fu'><a href='msprep.html'>msprep</a></span>(time=<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>NA</span>,<span class='st'>"prtime"</span>,<span class='st'>"rfstime"</span>),status=<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>NA</span>,<span class='st'>"prstat"</span>,<span class='st'>"rfsstat"</span>),
+    data=<span class='kw'>ebmt3</span>,trans=<span class='kw'>tmat</span>)
 <span class='co'># Cut at 5 years</span>
-<span class='fu'>cutLMms</span><span class='op'>(</span><span class='va'>msebmt</span>, LM<span class='op'>=</span><span class='fl'>1826</span><span class='op'>)</span>
+<span class='fu'>cutLMms</span>(<span class='kw'>msebmt</span>, LM=<span class='fl'>1826</span>)
 </div><div class='output co'>#&gt; An object of class 'msdata'
 #&gt; 
 #&gt; Data:
@@ -658,7 +658,7 @@ of Statistical Software 38: 7.</p>
 #&gt; 5510 2179    2  3     3   1826  2011  185      0     18
 #&gt; 5545 2192    1  2     1   1826  1952  126      0      0
 #&gt; 5546 2192    1  3     2   1826  1952  126      0      0
-#&gt; 5574 2203    2  3     3   1826  1841   15      0     41</div><div class='input'><span class='fu'><a href='events.html'>events</a></span><span class='op'>(</span><span class='fu'>cutLMms</span><span class='op'>(</span><span class='va'>msebmt</span>, LM<span class='op'>=</span><span class='fl'>1826</span><span class='op'>)</span><span class='op'>)</span>
+#&gt; 5574 2203    2  3     3   1826  1841   15      0     41</div><div class='input'><span class='fu'><a href='events.html'>events</a></span>(<span class='fu'>cutLMms</span>(<span class='kw'>msebmt</span>, LM=<span class='fl'>1826</span>))
 </div><div class='output co'>#&gt; $Frequencies
 #&gt;           to
 #&gt; from        Tx  PR RelDeath no event total entering

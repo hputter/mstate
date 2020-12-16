@@ -72,7 +72,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">mstate</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.12</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.1</span>
       </span>
     </div>
 
@@ -129,7 +129,7 @@
     <p>A generic nonparametric bootstrapping function for multi-state models.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>msboot</span><span class='op'>(</span><span class='va'>theta</span>, <span class='va'>data</span>, B <span class='op'>=</span> <span class='fl'>5</span>, id <span class='op'>=</span> <span class='st'>"id"</span>, verbose <span class='op'>=</span> <span class='fl'>0</span>, <span class='va'>...</span><span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>msboot</span>(<span class='kw'>theta</span>, <span class='kw'>data</span>, B = <span class='fl'>5</span>, id = <span class='st'>"id"</span>, verbose = <span class='fl'>0</span>, <span class='kw'>...</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -187,21 +187,21 @@ multi-state models. <em>Statistics in Medicine</em> <b>27</b>, 4340--4358.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'>
-<span class='va'>tmat</span> <span class='op'>&lt;-</span> <span class='fu'><a href='transMat.html'>trans.illdeath</a></span><span class='op'>(</span><span class='op'>)</span>
-<span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='va'>ebmt1</span><span class='op'>)</span>
-<span class='va'>covs</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"score"</span>,<span class='st'>"yrel"</span><span class='op'>)</span>
-<span class='va'>msebmt</span> <span class='op'>&lt;-</span> <span class='fu'><a href='msprep.html'>msprep</a></span><span class='op'>(</span>time<span class='op'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='cn'>NA</span>,<span class='st'>"rel"</span>,<span class='st'>"srv"</span><span class='op'>)</span>,status<span class='op'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='cn'>NA</span>,<span class='st'>"relstat"</span>,<span class='st'>"srvstat"</span><span class='op'>)</span>,
-    data<span class='op'>=</span><span class='va'>ebmt1</span>,id<span class='op'>=</span><span class='st'>"patid"</span>,keep<span class='op'>=</span><span class='va'>covs</span>,trans<span class='op'>=</span><span class='va'>tmat</span><span class='op'>)</span>
+<span class='kw'>tmat</span> <span class='op'>&lt;-</span> <span class='fu'><a href='transMat.html'>trans.illdeath</a></span>()
+<span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span>(<span class='kw'>ebmt1</span>)
+<span class='kw'>covs</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"score"</span>,<span class='st'>"yrel"</span>)
+<span class='kw'>msebmt</span> <span class='op'>&lt;-</span> <span class='fu'><a href='msprep.html'>msprep</a></span>(time=<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>NA</span>,<span class='st'>"rel"</span>,<span class='st'>"srv"</span>),status=<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>NA</span>,<span class='st'>"relstat"</span>,<span class='st'>"srvstat"</span>),
+    data=<span class='kw'>ebmt1</span>,id=<span class='st'>"patid"</span>,keep=<span class='kw'>covs</span>,trans=<span class='kw'>tmat</span>)
 <span class='co'># define a function (this one returns vector of regression coef's)</span>
-<span class='va'>regcoefvec</span> <span class='op'>&lt;-</span> <span class='kw'>function</span><span class='op'>(</span><span class='va'>data</span><span class='op'>)</span> <span class='op'>{</span>
-  <span class='va'>cx</span> <span class='op'>&lt;-</span> <span class='fu'>coxph</span><span class='op'>(</span><span class='fu'>Surv</span><span class='op'>(</span><span class='va'>Tstart</span>,<span class='va'>Tstop</span>,<span class='va'>status</span><span class='op'>)</span><span class='op'>~</span><span class='va'>score</span><span class='op'>+</span><span class='fu'>strata</span><span class='op'>(</span><span class='va'>trans</span><span class='op'>)</span>,
-          data<span class='op'>=</span><span class='va'>data</span>,method<span class='op'>=</span><span class='st'>"breslow"</span><span class='op'>)</span>
-  <span class='kw'><a href='https://rdrr.io/r/base/function.html'>return</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/stats/coef.html'>coef</a></span><span class='op'>(</span><span class='va'>cx</span><span class='op'>)</span><span class='op'>)</span>
-<span class='op'>}</span>
-<span class='fu'>regcoefvec</span><span class='op'>(</span><span class='va'>msebmt</span><span class='op'>)</span>
+<span class='kw'>regcoefvec</span> <span class='op'>&lt;-</span> <span class='fu'>function</span>(<span class='kw'>data</span>) {
+  <span class='kw'>cx</span> <span class='op'>&lt;-</span> <span class='fu'>coxph</span>(<span class='fu'>Surv</span>(<span class='kw'>Tstart</span>,<span class='kw'>Tstop</span>,<span class='kw'>status</span>)<span class='op'>~</span><span class='kw'>score</span><span class='op'>+</span><span class='fu'>strata</span>(<span class='kw'>trans</span>),
+          data=<span class='kw'>data</span>,method=<span class='st'>"breslow"</span>)
+  <span class='fu'><a href='https://rdrr.io/r/base/function.html'>return</a></span>(<span class='fu'><a href='https://rdrr.io/r/stats/coef.html'>coef</a></span>(<span class='kw'>cx</span>))
+}
+<span class='fu'>regcoefvec</span>(<span class='kw'>msebmt</span>)
 </div><div class='output co'>#&gt; scoreMedium risk   scoreHigh risk 
-#&gt;         0.545701         1.191317 </div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/Random.html'>set.seed</a></span><span class='op'>(</span><span class='fl'>1234</span><span class='op'>)</span>
-<span class='fu'>msboot</span><span class='op'>(</span>theta<span class='op'>=</span><span class='va'>regcoefvec</span>,data<span class='op'>=</span><span class='va'>msebmt</span>,id<span class='op'>=</span><span class='st'>"patid"</span><span class='op'>)</span>
+#&gt;         0.545701         1.191317 </div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/Random.html'>set.seed</a></span>(<span class='fl'>1234</span>)
+<span class='fu'>msboot</span>(theta=<span class='kw'>regcoefvec</span>,data=<span class='kw'>msebmt</span>,id=<span class='st'>"patid"</span>)
 </div><div class='output co'>#&gt;           [,1]     [,2]      [,3]     [,4]      [,5]
 #&gt; [1,] 0.4219375 0.539130 0.6494073 0.558677 0.3129345
 #&gt; [2,] 0.9633390 1.277396 1.2860004 1.340357 1.0736761</div><div class='input'>

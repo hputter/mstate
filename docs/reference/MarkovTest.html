@@ -72,7 +72,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">mstate</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.12</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.1</span>
       </span>
     </div>
 
@@ -129,19 +129,19 @@
     <p>Log-rank based test for the validity of the Markov assumption</p>
     </div>
 
-    <pre class="usage"><span class='fu'>MarkovTest</span><span class='op'>(</span>
-  <span class='va'>data</span>,
-  <span class='va'>id</span>,
-  formula <span class='op'>=</span> <span class='cn'>NULL</span>,
-  <span class='va'>transition</span>,
-  <span class='va'>grid</span>,
-  B <span class='op'>=</span> <span class='fl'>1000</span>,
-  fn <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='kw'>function</span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span> <span class='fu'><a href='https://rdrr.io/r/base/mean.html'>mean</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/MathFun.html'>abs</a></span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span>, na.rm <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span><span class='op'>)</span>,
-  fn2 <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='kw'>function</span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span> <span class='fu'><a href='https://rdrr.io/r/base/mean.html'>mean</a></span><span class='op'>(</span><span class='va'>x</span>, na.rm <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span><span class='op'>)</span>,
-  min_time <span class='op'>=</span> <span class='fl'>0</span>,
-  other_weights <span class='op'>=</span> <span class='cn'>NULL</span>,
-  dist <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"poisson"</span>, <span class='st'>"normal"</span><span class='op'>)</span>
-<span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>MarkovTest</span>(
+  <span class='kw'>data</span>,
+  <span class='kw'>id</span>,
+  formula = <span class='kw'>NULL</span>,
+  <span class='kw'>transition</span>,
+  <span class='kw'>grid</span>,
+  B = <span class='fl'>1000</span>,
+  fn = <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='fu'>function</span>(<span class='kw'>x</span>) <span class='fu'><a href='https://rdrr.io/r/base/mean.html'>mean</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/MathFun.html'>abs</a></span>(<span class='kw'>x</span>), na.rm = <span class='fl'>TRUE</span>)),
+  fn2 = <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='fu'>function</span>(<span class='kw'>x</span>) <span class='fu'><a href='https://rdrr.io/r/base/mean.html'>mean</a></span>(<span class='kw'>x</span>, na.rm = <span class='fl'>TRUE</span>)),
+  min_time = <span class='fl'>0</span>,
+  other_weights = <span class='kw'>NULL</span>,
+  dist = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"poisson"</span>, <span class='st'>"normal"</span>)
+)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -243,44 +243,44 @@ mstate by Hein Putter <a href='mailto:H.Putter@lumc.nl'>H.Putter@lumc.nl</a></p>
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'>
 <span class='co'># Example provided by the prothrombin data</span>
-<span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='st'>"prothr"</span><span class='op'>)</span>
+<span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span>(<span class='st'>"prothr"</span>)
 <span class='co'># Apply Markov test to grid of monthly time points over the first 7.5 years</span>
-<span class='va'>year</span> <span class='op'>&lt;-</span> <span class='fl'>365.25</span>
-<span class='va'>month</span> <span class='op'>&lt;-</span> <span class='va'>year</span> <span class='op'>/</span> <span class='fl'>12</span>
-<span class='va'>grid</span> <span class='op'>&lt;-</span> <span class='va'>month</span> <span class='op'>*</span> <span class='op'>(</span><span class='fl'>1</span> <span class='op'>:</span> <span class='fl'>90</span><span class='op'>)</span>
+<span class='kw'>year</span> <span class='op'>&lt;-</span> <span class='fl'>365.25</span>
+<span class='kw'>month</span> <span class='op'>&lt;-</span> <span class='kw'>year</span> <span class='op'>/</span> <span class='fl'>12</span>
+<span class='kw'>grid</span> <span class='op'>&lt;-</span> <span class='kw'>month</span> <span class='op'>*</span> (<span class='fl'>1</span> <span class='op'>:</span> <span class='fl'>90</span>)
 <span class='co'># Markov test for transition 1 (wild bootstrap based on 25 replications, 1000 recommended)</span>
-<span class='va'>MT</span> <span class='op'>&lt;-</span> <span class='fu'>MarkovTest</span><span class='op'>(</span><span class='va'>prothr</span>, id <span class='op'>=</span> <span class='st'>"id"</span>, transition <span class='op'>=</span> <span class='fl'>1</span>,
-                 grid <span class='op'>=</span> <span class='va'>grid</span>, B <span class='op'>=</span> <span class='fl'>25</span><span class='op'>)</span>
+<span class='kw'>MT</span> <span class='op'>&lt;-</span> <span class='fu'>MarkovTest</span>(<span class='kw'>prothr</span>, id = <span class='st'>"id"</span>, transition = <span class='fl'>1</span>,
+                 grid = <span class='kw'>grid</span>, B = <span class='fl'>25</span>)
 </div><div class='output co'>#&gt; <span class='warning'>Warning: 64 lines with Tstart &lt;= Tstop, have been removed before applying tests!</span></div><div class='input'>
 <span class='co'># Plot traces</span>
-<span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span><span class='op'>(</span><span class='va'>MT</span>, <span class='va'>grid</span>, what<span class='op'>=</span><span class='st'>"states"</span>, idx<span class='op'>=</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>10</span>, states<span class='op'>=</span><span class='fu'><a href='https://rdrr.io/r/base/colnames.html'>rownames</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/attr.html'>attr</a></span><span class='op'>(</span><span class='va'>prothr</span>, <span class='st'>"trans"</span><span class='op'>)</span><span class='op'>)</span>,
-     xlab<span class='op'>=</span><span class='st'>"Days since randomisation"</span>, ylab<span class='op'>=</span><span class='st'>"Log-rank test statistic"</span>,
-     main<span class='op'>=</span><span class='st'>"Transition Normal -&gt; Low"</span><span class='op'>)</span>
-</div><div class='img'><img src='MarkovTest-1.png' alt='' width='700' height='433' /></div><div class='input'><span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span><span class='op'>(</span><span class='va'>MT</span>, <span class='va'>grid</span>,what<span class='op'>=</span><span class='st'>"overall"</span>, idx<span class='op'>=</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>10</span>,
-     xlab<span class='op'>=</span><span class='st'>"Days since randomisation"</span>, ylab<span class='op'>=</span><span class='st'>"Chi-square test statistic"</span>,
-     main<span class='op'>=</span><span class='st'>"Transition Normal -&gt; Low"</span><span class='op'>)</span>
+<span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span>(<span class='kw'>MT</span>, <span class='kw'>grid</span>, what=<span class='st'>"states"</span>, idx=<span class='fl'>1</span><span class='op'>:</span><span class='fl'>10</span>, states=<span class='fu'><a href='https://rdrr.io/r/base/colnames.html'>rownames</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/attr.html'>attr</a></span>(<span class='kw'>prothr</span>, <span class='st'>"trans"</span>)),
+     xlab=<span class='st'>"Days since randomisation"</span>, ylab=<span class='st'>"Log-rank test statistic"</span>,
+     main=<span class='st'>"Transition Normal -&gt; Low"</span>)
+</div><div class='img'><img src='MarkovTest-1.png' alt='' width='700' height='433' /></div><div class='input'><span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span>(<span class='kw'>MT</span>, <span class='kw'>grid</span>,what=<span class='st'>"overall"</span>, idx=<span class='fl'>1</span><span class='op'>:</span><span class='fl'>10</span>,
+     xlab=<span class='st'>"Days since randomisation"</span>, ylab=<span class='st'>"Chi-square test statistic"</span>,
+     main=<span class='st'>"Transition Normal -&gt; Low"</span>)
 </div><div class='img'><img src='MarkovTest-2.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='co'># Example using optimal weights and adjustment for covariates</span>
-<span class='va'>oweights_fun</span> <span class='op'>&lt;-</span>
-  <span class='fu'>optimal_weights_matrix</span><span class='op'>(</span><span class='va'>prothr</span>, id <span class='op'>=</span> <span class='st'>"id"</span>, grid<span class='op'>=</span><span class='va'>grid</span>, transition <span class='op'>=</span> <span class='fl'>1</span>,
-                         other_weights<span class='op'>=</span><span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>
-                           <span class='kw'>function</span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span> <span class='fu'><a href='https://rdrr.io/r/base/mean.html'>mean</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/MathFun.html'>abs</a></span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span>,na.rm<span class='op'>=</span><span class='cn'>TRUE</span><span class='op'>)</span>,
-                           <span class='kw'>function</span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span> <span class='fu'><a href='https://rdrr.io/r/base/Extremes.html'>max</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/MathFun.html'>abs</a></span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span>,na.rm<span class='op'>=</span><span class='cn'>TRUE</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span>
+<span class='kw'>oweights_fun</span> <span class='op'>&lt;-</span>
+  <span class='fu'>optimal_weights_matrix</span>(<span class='kw'>prothr</span>, id = <span class='st'>"id"</span>, grid=<span class='kw'>grid</span>, transition = <span class='fl'>1</span>,
+                         other_weights=<span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(
+                           <span class='fu'>function</span>(<span class='kw'>x</span>) <span class='fu'><a href='https://rdrr.io/r/base/mean.html'>mean</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/MathFun.html'>abs</a></span>(<span class='kw'>x</span>),na.rm=<span class='fl'>TRUE</span>),
+                           <span class='fu'>function</span>(<span class='kw'>x</span>) <span class='fu'><a href='https://rdrr.io/r/base/Extremes.html'>max</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/MathFun.html'>abs</a></span>(<span class='kw'>x</span>),na.rm=<span class='fl'>TRUE</span>)))
 
-<span class='va'>oweights_chi</span> <span class='op'>&lt;-</span> <span class='fu'>optimal_weights_multiple</span><span class='op'>(</span><span class='va'>prothr</span>, id <span class='op'>=</span> <span class='st'>"id"</span>, grid<span class='op'>=</span><span class='va'>grid</span>, transition <span class='op'>=</span> <span class='fl'>1</span><span class='op'>)</span>
+<span class='kw'>oweights_chi</span> <span class='op'>&lt;-</span> <span class='fu'>optimal_weights_multiple</span>(<span class='kw'>prothr</span>, id = <span class='st'>"id"</span>, grid=<span class='kw'>grid</span>, transition = <span class='fl'>1</span>)
 
 <span class='co'># Formula in MarkovTest only works for continuous covariates and dummy coded variables</span>
 <span class='co'># No factors allowed</span>
-<span class='va'>prothr</span><span class='op'>$</span><span class='va'>prednisone</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/numeric.html'>as.numeric</a></span><span class='op'>(</span><span class='va'>prothr</span><span class='op'>$</span><span class='va'>treat</span> <span class='op'>==</span> <span class='st'>"Prednisone"</span><span class='op'>)</span>
-<span class='va'>MT</span> <span class='op'>&lt;-</span> <span class='fu'>MarkovTest</span><span class='op'>(</span><span class='va'>prothr</span>, id <span class='op'>=</span> <span class='st'>"id"</span>, 
-                 formula <span class='op'>=</span> <span class='st'>"prednisone"</span>,
-                 transition <span class='op'>=</span> <span class='fl'>1</span>,
-                 grid <span class='op'>=</span> <span class='va'>grid</span>, B <span class='op'>=</span> <span class='fl'>25</span>,
-                 fn <span class='op'>=</span> <span class='va'>oweights_fun</span>,
-                 fn2 <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>
-                   <span class='kw'>function</span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span> <span class='fu'><a href='https://rdrr.io/r/stats/weighted.mean.html'>weighted.mean</a></span><span class='op'>(</span><span class='va'>x</span>, w<span class='op'>=</span><span class='va'>oweights_chi</span>, na.rm<span class='op'>=</span><span class='cn'>TRUE</span><span class='op'>)</span>,
-                   <span class='kw'>function</span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span> <span class='fu'><a href='https://rdrr.io/r/base/mean.html'>mean</a></span><span class='op'>(</span><span class='va'>x</span>, na.rm<span class='op'>=</span><span class='cn'>TRUE</span><span class='op'>)</span>,
-                   <span class='kw'>function</span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span> <span class='fu'><a href='https://rdrr.io/r/base/Extremes.html'>max</a></span><span class='op'>(</span><span class='va'>x</span>, na.rm<span class='op'>=</span><span class='cn'>TRUE</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span>
+<span class='kw'>prothr</span><span class='op'>$</span><span class='kw'>prednisone</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/numeric.html'>as.numeric</a></span>(<span class='kw'>prothr</span><span class='op'>$</span><span class='kw'>treat</span> <span class='op'>==</span> <span class='st'>"Prednisone"</span>)
+<span class='kw'>MT</span> <span class='op'>&lt;-</span> <span class='fu'>MarkovTest</span>(<span class='kw'>prothr</span>, id = <span class='st'>"id"</span>, 
+                 formula = <span class='st'>"prednisone"</span>,
+                 transition = <span class='fl'>1</span>,
+                 grid = <span class='kw'>grid</span>, B = <span class='fl'>25</span>,
+                 fn = <span class='kw'>oweights_fun</span>,
+                 fn2 = <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(
+                   <span class='fu'>function</span>(<span class='kw'>x</span>) <span class='fu'><a href='https://rdrr.io/r/stats/weighted.mean.html'>weighted.mean</a></span>(<span class='kw'>x</span>, w=<span class='kw'>oweights_chi</span>, na.rm=<span class='fl'>TRUE</span>),
+                   <span class='fu'>function</span>(<span class='kw'>x</span>) <span class='fu'><a href='https://rdrr.io/r/base/mean.html'>mean</a></span>(<span class='kw'>x</span>, na.rm=<span class='fl'>TRUE</span>),
+                   <span class='fu'>function</span>(<span class='kw'>x</span>) <span class='fu'><a href='https://rdrr.io/r/base/Extremes.html'>max</a></span>(<span class='kw'>x</span>, na.rm=<span class='fl'>TRUE</span>)))
 </div><div class='output co'>#&gt; <span class='warning'>Warning: 64 lines with Tstart &lt;= Tstop, have been removed before applying tests!</span></div><div class='input'>
 </div></pre>
   </div>

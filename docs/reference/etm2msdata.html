@@ -73,7 +73,7 @@ Covariates have to be dealt with separately." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">mstate</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.12</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.1</span>
       </span>
     </div>
 
@@ -131,7 +131,7 @@ Covariates have to be dealt with separately." />
 Covariates have to be dealt with separately.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>etm2msdata</span><span class='op'>(</span><span class='va'>etmdata</span>, <span class='va'>id</span>, <span class='va'>tra</span>, <span class='va'>covs</span><span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>etm2msdata</span>(<span class='kw'>etmdata</span>, <span class='kw'>id</span>, <span class='kw'>tra</span>, <span class='kw'>covs</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -169,21 +169,21 @@ but the result does not really make much sense when used in etm.</p>
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'>
 <span class='co'># Transition matrix for illness-death model</span>
-<span class='va'>tmat</span> <span class='op'>&lt;-</span> <span class='fu'><a href='transMat.html'>trans.illdeath</a></span><span class='op'>(</span><span class='op'>)</span>
+<span class='kw'>tmat</span> <span class='op'>&lt;-</span> <span class='fu'><a href='transMat.html'>trans.illdeath</a></span>()
 <span class='co'># Data in wide format, for transition 1 this is dataset E1 of</span>
 <span class='co'># Therneau &amp; Grambsch (T&amp;G)</span>
-<span class='va'>tg</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span><span class='op'>(</span>id<span class='op'>=</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>6</span>,illt<span class='op'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>,<span class='fl'>1</span>,<span class='fl'>6</span>,<span class='fl'>6</span>,<span class='fl'>8</span>,<span class='fl'>9</span><span class='op'>)</span>,ills<span class='op'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>,<span class='fl'>0</span>,<span class='fl'>1</span>,<span class='fl'>1</span>,<span class='fl'>0</span>,<span class='fl'>1</span><span class='op'>)</span>,
-                 dt<span class='op'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>5</span>,<span class='fl'>1</span>,<span class='fl'>9</span>,<span class='fl'>7</span>,<span class='fl'>8</span>,<span class='fl'>12</span><span class='op'>)</span>,ds<span class='op'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>,<span class='fl'>1</span>,<span class='fl'>1</span>,<span class='fl'>1</span>,<span class='fl'>1</span>,<span class='fl'>1</span><span class='op'>)</span>,
-                 x1<span class='op'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>,<span class='fl'>1</span>,<span class='fl'>1</span>,<span class='fl'>0</span>,<span class='fl'>0</span>,<span class='fl'>0</span><span class='op'>)</span>,x2<span class='op'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>6</span><span class='op'>:</span><span class='fl'>1</span><span class='op'>)</span><span class='op'>)</span>
+<span class='kw'>tg</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span>(id=<span class='fl'>1</span><span class='op'>:</span><span class='fl'>6</span>,illt=<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>1</span>,<span class='fl'>1</span>,<span class='fl'>6</span>,<span class='fl'>6</span>,<span class='fl'>8</span>,<span class='fl'>9</span>),ills=<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>1</span>,<span class='fl'>0</span>,<span class='fl'>1</span>,<span class='fl'>1</span>,<span class='fl'>0</span>,<span class='fl'>1</span>),
+                 dt=<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>5</span>,<span class='fl'>1</span>,<span class='fl'>9</span>,<span class='fl'>7</span>,<span class='fl'>8</span>,<span class='fl'>12</span>),ds=<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>1</span>,<span class='fl'>1</span>,<span class='fl'>1</span>,<span class='fl'>1</span>,<span class='fl'>1</span>,<span class='fl'>1</span>),
+                 x1=<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>1</span>,<span class='fl'>1</span>,<span class='fl'>1</span>,<span class='fl'>0</span>,<span class='fl'>0</span>,<span class='fl'>0</span>),x2=<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>6</span><span class='op'>:</span><span class='fl'>1</span>))
 <span class='co'># Data in long format using msprep</span>
-<span class='va'>tglong</span> <span class='op'>&lt;-</span> <span class='fu'><a href='msprep.html'>msprep</a></span><span class='op'>(</span>time<span class='op'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='cn'>NA</span>,<span class='st'>"illt"</span>,<span class='st'>"dt"</span><span class='op'>)</span>,status<span class='op'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='cn'>NA</span>,<span class='st'>"ills"</span>,<span class='st'>"ds"</span><span class='op'>)</span>,
-                 data<span class='op'>=</span><span class='va'>tg</span>,keep<span class='op'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"x1"</span>,<span class='st'>"x2"</span><span class='op'>)</span>,trans<span class='op'>=</span><span class='va'>tmat</span>, id<span class='op'>=</span><span class='st'>"id"</span><span class='op'>)</span>
+<span class='kw'>tglong</span> <span class='op'>&lt;-</span> <span class='fu'><a href='msprep.html'>msprep</a></span>(time=<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>NA</span>,<span class='st'>"illt"</span>,<span class='st'>"dt"</span>),status=<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>NA</span>,<span class='st'>"ills"</span>,<span class='st'>"ds"</span>),
+                 data=<span class='kw'>tg</span>,keep=<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"x1"</span>,<span class='st'>"x2"</span>),trans=<span class='kw'>tmat</span>, id=<span class='st'>"id"</span>)
 <span class='co'># Same thing in etm format</span>
-<span class='va'>tra</span> <span class='op'>&lt;-</span> <span class='fu'><a href='trans2tra.html'>trans2tra</a></span><span class='op'>(</span><span class='va'>tmat</span><span class='op'>)</span>
-<span class='va'>tgetm</span> <span class='op'>&lt;-</span> <span class='fu'><a href='msdata2etm.html'>msdata2etm</a></span><span class='op'>(</span><span class='va'>tglong</span>, id<span class='op'>=</span><span class='st'>"id"</span><span class='op'>)</span>
-<span class='va'>tgetm</span> <span class='op'>&lt;-</span> <span class='fu'><a href='msdata2etm.html'>msdata2etm</a></span><span class='op'>(</span><span class='va'>tglong</span>, id<span class='op'>=</span><span class='st'>"id"</span>, covs<span class='op'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"x1"</span>, <span class='st'>"x2"</span><span class='op'>)</span><span class='op'>)</span> <span class='co'># with covariates</span>
+<span class='kw'>tra</span> <span class='op'>&lt;-</span> <span class='fu'><a href='trans2tra.html'>trans2tra</a></span>(<span class='kw'>tmat</span>)
+<span class='kw'>tgetm</span> <span class='op'>&lt;-</span> <span class='fu'><a href='msdata2etm.html'>msdata2etm</a></span>(<span class='kw'>tglong</span>, id=<span class='st'>"id"</span>)
+<span class='kw'>tgetm</span> <span class='op'>&lt;-</span> <span class='fu'><a href='msdata2etm.html'>msdata2etm</a></span>(<span class='kw'>tglong</span>, id=<span class='st'>"id"</span>, covs=<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"x1"</span>, <span class='st'>"x2"</span>)) <span class='co'># with covariates</span>
 <span class='co'># And back</span>
-<span class='fu'>etm2msdata</span><span class='op'>(</span><span class='va'>tgetm</span>, id<span class='op'>=</span><span class='st'>"id"</span>, tra<span class='op'>=</span><span class='va'>tra</span><span class='op'>)</span>
+<span class='fu'>etm2msdata</span>(<span class='kw'>tgetm</span>, id=<span class='st'>"id"</span>, tra=<span class='kw'>tra</span>)
 </div><div class='output co'>#&gt; An object of class 'msdata'
 #&gt; 
 #&gt; Data:
@@ -203,7 +203,7 @@ but the result does not really make much sense when used in etm.</p>
 #&gt; 13  5    1  3     2      0     8    8      1
 #&gt; 14  6    1  2     1      0     9    9      1
 #&gt; 15  6    1  3     2      0     9    9      0
-#&gt; 16  6    2  3     3      9    12    3      1</div><div class='input'><span class='fu'>etm2msdata</span><span class='op'>(</span><span class='va'>tgetm</span>, id<span class='op'>=</span><span class='st'>"id"</span>, tra<span class='op'>=</span><span class='va'>tra</span>, covs<span class='op'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"x1"</span>, <span class='st'>"x2"</span><span class='op'>)</span><span class='op'>)</span> <span class='co'># with covariates</span>
+#&gt; 16  6    2  3     3      9    12    3      1</div><div class='input'><span class='fu'>etm2msdata</span>(<span class='kw'>tgetm</span>, id=<span class='st'>"id"</span>, tra=<span class='kw'>tra</span>, covs=<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"x1"</span>, <span class='st'>"x2"</span>)) <span class='co'># with covariates</span>
 </div><div class='output co'>#&gt; An object of class 'msdata'
 #&gt; 
 #&gt; Data:

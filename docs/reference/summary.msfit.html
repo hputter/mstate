@@ -74,7 +74,7 @@ estimated cumulative transition intensities, and, if requested, also of the
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">mstate</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.12</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.1</span>
       </span>
     </div>
 
@@ -134,16 +134,16 @@ estimated cumulative transition intensities, and, if requested, also of the
     </div>
 
     <pre class="usage"><span class='co'># S3 method for msfit</span>
-<span class='fu'><a href='https://rdrr.io/r/base/summary.html'>summary</a></span><span class='op'>(</span>
-  <span class='va'>object</span>,
-  <span class='va'>times</span>,
-  <span class='va'>transitions</span>,
-  variance <span class='op'>=</span> <span class='cn'>TRUE</span>,
-  conf.int <span class='op'>=</span> <span class='fl'>0.95</span>,
-  conf.type <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"log"</span>, <span class='st'>"none"</span>, <span class='st'>"plain"</span><span class='op'>)</span>,
-  extend <span class='op'>=</span> <span class='cn'>FALSE</span>,
-  <span class='va'>...</span>
-<span class='op'>)</span></pre>
+<span class='fu'><a href='https://rdrr.io/r/base/summary.html'>summary</a></span>(
+  <span class='kw'>object</span>,
+  <span class='kw'>times</span>,
+  <span class='kw'>transitions</span>,
+  variance = <span class='fl'>TRUE</span>,
+  conf.int = <span class='fl'>0.95</span>,
+  conf.type = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"log"</span>, <span class='st'>"none"</span>, <span class='st'>"plain"</span>),
+  extend = <span class='fl'>FALSE</span>,
+  <span class='kw'>...</span>
+)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -206,20 +206,20 @@ method of a <code>summary.probtrans</code> doesn't return a value.</p>
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'>
 <span class='co'># Start with example from msfit</span>
-<span class='va'>tmat</span> <span class='op'>&lt;-</span> <span class='fu'><a href='transMat.html'>trans.illdeath</a></span><span class='op'>(</span><span class='op'>)</span>
-<span class='va'>tg</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span><span class='op'>(</span>illt<span class='op'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>,<span class='fl'>1</span>,<span class='fl'>6</span>,<span class='fl'>6</span>,<span class='fl'>8</span>,<span class='fl'>9</span><span class='op'>)</span>,ills<span class='op'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>,<span class='fl'>0</span>,<span class='fl'>1</span>,<span class='fl'>1</span>,<span class='fl'>0</span>,<span class='fl'>1</span><span class='op'>)</span>,
-                 dt<span class='op'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>5</span>,<span class='fl'>1</span>,<span class='fl'>9</span>,<span class='fl'>7</span>,<span class='fl'>8</span>,<span class='fl'>12</span><span class='op'>)</span>,ds<span class='op'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>,<span class='fl'>1</span>,<span class='fl'>1</span>,<span class='fl'>1</span>,<span class='fl'>1</span>,<span class='fl'>1</span><span class='op'>)</span>,
-                 x1<span class='op'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>,<span class='fl'>1</span>,<span class='fl'>1</span>,<span class='fl'>0</span>,<span class='fl'>0</span>,<span class='fl'>0</span><span class='op'>)</span>,x2<span class='op'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>6</span><span class='op'>:</span><span class='fl'>1</span><span class='op'>)</span><span class='op'>)</span>
-<span class='va'>tglong</span> <span class='op'>&lt;-</span> <span class='fu'><a href='msprep.html'>msprep</a></span><span class='op'>(</span>time<span class='op'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='cn'>NA</span>,<span class='st'>"illt"</span>,<span class='st'>"dt"</span><span class='op'>)</span>,status<span class='op'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='cn'>NA</span>,<span class='st'>"ills"</span>,<span class='st'>"ds"</span><span class='op'>)</span>,
-                 data<span class='op'>=</span><span class='va'>tg</span>,keep<span class='op'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"x1"</span>,<span class='st'>"x2"</span><span class='op'>)</span>,trans<span class='op'>=</span><span class='va'>tmat</span><span class='op'>)</span>
-<span class='va'>tglong</span> <span class='op'>&lt;-</span> <span class='fu'><a href='expand.covs.html'>expand.covs</a></span><span class='op'>(</span><span class='va'>tglong</span>,<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"x1"</span>,<span class='st'>"x2"</span><span class='op'>)</span><span class='op'>)</span>
-<span class='va'>cx</span> <span class='op'>&lt;-</span> <span class='fu'>coxph</span><span class='op'>(</span><span class='fu'>Surv</span><span class='op'>(</span><span class='va'>Tstart</span>,<span class='va'>Tstop</span>,<span class='va'>status</span><span class='op'>)</span><span class='op'>~</span><span class='va'>x1.1</span><span class='op'>+</span><span class='va'>x2.2</span><span class='op'>+</span><span class='fu'>strata</span><span class='op'>(</span><span class='va'>trans</span><span class='op'>)</span>,
-            data<span class='op'>=</span><span class='va'>tglong</span>,method<span class='op'>=</span><span class='st'>"breslow"</span><span class='op'>)</span>
-<span class='va'>newdata</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span><span class='op'>(</span>trans<span class='op'>=</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>3</span>,x1.1<span class='op'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>0</span>,<span class='fl'>0</span>,<span class='fl'>0</span><span class='op'>)</span>,x2.2<span class='op'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>0</span>,<span class='fl'>1</span>,<span class='fl'>0</span><span class='op'>)</span>,strata<span class='op'>=</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>3</span><span class='op'>)</span>
-<span class='va'>msf</span> <span class='op'>&lt;-</span> <span class='fu'><a href='msfit.html'>msfit</a></span><span class='op'>(</span><span class='va'>cx</span>,<span class='va'>newdata</span>,trans<span class='op'>=</span><span class='va'>tmat</span><span class='op'>)</span>
+<span class='kw'>tmat</span> <span class='op'>&lt;-</span> <span class='fu'><a href='transMat.html'>trans.illdeath</a></span>()
+<span class='kw'>tg</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span>(illt=<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>1</span>,<span class='fl'>1</span>,<span class='fl'>6</span>,<span class='fl'>6</span>,<span class='fl'>8</span>,<span class='fl'>9</span>),ills=<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>1</span>,<span class='fl'>0</span>,<span class='fl'>1</span>,<span class='fl'>1</span>,<span class='fl'>0</span>,<span class='fl'>1</span>),
+                 dt=<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>5</span>,<span class='fl'>1</span>,<span class='fl'>9</span>,<span class='fl'>7</span>,<span class='fl'>8</span>,<span class='fl'>12</span>),ds=<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>1</span>,<span class='fl'>1</span>,<span class='fl'>1</span>,<span class='fl'>1</span>,<span class='fl'>1</span>,<span class='fl'>1</span>),
+                 x1=<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>1</span>,<span class='fl'>1</span>,<span class='fl'>1</span>,<span class='fl'>0</span>,<span class='fl'>0</span>,<span class='fl'>0</span>),x2=<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>6</span><span class='op'>:</span><span class='fl'>1</span>))
+<span class='kw'>tglong</span> <span class='op'>&lt;-</span> <span class='fu'><a href='msprep.html'>msprep</a></span>(time=<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>NA</span>,<span class='st'>"illt"</span>,<span class='st'>"dt"</span>),status=<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>NA</span>,<span class='st'>"ills"</span>,<span class='st'>"ds"</span>),
+                 data=<span class='kw'>tg</span>,keep=<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"x1"</span>,<span class='st'>"x2"</span>),trans=<span class='kw'>tmat</span>)
+<span class='kw'>tglong</span> <span class='op'>&lt;-</span> <span class='fu'><a href='expand.covs.html'>expand.covs</a></span>(<span class='kw'>tglong</span>,<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"x1"</span>,<span class='st'>"x2"</span>))
+<span class='kw'>cx</span> <span class='op'>&lt;-</span> <span class='fu'>coxph</span>(<span class='fu'>Surv</span>(<span class='kw'>Tstart</span>,<span class='kw'>Tstop</span>,<span class='kw'>status</span>)<span class='op'>~</span><span class='kw'>x1.1</span><span class='op'>+</span><span class='kw'>x2.2</span><span class='op'>+</span><span class='fu'>strata</span>(<span class='kw'>trans</span>),
+            data=<span class='kw'>tglong</span>,method=<span class='st'>"breslow"</span>)
+<span class='kw'>newdata</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span>(trans=<span class='fl'>1</span><span class='op'>:</span><span class='fl'>3</span>,x1.1=<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>0</span>,<span class='fl'>0</span>,<span class='fl'>0</span>),x2.2=<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>0</span>,<span class='fl'>1</span>,<span class='fl'>0</span>),strata=<span class='fl'>1</span><span class='op'>:</span><span class='fl'>3</span>)
+<span class='kw'>msf</span> <span class='op'>&lt;-</span> <span class='fu'><a href='msfit.html'>msfit</a></span>(<span class='kw'>cx</span>,<span class='kw'>newdata</span>,trans=<span class='kw'>tmat</span>)
 
 <span class='co'># Default, all transitions, with SE</span>
-<span class='fu'><a href='https://rdrr.io/r/base/summary.html'>summary</a></span><span class='op'>(</span><span class='va'>msf</span><span class='op'>)</span>
+<span class='fu'><a href='https://rdrr.io/r/base/summary.html'>summary</a></span>(<span class='kw'>msf</span>)
 </div><div class='output co'>#&gt; 
 #&gt; Transition 1 :
 #&gt;   time        Haz      seHaz       lower    upper
@@ -249,7 +249,7 @@ method of a <code>summary.probtrans</code> doesn't return a value.</p>
 #&gt; 18    7 1.5 1.118034 0.3480512 6.464567
 #&gt; 19    8 1.5 1.118034 0.3480512 6.464567
 #&gt; 20    9 2.5 1.500000 0.7712925 8.103282
-#&gt; 21   12 3.5 1.802776 1.2753583 9.605144</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/summary.html'>summary</a></span><span class='op'>(</span><span class='va'>msf</span>, conf.type<span class='op'>=</span><span class='st'>"plain"</span><span class='op'>)</span>
+#&gt; 21   12 3.5 1.802776 1.2753583 9.605144</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/summary.html'>summary</a></span>(<span class='kw'>msf</span>, conf.type=<span class='st'>"plain"</span>)
 </div><div class='output co'>#&gt; 
 #&gt; Transition 1 :
 #&gt;   time        Haz      seHaz lower     upper
@@ -280,7 +280,7 @@ method of a <code>summary.probtrans</code> doesn't return a value.</p>
 #&gt; 19    8 1.5 1.118034     0 3.691306
 #&gt; 20    9 2.5 1.500000     0 5.439946
 #&gt; 21   12 3.5 1.802776     0 7.033375</div><div class='input'><span class='co'># Only transitions 1 and 3</span>
-<span class='fu'><a href='https://rdrr.io/r/base/summary.html'>summary</a></span><span class='op'>(</span><span class='va'>msf</span>, tra<span class='op'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>, <span class='fl'>3</span><span class='op'>)</span><span class='op'>)</span>
+<span class='fu'><a href='https://rdrr.io/r/base/summary.html'>summary</a></span>(<span class='kw'>msf</span>, tra=<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>1</span>, <span class='fl'>3</span>))
 </div><div class='output co'>#&gt; 
 #&gt; Transition 1 :
 #&gt;   time        Haz      seHaz       lower    upper
@@ -301,7 +301,7 @@ method of a <code>summary.probtrans</code> doesn't return a value.</p>
 #&gt; 19    8 1.5 1.118034 0.3480512 6.464567
 #&gt; 20    9 2.5 1.500000 0.7712925 8.103282
 #&gt; 21   12 3.5 1.802776 1.2753583 9.605144</div><div class='input'><span class='co'># Default is 95% confidence interval, change here to 90% </span>
-<span class='fu'><a href='https://rdrr.io/r/base/summary.html'>summary</a></span><span class='op'>(</span><span class='va'>msf</span>, conf.int<span class='op'>=</span><span class='fl'>0.90</span><span class='op'>)</span>
+<span class='fu'><a href='https://rdrr.io/r/base/summary.html'>summary</a></span>(<span class='kw'>msf</span>, conf.int=<span class='fl'>0.90</span>)
 </div><div class='output co'>#&gt; 
 #&gt; Transition 1 :
 #&gt;   time        Haz      seHaz      lower     upper
@@ -332,7 +332,7 @@ method of a <code>summary.probtrans</code> doesn't return a value.</p>
 #&gt; 19    8 1.5 1.118034 0.4401955 5.111366
 #&gt; 20    9 2.5 1.500000 0.9318146 6.707343
 #&gt; 21   12 3.5 1.802776 1.5001031 8.166106</div><div class='input'><span class='co'># Do not show variances (nor confidence intervals)</span>
-<span class='fu'><a href='https://rdrr.io/r/base/summary.html'>summary</a></span><span class='op'>(</span><span class='va'>msf</span>, variance<span class='op'>=</span><span class='cn'>FALSE</span><span class='op'>)</span>
+<span class='fu'><a href='https://rdrr.io/r/base/summary.html'>summary</a></span>(<span class='kw'>msf</span>, variance=<span class='fl'>FALSE</span>)
 </div><div class='output co'>#&gt; 
 #&gt; Transition 1 :
 #&gt;   time        Haz
@@ -363,7 +363,7 @@ method of a <code>summary.probtrans</code> doesn't return a value.</p>
 #&gt; 19    8 1.5
 #&gt; 20    9 2.5
 #&gt; 21   12 3.5</div><div class='input'><span class='co'># Cumulative hazards only at specified time points</span>
-<span class='fu'><a href='https://rdrr.io/r/base/summary.html'>summary</a></span><span class='op'>(</span><span class='va'>msf</span>, times<span class='op'>=</span><span class='fu'><a href='https://rdrr.io/r/base/seq.html'>seq</a></span><span class='op'>(</span><span class='fl'>0</span>, <span class='fl'>15</span>, by<span class='op'>=</span><span class='fl'>3</span><span class='op'>)</span><span class='op'>)</span>
+<span class='fu'><a href='https://rdrr.io/r/base/summary.html'>summary</a></span>(<span class='kw'>msf</span>, times=<span class='fu'><a href='https://rdrr.io/r/base/seq.html'>seq</a></span>(<span class='fl'>0</span>, <span class='fl'>15</span>, by=<span class='fl'>3</span>))
 </div><div class='output co'>#&gt; 
 #&gt; Transition 1 :
 #&gt;   times        Haz      seHaz       lower    upper
@@ -389,7 +389,7 @@ method of a <code>summary.probtrans</code> doesn't return a value.</p>
 #&gt; 4     9 2.5 1.500000 0.7712925 8.103282
 #&gt; 5    12 3.5 1.802776 1.2753583 9.605144</div><div class='input'><span class='co'># Last specified time point is larger than last observed, not printed</span>
 <span class='co'># Use extend=TRUE as in summary.survfit</span>
-<span class='fu'><a href='https://rdrr.io/r/base/summary.html'>summary</a></span><span class='op'>(</span><span class='va'>msf</span>, times<span class='op'>=</span><span class='fu'><a href='https://rdrr.io/r/base/seq.html'>seq</a></span><span class='op'>(</span><span class='fl'>0</span>, <span class='fl'>15</span>, by<span class='op'>=</span><span class='fl'>3</span><span class='op'>)</span>, extend<span class='op'>=</span><span class='cn'>TRUE</span><span class='op'>)</span>
+<span class='fu'><a href='https://rdrr.io/r/base/summary.html'>summary</a></span>(<span class='kw'>msf</span>, times=<span class='fu'><a href='https://rdrr.io/r/base/seq.html'>seq</a></span>(<span class='fl'>0</span>, <span class='fl'>15</span>, by=<span class='fl'>3</span>), extend=<span class='fl'>TRUE</span>)
 </div><div class='output co'>#&gt; 
 #&gt; Transition 1 :
 #&gt;   times        Haz      seHaz       lower    upper
@@ -417,7 +417,7 @@ method of a <code>summary.probtrans</code> doesn't return a value.</p>
 #&gt; 4     9 2.5 1.500000 0.7712925 8.103282
 #&gt; 5    12 3.5 1.802776 1.2753583 9.605144
 #&gt; 6    15 3.5 1.802776 1.2753583 9.605144</div><div class='input'><span class='co'># Different types of confidence intervals, default is log</span>
-<span class='fu'><a href='https://rdrr.io/r/base/summary.html'>summary</a></span><span class='op'>(</span><span class='va'>msf</span>, times<span class='op'>=</span><span class='fu'><a href='https://rdrr.io/r/base/seq.html'>seq</a></span><span class='op'>(</span><span class='fl'>0</span>, <span class='fl'>15</span>, by<span class='op'>=</span><span class='fl'>3</span><span class='op'>)</span>, conf.type<span class='op'>=</span><span class='st'>"plain"</span><span class='op'>)</span>
+<span class='fu'><a href='https://rdrr.io/r/base/summary.html'>summary</a></span>(<span class='kw'>msf</span>, times=<span class='fu'><a href='https://rdrr.io/r/base/seq.html'>seq</a></span>(<span class='fl'>0</span>, <span class='fl'>15</span>, by=<span class='fl'>3</span>), conf.type=<span class='st'>"plain"</span>)
 </div><div class='output co'>#&gt; 
 #&gt; Transition 1 :
 #&gt;   times        Haz      seHaz lower     upper
@@ -441,7 +441,7 @@ method of a <code>summary.probtrans</code> doesn't return a value.</p>
 #&gt; 2     3 0.0 0.000000     0 0.000000
 #&gt; 3     6 1.0 1.000000     0 2.959964
 #&gt; 4     9 2.5 1.500000     0 5.439946
-#&gt; 5    12 3.5 1.802776     0 7.033375</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/summary.html'>summary</a></span><span class='op'>(</span><span class='va'>msf</span>, times<span class='op'>=</span><span class='fu'><a href='https://rdrr.io/r/base/seq.html'>seq</a></span><span class='op'>(</span><span class='fl'>0</span>, <span class='fl'>15</span>, by<span class='op'>=</span><span class='fl'>3</span><span class='op'>)</span>, conf.type<span class='op'>=</span><span class='st'>"no"</span><span class='op'>)</span>
+#&gt; 5    12 3.5 1.802776     0 7.033375</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/summary.html'>summary</a></span>(<span class='kw'>msf</span>, times=<span class='fu'><a href='https://rdrr.io/r/base/seq.html'>seq</a></span>(<span class='fl'>0</span>, <span class='fl'>15</span>, by=<span class='fl'>3</span>), conf.type=<span class='st'>"no"</span>)
 </div><div class='output co'>#&gt; 
 #&gt; Transition 1 :
 #&gt;   times        Haz      seHaz
@@ -466,8 +466,8 @@ method of a <code>summary.probtrans</code> doesn't return a value.</p>
 #&gt; 3     6 1.0 1.000000
 #&gt; 4     9 2.5 1.500000
 #&gt; 5    12 3.5 1.802776</div><div class='input'><span class='co'># When the number of time points specified is larger than 12, head and tail is shown</span>
-<span class='va'>x</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/summary.html'>summary</a></span><span class='op'>(</span><span class='va'>msf</span>, times<span class='op'>=</span><span class='fu'><a href='https://rdrr.io/r/base/seq.html'>seq</a></span><span class='op'>(</span><span class='fl'>5</span>, <span class='fl'>8</span>, by<span class='op'>=</span><span class='fl'>0.25</span><span class='op'>)</span><span class='op'>)</span>
-<span class='va'>x</span>
+<span class='kw'>x</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/summary.html'>summary</a></span>(<span class='kw'>msf</span>, times=<span class='fu'><a href='https://rdrr.io/r/base/seq.html'>seq</a></span>(<span class='fl'>5</span>, <span class='fl'>8</span>, by=<span class='fl'>0.25</span>))
+<span class='kw'>x</span>
 </div><div class='output co'>#&gt; 
 #&gt; Transition 1 (head and tail):
 #&gt;   times        Haz      seHaz       lower    upper
