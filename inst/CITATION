@@ -10,13 +10,13 @@ citEntry(entry = "Article",
   volume       = "38",
   number       = "7",
   pages        = "1--30",
-  url          = "http://www.jstatsoft.org/v38/i07/",
+  url          = "https://www.jstatsoft.org/v38/i07/",
 
   textVersion  =
   paste("Liesbeth C. de Wreede, Marta Fiocco, Hein Putter (2011).",
         "mstate: An R Package for the Analysis of Competing Risks and Multi-State Models.",
         "Journal of Statistical Software, 38(7), 1-30.",
-        "URL http://www.jstatsoft.org/v38/i07/.")
+        "URL https://www.jstatsoft.org/v38/i07/.")
 )
 
 citEntry(entry = "Article",
@@ -31,7 +31,7 @@ citEntry(entry = "Article",
   textVersion =
   paste("Liesbeth C. de Wreede, Marta Fiocco, Hein Putter (2010)",
         "The {mstate} Package for Estimation and Prediction in Non- and Semi-Parametric Multi-State and Competing Risks Models.",
-        "Submitted to Computer Methods and Programs in Biomedicine.")
+        "Computer Methods and Programs in Biomedicine, 99, 261-274.")
 )
 
 citEntry(entry = "Article",
