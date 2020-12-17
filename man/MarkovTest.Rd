@@ -85,6 +85,7 @@ optimal weighting for the chi-squared trace.
 }
 \examples{
 
+\dontrun{
 # Example provided by the prothrombin data
 data("prothr")
 # Apply Markov test to grid of monthly time points over the first 7.5 years
@@ -124,6 +125,7 @@ MT <- MarkovTest(prothr, id = "id",
                    function(x) weighted.mean(x, w=oweights_chi, na.rm=TRUE),
                    function(x) mean(x, na.rm=TRUE),
                    function(x) max(x, na.rm=TRUE)))
+}
 
 }
 \references{

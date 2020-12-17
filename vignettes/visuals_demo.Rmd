@@ -35,7 +35,7 @@ library(ggplot2)
 theme_set(theme_bw(base_size = 14))
 ```
 
-We can then proceed to load the dataset, and prepare it for a competing risks analysis using `msprep()`. The steps are described in more detail in the [main vignette](https://cran.r-project.org/web/packages/mstate/vignettes/Tutorial.pdf).
+We can then proceed to load the dataset, and prepare it for a competing risks analysis using `msprep()`. The steps are described in more detail in the [main vignette](https://CRAN.R-project.org/package=mstate/vignettes/Tutorial.pdf).
 
 ```{r load_dat}
 # Load data

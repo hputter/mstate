@@ -1,6 +1,6 @@
 Package: mstate
 Version: 0.3.1
-Date: 2020-12-16
+Date: 2020-12-17
 Title: Data Preparation, Estimation and Prediction in Multi-State
         Models
 Authors@R: c(

@@ -1,4 +1,4 @@
-Version 0.3.1 (2020-12-16)
+Version 0.3.1 (2020-12-17)
 - Added test for Markov assumption from Titman & Putter (2020) in
   Biostatistics
 - Added ggplot versions of plot.msfit and plot.probtrans, as

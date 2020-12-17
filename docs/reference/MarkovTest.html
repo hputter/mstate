@@ -242,6 +242,7 @@ mstate by Hein Putter <a href='mailto:H.Putter@lumc.nl'>H.Putter@lumc.nl</a></p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'>
+<span class='co'>if</span> (<span class='fl'>FALSE</span>) {
 <span class='co'># Example provided by the prothrombin data</span>
 <span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span>(<span class='st'>"prothr"</span>)
 <span class='co'># Apply Markov test to grid of monthly time points over the first 7.5 years</span>
@@ -251,15 +252,15 @@ mstate by Hein Putter <a href='mailto:H.Putter@lumc.nl'>H.Putter@lumc.nl</a></p>
 <span class='co'># Markov test for transition 1 (wild bootstrap based on 25 replications, 1000 recommended)</span>
 <span class='kw'>MT</span> <span class='op'>&lt;-</span> <span class='fu'>MarkovTest</span>(<span class='kw'>prothr</span>, id = <span class='st'>"id"</span>, transition = <span class='fl'>1</span>,
                  grid = <span class='kw'>grid</span>, B = <span class='fl'>25</span>)
-</div><div class='output co'>#&gt; <span class='warning'>Warning: 64 lines with Tstart &lt;= Tstop, have been removed before applying tests!</span></div><div class='input'>
+
 <span class='co'># Plot traces</span>
 <span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span>(<span class='kw'>MT</span>, <span class='kw'>grid</span>, what=<span class='st'>"states"</span>, idx=<span class='fl'>1</span><span class='op'>:</span><span class='fl'>10</span>, states=<span class='fu'><a href='https://rdrr.io/r/base/colnames.html'>rownames</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/attr.html'>attr</a></span>(<span class='kw'>prothr</span>, <span class='st'>"trans"</span>)),
      xlab=<span class='st'>"Days since randomisation"</span>, ylab=<span class='st'>"Log-rank test statistic"</span>,
      main=<span class='st'>"Transition Normal -&gt; Low"</span>)
-</div><div class='img'><img src='MarkovTest-1.png' alt='' width='700' height='433' /></div><div class='input'><span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span>(<span class='kw'>MT</span>, <span class='kw'>grid</span>,what=<span class='st'>"overall"</span>, idx=<span class='fl'>1</span><span class='op'>:</span><span class='fl'>10</span>,
+<span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span>(<span class='kw'>MT</span>, <span class='kw'>grid</span>,what=<span class='st'>"overall"</span>, idx=<span class='fl'>1</span><span class='op'>:</span><span class='fl'>10</span>,
      xlab=<span class='st'>"Days since randomisation"</span>, ylab=<span class='st'>"Chi-square test statistic"</span>,
      main=<span class='st'>"Transition Normal -&gt; Low"</span>)
-</div><div class='img'><img src='MarkovTest-2.png' alt='' width='700' height='433' /></div><div class='input'>
+
 <span class='co'># Example using optimal weights and adjustment for covariates</span>
 <span class='kw'>oweights_fun</span> <span class='op'>&lt;-</span>
   <span class='fu'>optimal_weights_matrix</span>(<span class='kw'>prothr</span>, id = <span class='st'>"id"</span>, grid=<span class='kw'>grid</span>, transition = <span class='fl'>1</span>,
@@ -281,7 +282,8 @@ mstate by Hein Putter <a href='mailto:H.Putter@lumc.nl'>H.Putter@lumc.nl</a></p>
                    <span class='fu'>function</span>(<span class='kw'>x</span>) <span class='fu'><a href='https://rdrr.io/r/stats/weighted.mean.html'>weighted.mean</a></span>(<span class='kw'>x</span>, w=<span class='kw'>oweights_chi</span>, na.rm=<span class='fl'>TRUE</span>),
                    <span class='fu'>function</span>(<span class='kw'>x</span>) <span class='fu'><a href='https://rdrr.io/r/base/mean.html'>mean</a></span>(<span class='kw'>x</span>, na.rm=<span class='fl'>TRUE</span>),
                    <span class='fu'>function</span>(<span class='kw'>x</span>) <span class='fu'><a href='https://rdrr.io/r/base/Extremes.html'>max</a></span>(<span class='kw'>x</span>, na.rm=<span class='fl'>TRUE</span>)))
-</div><div class='output co'>#&gt; <span class='warning'>Warning: 64 lines with Tstart &lt;= Tstop, have been removed before applying tests!</span></div><div class='input'>
+}
+
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
