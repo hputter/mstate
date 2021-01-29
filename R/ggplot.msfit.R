@@ -38,7 +38,7 @@ ggplot.msfit <- function(x,
     df$trans_name <- leg$transname[match(df$trans, leg$transno)]
   }
   
-  df$trans_name <- as.factor(df$trans_name)
+  df$trans_name <- factor(df$trans_name, levels = unique(df$trans_name))
   
   # Remove possible inf time values
   if (any(df$time == Inf)) df <- df[-which(df$time == Inf), ]
