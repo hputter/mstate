@@ -82,6 +82,12 @@ plot.Cuminc <- function(x,
   
   # Ggplot version
   if (use.ggplot) {
+    
+    # Check for ggplot2
+    if (!requireNamespace("ggplot2", quietly = TRUE)) {
+      stop("Package ggplot2 needed for this function to work. Please install it.", call. = FALSE)
+    }
+    
     conf.type <- match.arg(conf.type)
     
     p <- ggplot.Cuminc(

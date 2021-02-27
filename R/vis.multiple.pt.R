@@ -92,7 +92,11 @@ vis.multiple.pt <- function(x,
                             conf.type = c("log", "plain", "none"),
                             legend.title) {
   
-  # For cmd check
+  # Check for ggplot2
+  if (!requireNamespace("ggplot2", quietly = TRUE)) {
+    stop("Package ggplot2 needed for this function to work. Please install it.", call. = FALSE)
+  }
+  
   . <- time <- state <- prob <- CI_low <- CI_upp <- PT <-  NULL
   
   # Check x are probtrans objects

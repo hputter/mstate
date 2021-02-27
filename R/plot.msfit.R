@@ -100,8 +100,14 @@ plot.msfit <- function(x,
   if (!inherits(x, "msfit"))
     stop("'x' must be a 'msfit' object")
   
-  # Use ggplot or not?
+  # Use ggplot 
   if (use.ggplot) {
+    
+    # Check for ggplot2
+    if (!requireNamespace("ggplot2", quietly = TRUE)) {
+      stop("Package ggplot2 needed for this function to work. Please install it.", call. = FALSE)
+    }
+    
     p <- ggplot.msfit(
       x = x,
       type = type,

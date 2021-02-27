@@ -95,6 +95,11 @@ vis.mirror.pt <- function(x,
                           ylab = "Probability",
                           legend.pos = "right") {
   
+  # Check for ggplot2
+  if (!requireNamespace("ggplot2", quietly = TRUE)) {
+    stop("Package ggplot2 needed for this function to work. Please install it.", call. = FALSE)
+  }
+  
   # Check both have the right number of states
   n_states <- 1 + sum(!is.na(x[[1]][["trans"]][from, ]))
   if (missing(cols)) cols <- set_colours(n = n_states, type = "areas")
