@@ -17,8 +17,8 @@ prep_Cuminc_df <- function(x,
   se_cols <- grep(x = names(x), pattern = "^seCI", value = T)
   
   # Prepare long df
-  df_long <- melt.data.table(
-    data = data.table(x), 
+  df_long <- data.table::melt.data.table(
+    data = data.table::data.table(x), 
     measure.vars = list(prob_cols, se_cols),
     value.name = c("prob", "se"), 
     variable.name = "state"

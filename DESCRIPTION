@@ -40,7 +40,6 @@ Depends:
 Imports: 
   rlang,
   data.table,
-  magrittr,
   lattice,
   RColorBrewer,
   viridisLite

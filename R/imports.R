@@ -1,7 +1,5 @@
 #' @import survival
-#' @importFrom data.table .N `:=` .SD melt.data.table data.table 
-#' @importFrom magrittr `%>%`
-#' @importFrom RColorBrewer brewer.pal
+#' @importFrom data.table .N `:=` .SD  
 #' @importFrom rlang .data
 #' @importFrom graphics box lines par plot polygon text title
 #' @importFrom stats as.formula delete.response model.frame model.matrix 

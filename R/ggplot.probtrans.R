@@ -31,23 +31,17 @@ ggplot.probtrans <- function(x,
   # Get names of states and state numbers
   if (missing(legend)) {
     state_names <- dimnames(x$trans)[[1]]
-    
-    # If supplied, check it is right length
   } else if (length(legend) != dim(x$trans)[1]) {
     stop(paste("'Legend' should be a vector of length ", dim(x$trans)[1]))
-    
   } else state_names <- legend
   
   # Check stacking order
   if (missing(ord)) ord <- 1:length(state_names)
   if (missing(cex)) cex <- 8
   if (missing(lwd)) lwd <- 0.5
+  if (!missing(label) & !(type %in% c("filled", "stacked"))) stop("Labels only valid for filled/stacked plots!")
   
-  # Check label is supplied for correct plot type
-  if (!missing(label) & !(type %in% c("filled", "stacked")))
-    stop("Labels only valid for filled/stacked plots!")
-  
-  # Create copy of pb object so original is NOT effected by references updating
+  # Create copy of pb object so original is NOT affected by references updating
   pb_copy <- data.table::copy(x)
   
   # Prepare dataframe 
@@ -60,27 +54,15 @@ ggplot.probtrans <- function(x,
     conf.type = conf.type
   )
   
-  # Get bounds of plot
+  # Set graphical parameters
   if (missing(xlim)) xlim <- c(0, max(df_steps$time))
   if (missing(ylim)) ylim <- c(0, 1)
-
-  # Arrange colours based on states plotted
   n_states_plotted <- length(unique(as.character(df_steps$state)))
-  
-  # check colours
   if (missing(cols)) cols <- set_colours(n_states_plotted, type = "areas")
-  if (length(cols) != n_states_plotted) 
-    stop(paste0("Length of col should be ", n_states_plotted))
-  
-  # Default colours different if line plot
-  if (type %in% c("separate", "single")) {
-    cols <- set_colours(n_states_plotted, type = "lines")
-  } 
-  
-  # Check linetype
+  if (length(cols) != n_states_plotted) stop(paste0("Length of col should be ", n_states_plotted))
+  if (type %in% c("separate", "single")) cols <- set_colours(n_states_plotted, type = "lines")
   if (missing(lty)) lty <- rep(1, n_states_plotted)
-  if (length(lty) != n_states_plotted) 
-    stop(paste0("Length of lty should be ", n_states_plotted))
+  if (length(lty) != n_states_plotted) stop(paste0("Length of lty should be ", n_states_plotted))
   
   # Make different plot types
   if (type == "stacked") {
@@ -94,9 +76,7 @@ ggplot.probtrans <- function(x,
     ) + 
       
       # Stacked so we just remove fill colour
-      ggplot2::scale_fill_manual(
-        values = rep(NA, length(state_names))
-      ) + 
+      ggplot2::scale_fill_manual(values = rep(NA, length(state_names))) + 
       ggplot2::ylab(ylab) +
       ggplot2::xlab(xlab) +
       ggplot2::coord_cartesian(expand = 0, xlim = xlim, ylim = ylim) +
@@ -108,11 +88,16 @@ ggplot.probtrans <- function(x,
     # add if for label_type
     if (missing(label)) {
       
-      p <- ggplot2::ggplot(data = df_steps, 
-                        ggplot2::aes(time, ymin = low, ymax = upp, 
-                                     fill = state)) +
-        ggplot2::geom_ribbon(col = "black", size = lwd,
-                             na.rm = T) + # for rel surv
+      p <- ggplot2::ggplot(
+        data = df_steps, 
+        ggplot2::aes(
+          x = time, 
+          ymin = low, 
+          ymax = upp, 
+          fill = state
+        )
+      ) +
+        ggplot2::geom_ribbon(col = "black", size = lwd, na.rm = T) + # for rel surv
         ggplot2::guides(fill = ggplot2::guide_legend("State", reverse = T)) + 
         ggplot2::theme(legend.position = legend.pos) +
         ggplot2::coord_cartesian(xlim = xlim, ylim = ylim, expand = 0)  +
@@ -140,18 +125,30 @@ ggplot.probtrans <- function(x,
     
   } else if (type == "single") {
     
-    # Colour of ribbon
-    col_ribb <- "grey70"
-    if (conf.type == "none") col_ribb <- NA
+    # Colour of ribbon 
+    col_ribb <- ifelse(conf.type == "none", NA, "grey70")
     
-    p <- ggplot2::ggplot(data = df_steps,
-                         ggplot2::aes(time, prob, 
-                                      col = state, 
-                                      linetype = state)) +
-      ggplot2::geom_ribbon(ggplot2::aes(ymin = CI_low, 
-                                        ymax = CI_upp,), 
-                           alpha = 0.5, fill = col_ribb,
-                           col = NA) +
+    p <- ggplot2::ggplot(
+      data = df_steps,
+      ggplot2::aes(
+        x = time, 
+        y = prob, 
+        col = state, 
+        linetype = state
+      )
+    ) 
+    
+    if (sum(grepl(pattern = "CI_low|CI_upp", x = names(df_steps))) > 0) {
+      p <- p + ggplot2::geom_ribbon(
+        ggplot2::aes(ymin = CI_low, ymax = CI_upp), 
+        alpha = 0.5, 
+        fill = col_ribb,
+        col = NA,
+        na.rm = TRUE
+      )
+    }
+    
+    p <- p +
       ggplot2::geom_line(size = lwd) + # colour boundaries
       ggplot2::guides(col = ggplot2::guide_legend("State", reverse = T)) +
       ggplot2::theme(legend.position = legend.pos) +
@@ -168,20 +165,30 @@ ggplot.probtrans <- function(x,
   } else if (type == "separate") {
     
     # Colour of ribbon
-    col_ribb <- "grey70"
-    if (conf.type == "none") col_ribb <- NA
+    col_ribb <- ifelse(conf.type == "none", NA, "grey70")
     
     p <- ggplot2::ggplot(
       data = df_steps,
-      ggplot2::aes(time, prob, 
-                   ymin = CI_low, 
-                   ymax = CI_upp,
-                   col = state, 
-                   linetype = state)
-    ) +
-      ggplot2::geom_ribbon(alpha = 0.5, fill = col_ribb,
-                           col = NA, na.rm = T) +
-      ggplot2::geom_line(size = lwd, na.rm = T) +
+      ggplot2::aes(
+        x = time,
+        y = prob, 
+        col = state, 
+        linetype = state
+      )
+    ) 
+    
+    if (sum(grepl(pattern = "CI_low|CI_upp", x = names(df_steps)) > 0)) {
+      p <- p + ggplot2::geom_ribbon(
+        ggplot2::aes(ymin = CI_low, ymax = CI_upp), 
+        alpha = 0.5, 
+        fill = col_ribb,
+        col = NA,
+        na.rm = TRUE
+      )
+    }
+    
+    p <- p +
+      ggplot2::geom_line(size = lwd, na.rm = TRUE) +
       ggplot2::facet_wrap(. ~ state) +
       ggplot2::guides(col = ggplot2::guide_legend("State", reverse = T)) +
       ggplot2::coord_cartesian(xlim = xlim, ylim = ylim, expand = 0) +
@@ -216,104 +223,83 @@ prep_probtrans_df <- function(obj,
   . <- state_num <- state <- se_state <- prob <- se <- cum_probs <-  NULL
   
   # Read in probtrans object
-  df <- data.table::setDT(obj[[from]])
+  df <- data.table::data.table(obj[[from]])
   
-  # Subset states with at least one non zero probabily
+  # Subset states with at least one non zero probability
   zero_prob_cols <- apply(df, 2, function(col) !all(col == 0))
   
   # Condition pstate cols
   pstate_cols <- grepl(x = names(df), pattern = "pstate|time")
   condition_pstate <- zero_prob_cols & pstate_cols  
-  
-  # Conditions se cols
-  se_cols <- grepl(x = names(df), pattern = "se|time")
-  condition_se <- zero_prob_cols & se_cols
-  
+
   # Prepare 
-  df_pstate <- df %>% 
-    
-    # Check for inf values, and exclude
-    .[time != Inf, .SD, .SDcols = condition_pstate] %>%
-    
-    # Make long format
-    data.table::melt.data.table(
-      id.vars       = "time",
-      variable.name = "state",
-      value.name    = "prob"
-    ) %>% 
-    .[, state_num := as.numeric(
-      gsub(x = state, pattern = "pstate", replacement = "")
-    )]
+  df_pstate <- data.table::melt.data.table(
+    data = df[time != Inf, .SD, .SDcols = condition_pstate],
+    id.vars = "time",
+    variable.name = "state",
+    value.name = "prob"
+  ) 
+  df_pstate[, state_num := as.numeric(gsub(x = state, pattern = "pstate", replacement = ""))]
+  df_long <- df_pstate
+  #df_long[, ':=' (CI_low = NA, CI_upp = NA)]
   
-  # Se's long
-  df_se <- df %>% 
+  # Check if standard errors were computed (only time)
+  se_cols <- grepl(x = names(df), pattern = "se|time")
+  if (sum(se_cols) > 1) {
+    condition_se <- zero_prob_cols & se_cols
     
-    # Check for infinite time values - exclude
-    .[time != Inf, .SD, .SDcols = condition_se] %>%
-    
-    # Make long format
-    data.table::melt.data.table(
-      id.vars       = "time",
+    # Se's long
+    df_se <- data.table::melt.data.table(
+      data = df[time != Inf, .SD, .SDcols = condition_se],
+      id.vars = "time",
       variable.name = "se_state",
-      value.name    = "se"
-    ) %>% 
+      value.name = "se"
+    ) 
+    df_se[, state_num := as.numeric(gsub(x = se_state, pattern = "se", replacement = ""))]
     
-    .[, state_num := as.numeric(
-      gsub(x = se_state, pattern = "se", replacement = "")
-    )]
-  
-  
-  # Put se's and pstates together
-  df_long <- data.table::merge.data.table(
-    x = df_pstate, 
-    y = df_se, 
-    by = c("time", "state_num")
-  ) %>% 
-    
-    # Order and label factor with state names
-    .[, state := factor(
-      state_num, 
-      levels = ord, 
-      labels = state_names[ord]
-    )] %>% 
+    # Put se's and pstates together
+    df_long <- data.table::merge.data.table(
+      x = df_pstate, 
+      y = df_se, 
+      by = c("time", "state_num")
+    )
     
     # Add CI for probabilities, do this on log
-    .[, ':=' (
-      CI_low = make_prob_confint(
-        prob, se, conf.type, conf.int, bound = "low"
-      ),
-      CI_upp = make_prob_confint(
-        prob, se, conf.type, conf.int, bound = "upp"
-      )
-    ), by = .(time, state)] %>% 
-    
-    # Sort by time and state, 
-    .[order(time, state)] %>% 
-    .[, cum_probs := cumsum(prob), by = time] %>% 
-    
-    # Compute upper and lower bounds of ribbons
-    .[, ':=' (
-      low = c(0, cum_probs[-length(cum_probs)]),
-      upp = c(cum_probs[-length(cum_probs)], 1)
-    ), by = time] 
+    df_long[, ':=' (
+      CI_low = make_prob_confint(prob, se, conf.type, conf.int, bound = "low"),
+      CI_upp = make_prob_confint(prob, se, conf.type, conf.int, bound = "upp")
+    )]  #, by = .(time, state)] %>% 
+  }
   
+  # Order and label factor with state names
+  df_long[, state := factor(
+    x = state_num, 
+    levels = ord, 
+    labels = state_names[ord]
+  )]
+  
+  data.table::setorder(df_long, time, state)
+  df_long[, cum_probs := cumsum(prob), by = time]
+  
+  # Compute upper and lower bounds of ribbons
+  df_long[, ':=' (
+    low = c(0, cum_probs[-length(cum_probs)]),
+    upp = c(cum_probs[-length(cum_probs)], 1)
+  ), by = time] 
   
   # Df with steps for ribbon
-  df_steps <- rbind(df_long, 
-                    df_long) %>%
-    .[order(time)] %>% 
+  df_steps <- rbind(df_long, df_long) 
+  data.table::setorder(df_steps, time)
     
-    # Shift time by 1, creating steps, equi to dplyr::lead(time, n = 1)
-    .[, time := data.table::shift(
-      time, 
-      fill = NA, 
-      n = 1, 
-      type = "lead"
-    ), by = state] %>% 
-    
-    .[!is.na(time)]
-  
-  return(df_steps) 
+  # Shift time by 1, creating steps, equi to dplyr::lead(time, n = 1)
+  df_steps[, time := data.table::shift(
+    x = time, 
+    fill = NA, 
+    n = 1, 
+    type = "lead"
+  ), by = state] 
+ 
+  return(df_steps[!is.na(time)]) 
 }
 
 
@@ -331,18 +317,16 @@ make_labelled_plot <- function(df_steps,
   max_t <- time_vec[length(time_vec)]
 
   # Prep labels - at end of follow-up
-  df_labels <- df_steps %>% 
-    .[, ':=' (
-      label = ifelse(time == max_t, as.character(state), NA_character_),
-      mean_cprob = (low + upp) / 2
-    )]  
+  df_labels <- df_steps[, ':=' (
+    label = ifelse(time == max_t, as.character(state), NA_character_),
+    mean_cprob = (low + upp) / 2
+  )]  
   
   # Begin plots
-  p <- df_labels %>% 
-    
-    # Remove last row to avoid dupl labels
-    .[time <= max_t, .SD[-.N], by = state] %>% 
-    ggplot2::ggplot(ggplot2::aes(time, mean_cprob)) + 
+  p <- ggplot2::ggplot(
+    data = df_labels[time <= max_t, .SD[-.N], by = state],
+    ggplot2::aes(time, mean_cprob)
+  ) + 
     ggplot2::geom_ribbon(
       ggplot2::aes(ymin = low, ymax = upp, fill = state),
       col = "black", size = lwd

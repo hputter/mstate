@@ -39,8 +39,6 @@ ggplot.msfit <- function(x,
   
   # Remove possible inf time values
   if (any(df$time == Inf)) df <- df[-which(df$time == Inf), ]
-  
-  # Checks
   n_states_plotted <- length(levels(df$trans_name))
   
   # Check colours
@@ -57,10 +55,8 @@ ggplot.msfit <- function(x,
     stop(paste0("Length of lty should be ", n_states_plotted))
   }
   
-  # Check lwd
+  # Check lwd, xlim and ylim
   if (missing(lwd)) lwd <- 1
-  
-  # Check xlim and ylim
   if (missing(xlim)) xlim <- c(0, max(df$time))
   if (missing(ylim)) ylim <- c(0, max(df$Haz))
   

@@ -180,13 +180,12 @@ vis.mirror.pt <- function(x,
   
   # Build basic plot
   p_main <-  dat_main %>% 
-    ggplot2::ggplot(
-      ggplot2::aes(x = .data$time)) + 
-    ggplot2::geom_ribbon(ggplot2::aes(ymin = .data$low, 
-                             ymax = .data$upp,
-                             fill = .data$state), 
-                         col = "black", na.rm = T) +
-    
+    ggplot2::ggplot(ggplot2::aes(x = .data$time)) + 
+    ggplot2::geom_ribbon(
+      ggplot2::aes(ymin = .data$low, ymax = .data$upp, fill = .data$state), 
+      col = "black",
+      na.rm = T
+    ) +
     # Add divider segment
     ggplot2::geom_segment(
       x = max_t, 
@@ -195,11 +194,7 @@ vis.mirror.pt <- function(x,
       yend = ylim[2], 
       size = 2
     ) +
-    ggplot2::scale_x_continuous(
-      xlab,
-      breaks = breakos,
-      labels = labos
-    ) +
+    ggplot2::scale_x_continuous(xlab, breaks = breakos, labels = labos) +
     ggplot2::ylab(ylab) +
     ggplot2::scale_fill_manual(values = cols) +
     ggplot2::guides(fill = ggplot2::guide_legend(reverse = T))
