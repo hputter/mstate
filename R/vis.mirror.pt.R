@@ -117,10 +117,8 @@ vis.mirror.pt <- function(x,
   # Horizon for symmetry
   if (!is.null(horizon)) {
     
-    if (horizon > max(left_xlim) | horizon > max(right_xlim))
-      stop(paste0("Horizon should be smaller than both ",
-                  max(left_xlim), " and ", max(right_xlim)))
-    
+    if (horizon > max(left_xlim) | horizon > max(right_xlim)) 
+      stop(paste0("Horizon should be smaller than both ", max(left_xlim), " and ", max(right_xlim)))
     left_xlim[which(left_xlim == max(left_xlim))] <- horizon
     right_xlim[which(right_xlim == max(right_xlim))] <- horizon
   }
@@ -152,35 +150,20 @@ vis.mirror.pt <- function(x,
   
   # Prep labels
   breaks_size <- c(floor(max_t / 3), floor(max(dat_right$time) / 3))
-  if (any(breaks_size == 0)) breaks_size <- c(
-    round(max_t / 3, digits = 1), round(max(dat_right$time) / 3, digits = 1)
-  )
-  
-  if (missing(breaks_x_left)) breaks_x_left <- seq(
-    from = 0, to = max_t, by = breaks_size[1]
-  )
-  
-  if (missing(breaks_x_right)) breaks_x_right <- seq(
-    from = 0, to = max(dat_right$time), by = breaks_size[2]
-  )
+  if (any(breaks_size == 0)) breaks_size <- c(round(max_t / 3, digits = 1), round(max(dat_right$time) / 3, digits = 1))
+  if (missing(breaks_x_left)) breaks_x_left <- seq(from = 0, to = max_t, by = breaks_size[1])
+  if (missing(breaks_x_right)) breaks_x_right <- seq(from = 0, to = max(dat_right$time), by = breaks_size[2])
   
   # If not missing check labels are within bounds
-  if (any(breaks_x_left > max_t))
-    stop(paste0("Max follow up on left side is ", 
-                round(max_t, 3),
-                ", make sure all breaks are smaller!"))
-  
-  if (any(breaks_x_right > max(dat_right$time)))
-    stop(paste0("Max follow up on right side is ", 
-                round(max(dat_right$time), 3),
-                ", make sure all breaks are smaller!"))
-  
+  if (any(breaks_x_left > max_t)) 
+    stop(paste0("Max follow up on left side is ", round(max_t, 3), ", make sure all breaks are smaller!"))
+  if (any(breaks_x_right > max(dat_right$time))) 
+    stop(paste0("Max follow up on right side is ", round(max(dat_right$time), 3), ", make sure all breaks are smaller!"))
   breakos <- c(breaks_x_left, max(dat_main$time) - breaks_x_right)
   labos <- c(breaks_x_left, breaks_x_right)
   
   # Build basic plot
-  p_main <-  dat_main %>% 
-    ggplot2::ggplot(ggplot2::aes(x = .data$time)) + 
+  p_main <-  ggplot2::ggplot(data = dat_main, ggplot2::aes(x = .data$time)) + 
     ggplot2::geom_ribbon(
       ggplot2::aes(ymin = .data$low, ymax = .data$upp, fill = .data$state), 
       col = "black",
@@ -245,7 +228,6 @@ vis.mirror.pt <- function(x,
 }
 
 
-
 prep_compare_df <- function(dat_left, dat_right) {
   
   # For data.table
@@ -258,52 +240,52 @@ prep_compare_df <- function(dat_left, dat_right) {
   # Set max_t to left one in any case
   max_t <- p1_maxt
   
-  # Check shift
-  if (p2_maxt != p1_maxt) {
-    diff <- p2_maxt - p1_maxt
-  } else diff <- 0
+  # Check shift  
+  diff <- ifelse(p2_maxt != p1_maxt, p2_maxt - p1_maxt, 0)
   
   # Get righthand side back to original df
-  df_p2 <- data.table::copy(dat_right) %>% 
-    .[, time := data.table::shift(
-      time, 
-      fill = NA,
-      n = 1, 
-      type = "lag"
-    ), by = state] %>% 
-    .[!is.na(time)] %>% 
-    unique() %>% 
+  df_p2 <- data.table::copy(dat_right) 
+  
+  df_p2[, time := data.table::shift(
+    x = time, 
+    fill = NA,
+    n = 1, 
+    type = "lag"
+  ), by = state] 
+  
+  df_p2 <- unique(df_p2[!is.na(time)])
+
+  # Rescale time
+  df_p2[, ':=' (
+    time_orig = time,
+    time = -time + 2 * max_t + (diff + 0.01)
+  )]
     
-    # Rescale time
-    .[, ':=' (
-      time_orig = time,
-      time = -time + 2 * max_t + (diff + 0.01)
-    )]
-  
+  # Shift all
   cols <- c("time", "time_orig")  
+  df_p2 <- rbind(df_p2, df_p2) 
+  data.table::setorder(df_p2, time)
+  df_p2[, (cols) := Map(
+    f = data.table::shift,
+    x = .SD, 
+    fill = time[1L], 
+    n = 1, 
+    type = "lag"
+  ), by = state, .SDcols = cols] 
+
+  df_p2[, side := "right"]
   
-  df_p2 <- rbind(df_p2, df_p2) %>% 
-    .[order(time)] %>% 
-    .[, (cols) := Map(
-      data.table::shift,
-      .SD, 
-      fill = time[1L], 
-      n = 1, 
-      type = "lag"
-    ), by = state, .SDcols = cols] %>% 
-    .[!is.na(time)]  %>% 
-    .[, side := "right"]
-  
+  # Left sides
   df_p1 <- dat_left[, ':=' (
     time_orig = time,
     side = "left"
   )]
   
-  plot_df <- rbind(df_p1, df_p2)
+  # Bind both sides
+  plot_df <- rbind(df_p1, df_p2[!is.na(time)])
   
   # Return a list of useful things
-  res <- list("df_compare" = plot_df,
-              "max_t" = max_t,
-              "diff" = diff)
+  res <- list("df_compare" = plot_df, "max_t" = max_t, "diff" = diff)
+  return(res)
 }
 
