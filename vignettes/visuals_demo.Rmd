@@ -295,12 +295,10 @@ cum_incid <- Cuminc(
 plot(
   x = cum_incid,
   use.ggplot = TRUE,
-  conf.type = "none",
+  conf.type = "log",
   lty = 1:2,
   conf.int = 0.95,
 )
-
-
 ```
 
 In the case where this a grouping variable:

@@ -33,8 +33,6 @@
 #' indicating whether subjects with missing cause of failure should be removed
 #' or whether missing cause of failure should be treated as a separate cause of
 #' failure
-#' @param variance Logical value, indicating whether the standard errors of the
-#' cumulative incidences should be output (\code{TRUE}, the default) or not
 #' 
 #' @return An object of class \code{"Cuminc"}, which is a data frame containing
 #' the estimated failure-free probabilities and cumulative incidences and their
@@ -89,7 +87,7 @@
 #' 
 #' @export 
 `Cuminc` <- function(time, status, data, group, failcodes, 
-                     na.status=c("remove","extra"), variance=TRUE)
+                     na.status=c("remove","extra"))
 {
   ## time
   if (!is.vector(time)) stop("argument \"time\" not of correct type")

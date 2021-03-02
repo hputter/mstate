@@ -12,7 +12,7 @@ prep_Cuminc_df <- function(x,
   # For data.table warnings
   . <- prob <- se <- NULL
   
-  # Get list of se cols and prob cols
+  # Get list of se cols and prob cols (Cumin will always return SEs)
   prob_cols <- grep(x = names(x), pattern = "^CI", value = T)
   se_cols <- grep(x = names(x), pattern = "^seCI", value = T)
   
@@ -20,7 +20,6 @@ prep_Cuminc_df <- function(x,
   df_long <- melt.data.table(
     data = data.table(x), 
     measure.vars = list(prob_cols, se_cols),
-    #measure.vars = data.table:::patterns("^CI", "^seCI"), 
     value.name = c("prob", "se"), 
     variable.name = "state"
   ) %>% 
