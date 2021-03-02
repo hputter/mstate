@@ -22,32 +22,26 @@ prep_Cuminc_df <- function(x,
     measure.vars = list(prob_cols, se_cols),
     value.name = c("prob", "se"), 
     variable.name = "state"
-  ) %>% 
-    .[, ':=' (
-      CI_low = make_prob_confint(
-        prob, se, conf.type, conf.int, bound = "low"
-      ),
-      CI_upp = make_prob_confint(
-        prob, se, conf.type, conf.int, bound = "upp"
-      )
-    ), by = shift_vars] 
+  ) 
+  
+  df_long[, ':=' (
+    CI_low = make_prob_confint(prob, se, conf.type, conf.int, bound = "low"),
+    CI_upp = make_prob_confint(prob, se, conf.type, conf.int, bound = "upp")
+  ), by = shift_vars] 
   
   # Shift for the ribbons
-  df_steps <- rbind(df_long, 
-                    df_long) %>%
-    .[order(time)] %>% 
-    
-    # Shift time by 1, creating steps, equi to dplyr::lead(time, n = 1)
-    .[, time := data.table::shift(
-      time, 
-      fill = NA, 
-      n = 1, 
-      type = "lead"
-    ), by = shift_vars] %>% 
-    
-    .[!is.na(time)]
+  df_steps <- rbind(df_long, df_long) 
+  data.table::setorder(x = df_steps, time)
+
+  # Shift time by 1, creating steps, equi to dplyr::lead(time, n = 1)
+  df_steps[, time := data.table::shift(
+    x = time, 
+    fill = NA, 
+    n = 1, 
+    type = "lead"
+  ), by = shift_vars]
   
-  return(df_steps)
+  return(df_steps[!is.na(time)])
 } 
 
 
@@ -67,14 +61,9 @@ ggplot.Cuminc <- function(x,
   # For data.table warnings
   state.grp <- state <- group <- NULL
   
-  # Check whether group was specified
-  if ("group" %in% names(x)) {
-    shift_vars <- c("state", "group")
-  } else shift_vars <- "state"
-  
-  # Check facet
-  if (facet & length(shift_vars) == 1)
-    stop("Cannot facet for Cuminc object without group specified")
+  # Check whether group was specified and facets
+  shift_vars <- if ("group" %in% names(x)) c("state", "group") else "state"
+  if (facet & length(shift_vars) == 1) stop("Cannot facet for Cuminc object without group specified")
   
   # Format data
   df_steps <- prep_Cuminc_df(
@@ -98,21 +87,19 @@ ggplot.Cuminc <- function(x,
   if (missing(ylim)) ylim <- c(0, 1)
   if (missing(lty)) lty <- rep(1, n_grps_plotted)
   if (missing(legend)) legend <- levels(factor(df_steps[[grp]]))
-  if (conf.type == "none") {
-    col_ribb <- NA
-  } else col_ribb <- "grey70"
-  
-  # Colours
   if (missing(cols)) cols <- set_colours(n_grps_plotted, type = "lines")
-
+  col_ribb <- ifelse(conf.type == "none", NA, "grey70")
+  
   # Start plot
   p <- ggplot2::ggplot(
     data = df_steps,
-    ggplot2::aes(x = .data$time,
-                 y = .data$prob,
-                 col = !!grp,
-                 group = !!grp,
-                 linetype = !!grp)
+    ggplot2::aes(
+      x = .data$time,
+      y = .data$prob,
+      col = !!grp,
+      group = !!grp,
+      linetype = !!grp
+    )
   ) +
     ggplot2::geom_ribbon(
       ggplot2::aes(ymin = .data$CI_low, ymax = .data$CI_upp),
