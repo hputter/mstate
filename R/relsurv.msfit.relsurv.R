@@ -22,7 +22,7 @@
 #' 
 #' @author Damjan Manevski \email{damjan.manevski@@mf.uni-lj.si}
 #' @seealso \code{\link{msfit}}
-#' @example 
+#' @examples 
 #' 
 #' tmat <- trans.illdeath()
 #' tg <- data.frame(illt=c(1,1,6,6,8,9)*30,ills=c(1,0,1,1,0,1),

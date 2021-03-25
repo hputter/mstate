@@ -55,6 +55,30 @@ split in population and excess transitions. This upgraded
 msfit object contains the split hazards based on the transition
 matrix (transMat). The (co)variance matrix is also upgraded, if provided.
 }
+\examples{
+
+tmat <- trans.illdeath()
+tg <- data.frame(illt=c(1,1,6,6,8,9)*30,ills=c(1,0,1,1,0,1),
+                 dt=c(5,1,9,7,8,12)*30,ds=c(1,1,1,1,1,1),
+                 x1=c(1,1,1,0,0,0),x2=c(6:1))
+# data in long format using msprep
+tglong <- msprep(time=c(NA,"illt","dt"),status=c(NA,"ills","ds"),
+                 data=tg,keep=c("x1","x2"),trans=tmat)
+# expanded covariates
+tglong <- expand.covs(tglong,c("x1","x2"))
+# generate demographic covariates
+set.seed(510)
+tglong$sex <- sample(1:2, size = nrow(tglong), replace = TRUE)
+tglong$age <- runif(nrow(tglong), min = 30, max=70)
+tglong$year <- sample(seq(as.Date('2000/01/01'), as.Date('2010/01/01'), by="day"), nrow(tglong)) 
+# Cox model with different covariate
+cx <- coxph(Surv(Tstart,Tstop,status)~x1.1+x2.2+strata(trans),
+            data=tglong,method="breslow")
+newdata <- data.frame(trans=1:3,x1.1=c(0,0,0),x2.2=c(0,1,0),strata=1:3)
+mod <- msfit(cx,newdata,trans=tmat)
+mod.relsurv <- msfit.relsurv(mod, data=tglong, split.transitions = c(2,3),
+                             ratetable = relsurv::slopop, rmap = list(age=age*365.241))
+}
 \seealso{
 \code{\link{msfit}}
 }
