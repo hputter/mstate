@@ -3,12 +3,12 @@
 #' A function that calculates the excess and population hazards
 #' for a given transition. Code is based on function rs.surv from
 #' the relsurv package. 
-#' @param formula A non-parametric Surv-based formula, e.g. Surv(times, status)~1.
+#' @param formula A non-parametric Surv-based formula, e.g. Surv(times, status)~1
 #' @param data A subset of the msprep object (dataset) where there's 
-#' only data for the chosen transition.
-#' @param ratetable A table of event rates, organized as a ratetable object, such as slopop.
-#' @param na.action A missing-data filter function, applied to the model.frame, after any subset argument has been used. Default is options()$na.action.
-#' @param add.times Additional times at which the hazards should be evaluated.
+#' only data for the chosen transition
+#' @param ratetable A table of event rates, organized as a ratetable object, such as slopop
+#' @param na.action A missing-data filter function, applied to the model.frame, after any subset argument has been used. Default is options()$na.action
+#' @param add.times Additional times at which the hazards should be evaluated
 #' @param rmap An optional list to be used if the variables are not organized and named in the same way as in the ratetable object
 #' @param include.all.times Should hazards be evaluated at all times in seq(minimum time, maximum time, by=1). Default is FALSE
 #' @return A list containing the needed hazards.
@@ -34,7 +34,7 @@
   
   # Prepare rform:
   if(nrow(data)==0) browser()
-  rform <- relsurv:::rformulate(formula,data,ratetable,na.action,rmap)
+  rform <- rformulate.mstate(formula,data,ratetable,na.action,rmap) # relsurv:::rformulate
   data <- rform$data # dataset
   
   # Adjust year/age for left truncation:
