@@ -5,7 +5,7 @@
 #' This implementation is written based on function mstate:::msboot.
 #' @param theta	A function of data and perhaps other arguments, returning the value of the statistic to be bootstrapped
 #' @param data An object of class 'msdata', such as output from msprep
-#' @param B	The number of bootstrap replications; the default is taken to be quite small (5) since bootstrapping can be time-consuming
+#' @param B	The number of bootstrap replications; the default is B=10
 #' @param id Character string indicating which column identifies the subjects to be resampled
 #' @param verbose The level of output; default 0 = no output, 1 = print the replication
 #' @param transmat The transition matrix of class transMat
@@ -17,13 +17,13 @@
 #' @param ratetable The population mortality table. A table of event rates, organized as a ratetable object, see for example relsurv::slopop. Default is slopop
 #' @param add.times Additional times at which hazards should be evaluated
 #' @param ... Any further arguments to the function theta
-#' @return A list of size B containing the results for every bootstrap iteration.
+#' @return A list of size B containing the results for every bootstrap replication.
 #' 
 #' @author Damjan Manevski \email{damjan.manevski@@mf.uni-lj.si}, Marta Fiocco, Hein Putter \email{H.Putter@@lumc.nl}
 #' @seealso \code{\link{msboot}}
 #' 
 #' @export
-`msboot.relsurv` <- function(theta, data, B = 5, id = "id", verbose = 0, 
+`msboot.relsurv` <- function(theta, data, B = 10, id = "id", verbose = 0, 
                            transmat, all_times, split.transitions,
                            rmap, time.format, boot_orig_msfit, ratetable=relsurv::slopop, add.times, ...){
   

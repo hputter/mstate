@@ -1,9 +1,9 @@
 #' Upgrade the varHaz object
 #'
-#' A function that upgrades the varHaz object where the variances are
-#' estimated in such a way that we assume that variances for the population
+#' A function that upgrades varHaz from the msfit object where the variances are
+#' estimated using the Greenwood estimator; it is further assumed that variances for the population
 #' hazards are equal to zero.
-#' @param varHaz The varHaz object (usually present in a msfit object).
+#' @param varHaz The varHaz object (present in a msfit object).
 #' @param link_trans A list that gives the linkage between the original and upgraded 
 #' transition matrix.
 #' @param varHaz_original The original varHaz object from msfit (without the eventual time conversion).
