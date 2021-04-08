@@ -7,7 +7,7 @@
 msboot.relsurv(
   theta,
   data,
-  B = 5,
+  B = 10,
   id = "id",
   verbose = 0,
   transmat,
@@ -26,7 +26,7 @@ msboot.relsurv(
 
 \item{data}{An object of class 'msdata', such as output from msprep}
 
-\item{B}{The number of bootstrap replications; the default is taken to be quite small (5) since bootstrapping can be time-consuming}
+\item{B}{The number of bootstrap replications; the default is B=10}
 
 \item{id}{Character string indicating which column identifies the subjects to be resampled}
 
@@ -51,7 +51,7 @@ msboot.relsurv(
 \item{...}{Any further arguments to the function theta}
 }
 \value{
-A list of size B containing the results for every bootstrap iteration.
+A list of size B containing the results for every bootstrap replication.
 }
 \description{
 A helper nonparametric bootstrapping function for variances

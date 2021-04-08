@@ -12,7 +12,7 @@ msfit.relsurv(
   rmap,
   time.format = "days",
   var.pop.haz = c("fixed", "bootstrap", "both"),
-  B = 100,
+  B = 10,
   seed = NULL,
   add.times,
   substitution = TRUE,
@@ -22,31 +22,31 @@ msfit.relsurv(
 \arguments{
 \item{msfit.obj}{The msfit object which has to be upgraded}
 
-\item{data}{The dataset used for fitting the msfit model}
+\item{data}{The data used for fitting the msfit model}
 
 \item{split.transitions}{An integer vector containing the numbered transitions that should be split. Use same numbering as in the given transition matrix}
 
 \item{ratetable}{The population mortality table. A table of event rates, organized as a ratetable object, see for example relsurv::slopop. Default is slopop}
 
-\item{rmap}{An optional list to be used if the variables in the dataset are not organized (and named) in the same way as in the ratetable object}
+\item{rmap}{An optional list to be used if the variables in the data are not organized (and named) in the same way as in the ratetable object}
 
-\item{time.format}{Define the time format which is used in the dataset Possible options: c('days', 'years', 'months'). Default is 'days'}
+\item{time.format}{Define the time format which is used in the data. Possible options: c('days', 'years', 'months'). Default is 'days'}
 
-\item{var.pop.haz}{If 'fixed' (default), one assumes that the variance of the population hazards is zero. If 'bootstrap', one gets boostrapped variances for all transitions.}
+\item{var.pop.haz}{If 'fixed' (default), the Greenwood estimator for the variances is used, where it is assumed that the variance of the population hazards is zero. If 'bootstrap', one gets boostrap estimates for all all transitions. Option 'both' gives both variance estimates}
 
-\item{B}{Number of bootstrap replications. Relevant only if var.pop.haz == 'bootstrap'}
+\item{B}{Number of bootstrap replications. Relevant only if var.pop.haz == 'bootstrap' or 'both'. Default is B=10.}
 
 \item{seed}{Set seed}
 
 \item{add.times}{Additional times at which hazards should be evaluated}
 
-\item{substitution}{Whether function substitute should be used for rmap argument}
+\item{substitution}{Whether function substitute should be used for rmap argument. Default is TRUE}
 
 \item{link_trans_ind}{Choose whether the linkage between the old and new transition matrix should be saved. Default is FALSE.}
 }
 \value{
-Returns a msfit object that now contains hazards and their variances (if provided) 
-for the split (population and excess) transitions.
+Returns a msfit object that contains estimates for the extended model
+with split (population and excess) transitions.
 }
 \description{
 A function that takes a fitted msfit object and upgrades
@@ -57,27 +57,50 @@ matrix (transMat). The (co)variance matrix is also upgraded, if provided.
 }
 \examples{
 
-tmat <- trans.illdeath()
-tg <- data.frame(illt=c(1,1,6,6,8,9)*30,ills=c(1,0,1,1,0,1),
-                 dt=c(5,1,9,7,8,12)*30,ds=c(1,1,1,1,1,1),
-                 x1=c(1,1,1,0,0,0),x2=c(6:1))
-# data in long format using msprep
-tglong <- msprep(time=c(NA,"illt","dt"),status=c(NA,"ills","ds"),
-                 data=tg,keep=c("x1","x2"),trans=tmat)
-# expanded covariates
-tglong <- expand.covs(tglong,c("x1","x2"))
-# generate demographic covariates
+library(mstate)
+# Load dataset:
+data("ebmt1")
+# Transition matrix:
+tmat <- transMat(list(c(2,3),c(4), c(), c()), 
+                 names = c("Alive relapse-free", "Relapse","NRM", "DaR"))
+# Data in long format using msprep
+df <- msprep(time=c(NA,"rel","srv","srv"), status=c(NA,"relstat","srvstat","srvstat"),
+             data=ebmt1, trans=tmat)
+# Generate demographic covariates (which are usually present in datasets) 
+# and based on them estimate the population hazard.
 set.seed(510)
-tglong$sex <- sample(1:2, size = nrow(tglong), replace = TRUE)
-tglong$age <- runif(nrow(tglong), min = 30, max=70)
-tglong$year <- sample(seq(as.Date('2000/01/01'), as.Date('2010/01/01'), by="day"), nrow(tglong)) 
-# Cox model with different covariate
-cx <- coxph(Surv(Tstart,Tstop,status)~x1.1+x2.2+strata(trans),
-            data=tglong,method="breslow")
-newdata <- data.frame(trans=1:3,x1.1=c(0,0,0),x2.2=c(0,1,0),strata=1:3)
-mod <- msfit(cx,newdata,trans=tmat)
-mod.relsurv <- msfit.relsurv(mod, data=tglong, split.transitions = c(2,3),
-                             ratetable = relsurv::slopop, rmap = list(age=age*365.241))
+df$age <- runif(nrow(df), 45, 65)
+df$sex <- sample(c("male", "female"), size = nrow(df), replace = TRUE)
+df$dateHCT <- sample(seq(as.Date('1990/01/01'), 
+    as.Date('2000/01/01'), by="day"), nrow(df), replace = TRUE) # generate years
+# Cox object:
+cx <- coxph(Surv(Tstart,Tstop,status)~strata(trans),
+            data=df,method="breslow")
+# Basic multi-state model:
+mod <- msfit(cx,trans=tmat)
+# Extended multi-state model, where the two transition
+# reaching death are split in excess and population parts.
+# We assume patients live like in the Slovene population,
+# thus we use Slovene mortality tables in this example.
+# Variances estimated using 100 bootstrap replications.
+mod.relsurv <- msfit.relsurv(msfit.obj = mod, data=df, split.transitions = c(2,3),
+                            ratetable = relsurv::slopop, 
+                            rmap = list(age=age*365.241, year=dateHCT),
+                            time.format = "days",
+                            var.pop.haz = "bootstrap",
+                            B = 100)
+# Estimate transition probabilities:
+pt <- probtrans(mod.relsurv, predt=0, method='greenwood')
+# Estimated cumulative hazards with the corresponding 
+# bootstrap standard errors at 300, 600, 900 days:
+summary(object = mod.relsurv, times = c(300, 600, 900), conf.type = 'log')
+# Estimated transition probabilities together with the corresponding 
+# bootstrap standard errors and log.boot confidence intervals 
+# at 300, 600, 900 days:
+summary(object = pt, times = c(300, 600, 900), conf.type = 'log')
+# Plot the measures:
+plot(mod.relsurv, use.ggplot = TRUE)
+plot(pt, use.ggplot = TRUE)
 }
 \seealso{
 \code{\link{msfit}}

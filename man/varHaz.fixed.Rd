@@ -7,7 +7,7 @@
 varHaz.fixed(varHaz, link_trans, varHaz_original)
 }
 \arguments{
-\item{varHaz}{The varHaz object (usually present in a msfit object).}
+\item{varHaz}{The varHaz object (present in a msfit object).}
 
 \item{link_trans}{A list that gives the linkage between the original and upgraded 
 transition matrix.}
@@ -18,8 +18,8 @@ transition matrix.}
 Return the upgraded varHaz object containing variances for the split transitions.
 }
 \description{
-A function that upgrades the varHaz object where the variances are
-estimated in such a way that we assume that variances for the population
+A function that upgrades varHaz from the msfit object where the variances are
+estimated using the Greenwood estimator; it is further assumed that variances for the population
 hazards are equal to zero.
 }
 \author{

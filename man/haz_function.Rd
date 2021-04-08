@@ -15,16 +15,16 @@ haz_function(
 )
 }
 \arguments{
-\item{formula}{A non-parametric Surv-based formula, e.g. Surv(times, status)~1.}
+\item{formula}{A non-parametric Surv-based formula, e.g. Surv(times, status)~1}
 
 \item{data}{A subset of the msprep object (dataset) where there's 
-only data for the chosen transition.}
+only data for the chosen transition}
 
-\item{ratetable}{A table of event rates, organized as a ratetable object, such as slopop.}
+\item{ratetable}{A table of event rates, organized as a ratetable object, such as slopop}
 
-\item{na.action}{A missing-data filter function, applied to the model.frame, after any subset argument has been used. Default is options()$na.action.}
+\item{na.action}{A missing-data filter function, applied to the model.frame, after any subset argument has been used. Default is options()$na.action}
 
-\item{add.times}{Additional times at which the hazards should be evaluated.}
+\item{add.times}{Additional times at which the hazards should be evaluated}
 
 \item{rmap}{An optional list to be used if the variables are not organized and named in the same way as in the ratetable object}
 
