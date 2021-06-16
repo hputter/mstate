@@ -19,6 +19,8 @@
   use.ggplot = FALSE,
   xlim,
   scale_type = "fixed",
+  conf.int = 0.95,
+  conf.type = "none",
   ...
 )
 }
@@ -62,6 +64,12 @@ default is \code{"topleft"}}
 
 \item{scale_type}{"fixed", "free", "free_x" or "free_y", see scales argument
 of facet_wrap(). Only relevant for use_ggplot = T.}
+
+\item{conf.int}{Confidence level (\%) from 0-1 for the cumulative hazard, 
+default is 0.95. Only relevant for use_ggplot = T}
+
+\item{conf.type}{Type of confidence interval - either "log" or "plain" . See
+function details of \code{plot.probtrans} for details}
 
 \item{\dots}{Further arguments to plot}
 }

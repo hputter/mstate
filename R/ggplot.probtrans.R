@@ -55,7 +55,7 @@ ggplot.probtrans <- function(x,
   )
   
   # Set graphical parameters
-  if (missing(xlim)) xlim <- c(0, max(df_steps$time))
+  if (missing(xlim)) xlim <- c(0, max(df_steps$time, na.rm = TRUE))
   if (missing(ylim)) ylim <- c(0, 1)
   n_states_plotted <- length(unique(as.character(df_steps$state)))
   if (missing(cols)) cols <- set_colours(n_states_plotted, type = "areas")
