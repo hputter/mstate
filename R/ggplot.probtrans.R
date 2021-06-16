@@ -348,9 +348,9 @@ make_prob_confint <- function(prob,
                               conf.int = 0.95, 
                               bound) {
   # Get critical value
-  if (!is.null(conf.int)) {
-    crit <- qnorm((1 - conf.int) / 2, lower.tail = FALSE)
-  }
+  crit <- if (!is.null(conf.int)) {
+    qnorm((1 - conf.int) / 2, lower.tail = FALSE)
+  } else 0
 
   if (conf.type == "log") {
     low <- exp(log(prob) - crit * se / prob)

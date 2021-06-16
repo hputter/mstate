@@ -137,9 +137,9 @@ make_haz_confint <- function(haz,
                              conf.int = 0.95, 
                              bound) {
   # Get critical value
-  if (!is.null(conf.int)) {
-    crit <- qnorm((1 - conf.int) / 2, lower.tail = FALSE)
-  }
+  crit <- if (!is.null(conf.int)) {
+    qnorm((1 - conf.int) / 2, lower.tail = FALSE)
+  } else 0
   
   if (conf.type == "log") {
     low <- exp(log(haz) - crit * se / haz)
@@ -163,6 +163,8 @@ make_haz_confint <- function(haz,
 
 prep_msfit_df <- function(df_haz, df_var, conf.type, conf.int) {
   
+  varHaz <- Haz <- se <- trans_name <- NULL
+  
   # Merge df with variances to the one with hazards
   df_varHaz <- df_var[df_var$trans1 == df_var$trans2, ]
   df_varHaz$trans <- df_varHaz$trans1 
@@ -185,7 +187,7 @@ prep_msfit_df <- function(df_haz, df_var, conf.type, conf.int) {
     fill = NA, 
     n = 1, 
     type = "lead"
-  ), by = trans] 
+  ), by = trans_name] 
   
   df_steps <- df_steps[!is.na(time)]
   
