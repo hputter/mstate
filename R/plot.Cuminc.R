@@ -75,10 +75,9 @@ plot.Cuminc <- function(x,
                         conf.int = 0.95,
                         legend.pos = "right",
                         facet = FALSE,
-                        ...)
-{
-  if (!inherits(x, "Cuminc"))
-    stop("'x' must be a 'Cuminc' object")
+                        ...) {
+  
+  if (!inherits(x, "Cuminc")) stop("'x' must be a 'Cuminc' object")
   
   # Ggplot version
   if (use.ggplot) {
@@ -108,7 +107,16 @@ plot.Cuminc <- function(x,
     return(p)
   } else {
     
-    # Base r
-    plot(attr(x, "survfit"), ...)
+    # Set up base R arguments
+    base_args <- list(..., "conf.int" = conf.int, "xlab" = xlab, "ylab" = ylab)
+    survfit_obj <- attr(x, "survfit") 
+    base_args$x <- survfit_obj
+    if (!missing(cols)) base_args$col <- cols
+    if (!missing(lty)) base_args$lty <- lty
+    if (!missing(xlim)) base_args$xlim <- xlim
+    if (!missing(ylim)) base_args$ylim <- ylim
+    
+    # Call plot.survfit
+    do.call("plot", args = base_args)
   }
 }
