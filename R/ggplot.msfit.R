@@ -92,9 +92,9 @@ ggplot.msfit <- function(x,
         na.rm = TRUE
       ) +
       ggplot2::geom_line(size = lwd) +
-      ggplot2::coord_cartesian(expand = 0, xlim = xlim, ylim = ylim) +
       ggplot2::ylab(ylab) +
-      ggplot2::theme(legend.position = legend.pos) 
+      ggplot2::theme(legend.position = legend.pos) +
+      ggplot2::coord_cartesian(expand = 0, xlim = xlim, ylim = ylim)
       
   } else if (type == "separate") {
     
@@ -125,7 +125,7 @@ ggplot.msfit <- function(x,
   p <- p +
     ggplot2::scale_colour_manual("Transition", values = cols) +
     ggplot2::scale_linetype_manual("Transition", values = lty) +
-    ggplot2::xlab(xlab) 
+    ggplot2::xlab(xlab)  
   
   return(p) 
 }
