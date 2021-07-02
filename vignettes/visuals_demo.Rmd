@@ -428,7 +428,7 @@ vis.mirror.pt(
 )
 ```
 
-Omitting the `horizon` argument will default to plotting both sides with their respective maximum follow-up time, so it may be asymmetric. We thus recomment to always use the `horizon` argument.
+Omitting the `horizon` argument will default to plotting both sides with their respective maximum follow-up time, so it may be asymmetric. We thus recommend to always use the `horizon` argument.
 
 If for example time is in years, and follow-up is extremely short, you may want to override the breaks on the x-axis. This can be done using the `breaks_x_left` and `breaks_x_right` arguments. 
 
@@ -437,9 +437,9 @@ vis.mirror.pt(
   x = list(pt.WW, pt.WM),
   titles = c("WW", "WM"),
   size_titles = 8,
-  horizon = 3,
-  breaks_x_left = c(0, 1, 2, 3),
-  breaks_x_right = c(0, 1, 2),
+  horizon = 5,
+  breaks_x_left = c(0, 1, 2, 3, 4, 5),
+  breaks_x_right = c(0, 1, 2, 3, 4),
   ord = c(3, 2, 1)
 )
 ```

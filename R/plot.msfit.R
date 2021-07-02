@@ -103,8 +103,7 @@ plot.msfit <- function(x,
   
   # Prelim
   type <- match.arg(type)
-  if (!inherits(x, "msfit"))
-    stop("'x' must be a 'msfit' object")
+  if (!inherits(x, "msfit")) stop("'x' must be a 'msfit' object")
   
   # Use ggplot 
   if (use.ggplot) {

@@ -18,9 +18,9 @@ ggplot.msfit <- function(x,
                          lwd = 1,
                          conf.int = 0.95, 
                          conf.type = "log") {
-  
+
   # Extract transmat, and get transition labels
-  trans_legend <- to.trans2(x$trans)
+  trans_legend <- to.trans2(trans = x$trans)
   
   # Extract df and append transition labels
   df <- x$Haz

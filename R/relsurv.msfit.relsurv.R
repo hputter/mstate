@@ -49,13 +49,13 @@
 #' # reaching death are split in excess and population parts.
 #' # We assume patients live like in the Slovene population,
 #' # thus we use Slovene mortality tables in this example.
-#' # Variances estimated using 100 bootstrap replications.
+#' # Variances estimated using 25 bootstrap replications.
 #' mod.relsurv <- msfit.relsurv(msfit.obj = mod, data=df, split.transitions = c(2,3),
 #'                             ratetable = relsurv::slopop, 
 #'                             rmap = list(age=age*365.241, year=dateHCT),
 #'                             time.format = "days",
 #'                             var.pop.haz = "bootstrap",
-#'                             B = 100)
+#'                             B = 25)
 #' # Estimate transition probabilities:
 #' pt <- probtrans(mod.relsurv, predt=0, method='greenwood')
 #' # Estimated cumulative hazards with the corresponding 
