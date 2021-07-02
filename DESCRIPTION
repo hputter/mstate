@@ -48,7 +48,7 @@ Suggests:
   ggplot2,
   knitr,
   rmarkdown,
-  relsurv
+  relsurv (>= 2.2-5)
 Description: Contains functions for data preparation, descriptives, hazard estimation and prediction with Aalen-Johansen or simulation in competing risks and multi-state models, see Putter, Fiocco, Geskus (2007) <doi:10.1002/sim.2712>.
 License: GPL (>= 2)
 Encoding: UTF-8

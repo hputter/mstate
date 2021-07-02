@@ -102,7 +102,7 @@
   # data$year_helper <- NULL # remove helper column
   
   # Calculate the values for each interval of time:
-  temp <- relsurv:::exp.prep(rform$R[inx,,drop=FALSE],rform$Y[inx],rform$ratetable,rform$status[inx],times=tis,fast=TRUE, cmp=FALSE, ys=data_yi$Tstart)	
+  temp <- relsurv::expprep2(rform$R[inx,,drop=FALSE],rform$Y[inx],rform$ratetable,rform$status[inx],times=tis,fast=TRUE, cmp=FALSE, ys=data_yi$Tstart)	
   
   # Fix at-risk process, if needed:
   temp$yi[temp$yi==0] <- Inf
