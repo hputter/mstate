@@ -81,6 +81,10 @@ summary.msfit <- function(object, times, transitions,
         stop("conf.type should be one of log, none, plain")
     Haz <- object$Haz
     varHaz <- object$varHaz
+    # Check for msfit.relsurv:
+    if('var.pop.haz' %in% colnames(varHaz)){
+        varHaz <- varHaz[varHaz$var.pop.haz=='bootstrap', 1:4]
+    }
     K <- max(Haz$trans)
     tt <- unique(Haz$time) # the time points
     nt <- length(tt)

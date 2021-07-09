@@ -1,6 +1,6 @@
 #' Visualise multiple probtrans objects
 #' 
-#' Helper function allow to visualise state probabilities for 
+#' Helper function allowing to visualise state probabilities for 
 #' different reference patients/covariates. Multiple \code{"probtrans"} objects
 #' are thus needed.
 #'
@@ -82,7 +82,7 @@ vis.multiple.pt <- function(x,
                             from = 1,
                             to,
                             xlab = "Time",
-                            ylab,
+                            ylab = "Probability",
                             xlim = NULL,
                             ylim = NULL,
                             cols,
@@ -100,12 +100,12 @@ vis.multiple.pt <- function(x,
   . <- time <- state <- prob <- CI_low <- CI_upp <- PT <-  NULL
   
   # Check x are probtrans objects
-  cond <- sapply(x, function(p) inherits(p, what = "probtrans"))
+  cond <- vapply(x, function(p) inherits(p, what = "probtrans"), FUN.VALUE = logical(1L))
   if (!all(cond)) stop("x should be a list of probtrans objects")
   
   # Check conf
   conf.type <- match.arg(conf.type)
-  if (missing(labels)) labels <- paste0("pt_", 1:length(x))
+  if (missing(labels)) labels <- paste0("pt_", seq_along(x))
   if (missing(legend.title)) legend.title <- "PT"
   if (missing(to)) stop("Please specify destination state in 'to'!")
   if (missing(lwd)) lwd <- 1
@@ -124,7 +124,7 @@ vis.multiple.pt <- function(x,
   if (missing(cols)) cols <- set_colours(n_pt, type = "line")
     
   # Prep data
-  dfs_labelled <- lapply(1:length(x), function(i) {
+  dfs_labelled <- lapply(seq_len(n_pt), function(i) {
     p <- plot(
       x[[i]], 
       type = "separate", 
@@ -143,15 +143,15 @@ vis.multiple.pt <- function(x,
   p <- ggplot2::ggplot(
     data = df_steps,
     ggplot2::aes(
-      x = time, 
-      y = prob, 
-      group = PT
+      x = .data$time, 
+      y = .data$prob, 
+      group = .data$PT
     )
   )
   
   if (sum(grepl(pattern = "CI_low|CI_upp", x = names(df_steps)) > 0)) {
     p <- p + ggplot2::geom_ribbon(
-      ggplot2::aes(ymin = CI_low, ymax = CI_upp), 
+      ggplot2::aes(ymin = .data$CI_low, ymax = .data$CI_upp), 
       alpha = 0.5, 
       fill = "grey70",
       col = NA,
@@ -160,7 +160,7 @@ vis.multiple.pt <- function(x,
   }
   
   p <- p + 
-    ggplot2::geom_line(ggplot2::aes(col = PT), size = lwd) +
+    ggplot2::geom_line(ggplot2::aes(col = .data$PT), size = lwd) +
     ggplot2::scale_colour_manual(values = cols) +
     ggplot2::coord_cartesian(xlim = xlim, ylim = ylim, expand = 0) +
     ggplot2::labs(x = xlab, y = ylab) +

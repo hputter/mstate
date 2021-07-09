@@ -9,7 +9,7 @@ vis.multiple.pt(
   from = 1,
   to,
   xlab = "Time",
-  ylab,
+  ylab = "Probability",
   xlim = NULL,
   ylim = NULL,
   cols,
@@ -58,7 +58,7 @@ function details for details.}
 A ggplot object.
 }
 \description{
-Helper function allow to visualise state probabilities for 
+Helper function allowing to visualise state probabilities for 
 different reference patients/covariates. Multiple \code{"probtrans"} objects
 are thus needed.
 }

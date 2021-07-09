@@ -56,7 +56,7 @@ A ggplot2 object.
 \description{
 A mirror plot for comparing two different \code{"probtrans"} objects. Useful
 for comparing predicted probabilities for different levels of a covariate,
-or for different subgroups.
+or for different subgroups at some prediction time horizon.
 }
 \examples{
 

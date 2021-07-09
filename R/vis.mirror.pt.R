@@ -2,7 +2,7 @@
 #' 
 #' A mirror plot for comparing two different \code{"probtrans"} objects. Useful
 #' for comparing predicted probabilities for different levels of a covariate,
-#' or for different subgroups.
+#' or for different subgroups at some prediction time horizon.
 #'
 #' @param x A list of two \code{"probtrans"} objects. 
 #' The first element will be on the left of the mirror plot, 
@@ -103,11 +103,11 @@ vis.mirror.pt <- function(x,
   # Check both have the right number of states
   n_states <- 1 + sum(!is.na(x[[1]][["trans"]][from, ]))
   if (missing(cols)) cols <- set_colours(n = n_states, type = "areas")
-  if (missing(ord)) ord <- 1:n_states
+  if (missing(ord)) ord <- seq_len(n_states)
   
   # First build plot and inherit colours from left
-  p_left <- plot.probtrans(x[[1]], use.ggplot = T, ord = ord, cols = cols)
-  p_right <- plot.probtrans(x[[2]], use.ggplot = T, ord = ord, cols = cols)
+  p_left <- plot.probtrans(x[[1]], use.ggplot = TRUE, ord = ord, cols = cols)
+  p_right <- plot.probtrans(x[[2]], use.ggplot = TRUE, ord = ord, cols = cols)
   build_p1 <- ggplot2::ggplot_build(p_left)
 
   # Inherit also xlims for symmetry - edit here for xlim.
@@ -167,7 +167,7 @@ vis.mirror.pt <- function(x,
     ggplot2::geom_ribbon(
       ggplot2::aes(ymin = .data$low, ymax = .data$upp, fill = .data$state), 
       col = "black",
-      na.rm = T
+      na.rm = TRUE
     ) +
     # Add divider segment
     ggplot2::geom_segment(
@@ -180,7 +180,7 @@ vis.mirror.pt <- function(x,
     ggplot2::scale_x_continuous(xlab, breaks = breakos, labels = labos) +
     ggplot2::ylab(ylab) +
     ggplot2::scale_fill_manual(values = cols) +
-    ggplot2::guides(fill = ggplot2::guide_legend(reverse = T))
+    ggplot2::guides(fill = ggplot2::guide_legend(reverse = TRUE))
   
   if (missing(titles)) {
     

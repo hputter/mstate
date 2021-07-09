@@ -29,6 +29,10 @@
 #' @param xlim Limits of x axis, relevant if use_ggplot = T
 #' @param scale_type "fixed", "free", "free_x" or "free_y", see scales argument
 #' of facet_wrap(). Only relevant for use_ggplot = T.
+#' @param conf.int Confidence level (\%) from 0-1 for the cumulative hazard, 
+#' default is 0.95. Only relevant for use_ggplot = T
+#' @param conf.type Type of confidence interval - either "log" or "plain" . See
+#' function details of \code{plot.probtrans} for details
 #' @param \dots Further arguments to plot
 #' 
 #' @return No return value
@@ -93,12 +97,13 @@ plot.msfit <- function(x,
                        # Possible ggplot args here
                        xlim,
                        scale_type = "fixed",
+                       conf.int = 0.95, 
+                       conf.type = "none",
                        ...) {
   
   # Prelim
   type <- match.arg(type)
-  if (!inherits(x, "msfit"))
-    stop("'x' must be a 'msfit' object")
+  if (!inherits(x, "msfit")) stop("'x' must be a 'msfit' object")
   
   # Use ggplot 
   if (use.ggplot) {
@@ -120,7 +125,9 @@ plot.msfit <- function(x,
       legend = legend,
       legend.pos = legend.pos,
       xlim = xlim,
-      scale_type = scale_type
+      scale_type = scale_type,
+      conf.int = conf.int,
+      conf.type = conf.type
     )
     return(p)
   }

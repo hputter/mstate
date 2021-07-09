@@ -24,7 +24,7 @@ ggplot.probtrans <- function(x,
                              conf.int = 0.95, # 0 if no confidence intervals
                              conf.type = "log",
                              label) { # specify "annotate" for labels
-                  
+          
   # For R cmd check
   low <- upp <- state <- prob <- CI_low <- CI_upp <- NULL
                
@@ -36,7 +36,7 @@ ggplot.probtrans <- function(x,
   } else state_names <- legend
   
   # Check stacking order
-  if (missing(ord)) ord <- 1:length(state_names)
+  if (missing(ord)) ord <- seq_along(state_names) 
   if (missing(cex)) cex <- 8
   if (missing(lwd)) lwd <- 0.5
   if (!missing(label) & !(type %in% c("filled", "stacked"))) stop("Labels only valid for filled/stacked plots!")
@@ -55,7 +55,7 @@ ggplot.probtrans <- function(x,
   )
   
   # Set graphical parameters
-  if (missing(xlim)) xlim <- c(0, max(df_steps$time))
+  if (missing(xlim)) xlim <- c(0, max(df_steps$time, na.rm = TRUE))
   if (missing(ylim)) ylim <- c(0, 1)
   n_states_plotted <- length(unique(as.character(df_steps$state)))
   if (missing(cols)) cols <- set_colours(n_states_plotted, type = "areas")
@@ -76,7 +76,7 @@ ggplot.probtrans <- function(x,
     ) + 
       
       # Stacked so we just remove fill colour
-      ggplot2::scale_fill_manual(values = rep(NA, length(state_names))) + 
+      ggplot2::scale_fill_manual(values = rep("transparent", length(state_names))) + 
       ggplot2::ylab(ylab) +
       ggplot2::xlab(xlab) +
       ggplot2::coord_cartesian(expand = 0, xlim = xlim, ylim = ylim) +
@@ -91,14 +91,14 @@ ggplot.probtrans <- function(x,
       p <- ggplot2::ggplot(
         data = df_steps, 
         ggplot2::aes(
-          x = time, 
-          ymin = low, 
-          ymax = upp, 
-          fill = state
+          x = .data$time, 
+          ymin = .data$low, 
+          ymax = .data$upp, 
+          fill = .data$state
         )
       ) +
-        ggplot2::geom_ribbon(col = "black", size = lwd, na.rm = T) + # for rel surv
-        ggplot2::guides(fill = ggplot2::guide_legend("State", reverse = T)) + 
+        ggplot2::geom_ribbon(col = "black", size = lwd, na.rm = TRUE) + # for rel surv
+        ggplot2::guides(fill = ggplot2::guide_legend("State", reverse = TRUE)) + 
         ggplot2::theme(legend.position = legend.pos) +
         ggplot2::coord_cartesian(xlim = xlim, ylim = ylim, expand = 0)  +
         ggplot2::xlab(xlab) +
@@ -131,16 +131,16 @@ ggplot.probtrans <- function(x,
     p <- ggplot2::ggplot(
       data = df_steps,
       ggplot2::aes(
-        x = time, 
-        y = prob, 
-        col = state, 
-        linetype = state
+        x = .data$time, 
+        y = .data$prob, 
+        col = .data$state, 
+        linetype = .data$state
       )
     ) 
     
     if (sum(grepl(pattern = "CI_low|CI_upp", x = names(df_steps))) > 0) {
       p <- p + ggplot2::geom_ribbon(
-        ggplot2::aes(ymin = CI_low, ymax = CI_upp), 
+        ggplot2::aes(ymin = .data$CI_low, ymax = .data$CI_upp), 
         alpha = 0.5, 
         fill = col_ribb,
         col = NA,
@@ -150,7 +150,7 @@ ggplot.probtrans <- function(x,
     
     p <- p +
       ggplot2::geom_line(size = lwd) + # colour boundaries
-      ggplot2::guides(col = ggplot2::guide_legend("State", reverse = T)) +
+      ggplot2::guides(col = ggplot2::guide_legend("State", reverse = TRUE)) +
       ggplot2::theme(legend.position = legend.pos) +
       ggplot2::coord_cartesian(xlim = xlim, ylim = ylim, expand = 0) +
       ggplot2::xlab(xlab) +
@@ -158,8 +158,8 @@ ggplot.probtrans <- function(x,
       ggplot2::scale_colour_manual("State", values = cols) +
       ggplot2::scale_linetype_manual("State", values = lty) +
       ggplot2::guides(
-        col = ggplot2::guide_legend("State", reverse = T),
-        linetype = ggplot2::guide_legend("State", reverse = T)
+        col = ggplot2::guide_legend("State", reverse = TRUE),
+        linetype = ggplot2::guide_legend("State", reverse = TRUE)
       )
     
   } else if (type == "separate") {
@@ -170,16 +170,16 @@ ggplot.probtrans <- function(x,
     p <- ggplot2::ggplot(
       data = df_steps,
       ggplot2::aes(
-        x = time,
-        y = prob, 
-        col = state, 
-        linetype = state
+        x = .data$time,
+        y = .data$prob, 
+        col = .data$state, 
+        linetype = .data$state
       )
     ) 
     
     if (sum(grepl(pattern = "CI_low|CI_upp", x = names(df_steps)) > 0)) {
       p <- p + ggplot2::geom_ribbon(
-        ggplot2::aes(ymin = CI_low, ymax = CI_upp), 
+        ggplot2::aes(ymin = .data$CI_low, ymax = .data$CI_upp), 
         alpha = 0.5, 
         fill = col_ribb,
         col = NA,
@@ -190,15 +190,15 @@ ggplot.probtrans <- function(x,
     p <- p +
       ggplot2::geom_line(size = lwd, na.rm = TRUE) +
       ggplot2::facet_wrap(. ~ state) +
-      ggplot2::guides(col = ggplot2::guide_legend("State", reverse = T)) +
+      ggplot2::guides(col = ggplot2::guide_legend("State", reverse = TRUE)) +
       ggplot2::coord_cartesian(xlim = xlim, ylim = ylim, expand = 0) +
       ggplot2::xlab(xlab) +
       ggplot2::ylab(ylab) +
       ggplot2::scale_colour_manual("State", values = cols) +
       ggplot2::scale_linetype_manual("State", values = lty) +
       ggplot2::guides(
-        col = ggplot2::guide_legend("State", reverse = T),
-        linetype = ggplot2::guide_legend("State", reverse = T)
+        col = ggplot2::guide_legend("State", reverse = TRUE),
+        linetype = ggplot2::guide_legend("State", reverse = TRUE)
       ) +
       # Facet titles are already the labels
       ggplot2::theme(legend.position = "none") 
@@ -241,8 +241,7 @@ prep_probtrans_df <- function(obj,
   ) 
   df_pstate[, state_num := as.numeric(gsub(x = state, pattern = "pstate", replacement = ""))]
   df_long <- df_pstate
-  #df_long[, ':=' (CI_low = NA, CI_upp = NA)]
-  
+
   # Check if standard errors were computed (only time)
   se_cols <- grepl(x = names(df), pattern = "se|time")
   if (sum(se_cols) > 1) {
@@ -325,14 +324,14 @@ make_labelled_plot <- function(df_steps,
   # Begin plots
   p <- ggplot2::ggplot(
     data = df_labels[time <= max_t, .SD[-.N], by = state],
-    ggplot2::aes(time, mean_cprob)
+    ggplot2::aes(x = .data$time, y = .data$mean_cprob)
   ) + 
     ggplot2::geom_ribbon(
-      ggplot2::aes(ymin = low, ymax = upp, fill = state),
+      ggplot2::aes(ymin = .data$low, ymax = .data$upp, fill = .data$state),
       col = "black", size = lwd
     ) +
     ggplot2::geom_text(
-      ggplot2::aes(label = label, x = time), 
+      ggplot2::aes(label = .data$label, x = .data$time), 
       na.rm = T,
       hjust = 1, 
       size = cex
@@ -348,9 +347,9 @@ make_prob_confint <- function(prob,
                               conf.int = 0.95, 
                               bound) {
   # Get critical value
-  if (!is.null(conf.int)) {
-    crit <- qnorm((1 - conf.int) / 2, lower.tail = FALSE)
-  }
+  crit <- if (!is.null(conf.int)) {
+    qnorm((1 - conf.int) / 2, lower.tail = FALSE)
+  } else 0
 
   if (conf.type == "log") {
     low <- exp(log(prob) - crit * se / prob)

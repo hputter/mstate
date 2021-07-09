@@ -96,6 +96,16 @@
     trans <- object$trans
     transit <- to.trans2(trans)
     numtrans <- nrow(transit)
+    variance_boot <- FALSE
+    # Check if bootstrap replications are in the object:
+    if("Haz.boot" %in% names(object)){
+      # We don't want to calculate (co)variances with the usual methods:
+      covariance <- FALSE
+      if(variance){
+        variance <- FALSE
+        variance_boot <- TRUE # we want to calculate bootstrapped variances
+      }
+    }
     stackhaz <- object$Haz
     stackvarhaz <- object$varHaz
     for (i in 1:numtrans)
@@ -339,6 +349,74 @@
         res2[[s]] <- tmp
     }
     if (covariance) res2$varMatrix <- varParr
+    
+    # Calculate bootstrap se's for probtrans:
+    if(variance_boot){
+      # Find absorbing states:
+      is_absorbing <- rowSums(!is.na(trans))==0
+      absorbing_true <- which(is_absorbing==TRUE)
+      absorbing_false <- which(is_absorbing==FALSE)
+      
+      # We make two steps (based on whether we deal with an absorbing or transient state):
+      
+      # 1. For transprobs starting from an absorbing state put se = 0:
+      # Define empty SE data frames:
+      se_df <- as.data.frame(matrix(0, nrow=1, ncol=S))
+      names(se_df) <- paste("se", 1:S, sep="")
+      
+      # Add zero SE's in probtrans for absorbing states:
+      for(s in absorbing_true){
+        res2[[s]] <- cbind(res2[[s]], se_df)
+      }
+      
+      # 2. For transprobs starting from a transient state calculate bootstrap se's:
+      B <- length(object$Haz.boot) # find B
+      pt_list <- vector("list", S)
+      
+      # Initialize objects:
+      for(s in absorbing_false){
+        pt_list[[s]] <- vector("list", B)
+        # pt_list[[s]] <- as.data.frame(matrix(NA, nrow = no_rows*B, ncol=S+1))
+        # names(pt_list[[s]]) <- c("time", paste("pstate",1:S,sep=""))
+      }
+      
+      # Do the bootstrap:
+      for(i in 1:B){
+        # Prepare boot msfit object:
+        haz_tmp <- object$Haz.boot[[i]]
+        haz_tmp$b <- NULL
+        msfit_tmp <- list(Haz=haz_tmp, trans=trans)
+        class(msfit_tmp) <- "msfit"
+        
+        # save bootstrapped probtrans:
+        pt_tmp <- suppressWarnings(probtrans(msfit_tmp, predt=predt, direction=direction, variance = FALSE, covariance = FALSE))
+        
+        for(s in absorbing_false){
+          pt_list[[s]][[i]] <- pt_tmp[[s]]
+          # pt_list[[s]][((i-1)*no_rows+1):(i*no_rows),] <- pt_tmp[[s]]
+          # pt_list[[s]] <- rbind(pt_list[[s]], pt_tmp[[s]])
+        }
+      }
+      pt_list_save <- pt_list
+      
+      # Add the bootstrapped se's in the probtrans object:
+      for(s in absorbing_false){
+        # Calculate SEs:
+        # pt_list[[s]] <- na.omit(pt_list[[s]])
+        pt_list[[s]] <- do.call(rbind.data.frame, pt_list[[s]])
+        pt_list[[s]] <- aggregate(.~time, data=pt_list[[s]], FUN = stats::sd)
+        
+        # Check times:
+        unneeded_times <- which(!(pt_list[[s]]$time %in% res2[[s]]$time))
+        if(length(unneeded_times)>0) pt_list[[s]] <- pt_list[[s]][-unneeded_times,]
+        # Save object:
+        pt_list[[s]] <- pt_list[[s]][,2:ncol(pt_list[[s]])]
+        names(pt_list[[s]]) <- gsub("pstate", "se", names(pt_list[[s]]))
+        res2[[s]] <- cbind(res2[[s]], pt_list[[s]])
+      }
+      res2$pt.boot <- pt_list_save # save bootstrapped trans. probabilities
+    }
+    
     res2$trans <- trans
     res2$method <- method
     res2$predt <- predt

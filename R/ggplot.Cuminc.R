@@ -13,8 +13,8 @@ prep_Cuminc_df <- function(x,
   . <- prob <- se <- NULL
   
   # Get list of se cols and prob cols (Cumin will always return SEs)
-  prob_cols <- grep(x = names(x), pattern = "^CI", value = T)
-  se_cols <- grep(x = names(x), pattern = "^seCI", value = T)
+  prob_cols <- grep(x = names(x), pattern = "^CI", value = TRUE)
+  se_cols <- grep(x = names(x), pattern = "^seCI", value = TRUE)
   
   # Prepare long df
   df_long <- data.table::melt.data.table(
@@ -56,7 +56,12 @@ ggplot.Cuminc <- function(x,
                           conf.type = "log",
                           conf.int = 0.95,
                           legend.pos = "right",
-                          facet = F) {
+                          facet = FALSE) {
+  
+  # Check for ggplot2
+  if (!requireNamespace("ggplot2", quietly = TRUE)) {
+    stop("Package ggplot2 needed for this function to work. Please install it.", call. = FALSE)
+  }
   
   # For data.table warnings
   state.grp <- state <- group <- NULL

@@ -148,8 +148,7 @@ plot.probtrans <- function(x,
   
   # Prelims
   type <- match.arg(type)
-  if (!inherits(x, "probtrans"))
-    stop("'x' must be a 'probtrans' object")
+  if (!inherits(x, "probtrans")) stop("'x' must be a 'probtrans' object")
   
   # Ggplot version
   if (use.ggplot) {
