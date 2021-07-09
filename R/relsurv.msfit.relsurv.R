@@ -24,6 +24,7 @@
 #' @seealso \code{\link{msfit}}
 #' @examples 
 #' 
+#' \dontrun{
 #' library(mstate)
 #' # Load dataset:
 #' data("ebmt1")
@@ -68,6 +69,7 @@
 #' # Plot the measures:
 #' plot(mod.relsurv, use.ggplot = TRUE)
 #' plot(pt, use.ggplot = TRUE)
+#' }
 #' @export
 `msfit.relsurv` <- function(msfit.obj, 
                           data,

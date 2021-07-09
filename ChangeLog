@@ -1,3 +1,10 @@
+Version 0.3.2 (2021-07-09)
+- Multi-state models can now be run accounting for population mortality,
+  by adding relsurv functionality, see Manevski et al. (2021)
+- plot.msfit() allows confidence intervals around the cumulative hazards
+- Various plotting fixed
+- msprep() now accepts tibbles and data.tables
+
 Version 0.3.1 (2020-12-17)
 - Added test for Markov assumption from Titman & Putter (2020) in
   Biostatistics
