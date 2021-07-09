@@ -22,6 +22,10 @@
 #' 
 #' @author Damjan Manevski \email{damjan.manevski@@mf.uni-lj.si}
 #' @seealso \code{\link{msfit}}
+#' @references Manevski D, Putter H, Pohar Perme M, Bonneville EF, Schetelig J, de Wreede LC (2021).
+#' Integrating relative survival in multi-state models -- a non-parametric approach.
+#' https://arxiv.org/abs/2106.12399
+#' 
 #' @examples 
 #' 
 #' \dontrun{

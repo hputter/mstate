@@ -57,6 +57,7 @@ matrix (transMat). The (co)variance matrix is also upgraded, if provided.
 }
 \examples{
 
+\dontrun{
 library(mstate)
 # Load dataset:
 data("ebmt1")
@@ -101,6 +102,12 @@ summary(object = pt, times = c(300, 600, 900), conf.type = 'log')
 # Plot the measures:
 plot(mod.relsurv, use.ggplot = TRUE)
 plot(pt, use.ggplot = TRUE)
+}
+}
+\references{
+Manevski D, Putter H, Pohar Perme M, Bonneville EF, Schetelig J, de Wreede LC (2021).
+Integrating relative survival in multi-state models -- a non-parametric approach.
+https://arxiv.org/abs/2106.12399
 }
 \seealso{
 \code{\link{msfit}}
