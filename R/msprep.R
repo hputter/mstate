@@ -175,7 +175,7 @@ msprep <- function (time, status, data, trans, start, id, keep)
                     stop("cannot determine whether \"id\" argument indicates ")
                   else {
                     idname <- id
-                    id <- data[[id]]
+                    id <- as.factor(data[[id]])
                   }
                 }
                 else {

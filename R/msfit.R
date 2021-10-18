@@ -186,6 +186,7 @@
       sf0 <- summary(survfit(object))
       norisk <- sf0$n.risk
       noevent <- sf0$n.event
+      sf0$strata <- data.table::tstrsplit(x=as.character(sf0$strata), "=")[[2]]
       sf0 <- data.frame(time=sf0$time,Haz=-log(sf0$surv),norisk=norisk,
                         noevent=noevent, trans=as.numeric(sf0$strata))
       allt <- sort(unique(c(sf0$time,lasty)))
@@ -250,6 +251,7 @@
           sf0 <- summary(survfit(object))
           norisk <- sf0$n.risk
           noevent <- sf0$n.event
+          sf0$strata <- data.table::tstrsplit(x=as.character(sf0$strata), "=")[[2]]
           sf0 <- data.frame(time=sf0$time,Haz=-log(sf0$surv),norisk=norisk,
                             noevent=noevent,var=sf0$std.err^2/(sf0$surv)^2,trans=as.numeric(sf0$strata))
           allt <- sort(unique(c(sf0$time,lasty)))
