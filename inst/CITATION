@@ -10,6 +10,7 @@ citEntry(entry = "Article",
   volume       = "38",
   number       = "7",
   pages        = "1--30",
+  doi          = "10.18637/jss.v038.i07",
   url          = "https://www.jstatsoft.org/v38/i07/",
 
   textVersion  =
