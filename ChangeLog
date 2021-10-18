@@ -4,6 +4,7 @@ Version 0.3.2 (2021-07-09)
 - plot.msfit() allows confidence intervals around the cumulative hazards
 - Various plotting fixed
 - msprep() now accepts tibbles and data.tables
+- Fix issues #5 and #9 from github
 
 Version 0.3.1 (2020-12-17)
 - Added test for Markov assumption from Titman & Putter (2020) in
