@@ -66,11 +66,11 @@ LMAJ <- function(msdata, s, from, method=c("aalen", "greenwood"))
     if (nrow(msdata_from) == 0) {
       stop(paste0("No transitions are made from state ", from, "!"))
     } else {
-      first_trans_from <- round(min(msdata_from$Tstart), 4)
+      first_entering <- round(min(msdata_from$Tstart), 4)
       stop_mssg <- paste0(
         "At landmark time s = ", s, 
-        ", no transitions have yet been observed from state ", 
-        from, ". The first one occurs at t = ", first_trans_from, "."
+        ", no individual has yet made it into state ", 
+        from, ". The first individual enters at t = ", first_entering, "."
       )
       stop(stop_mssg)
     }
