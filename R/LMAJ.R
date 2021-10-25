@@ -62,9 +62,28 @@ LMAJ <- function(msdata, s, from, method=c("aalen", "greenwood"))
   infrom <- xss$id[xss$state %in% from]
   msdatas <- cutLMms(msdata, LM=s)
   msdatasfrom <- msdatas[msdatas$id %in% infrom, ]
+  msdatasfrom$trans <- factor(msdatasfrom$trans) # Feed to coxph factor (for easier matching)
   c0 <- coxph(Surv(Tstart, Tstop, status) ~ strata(trans), data=msdatasfrom)
   msf0 <- msfit(c0, trans=tmat)
-  pt0 <- probtrans(msf0, predt=s, method=method)[from]
+  
+  # Check if only subset of transitions left
+  cond_subset_trans <- length(levels(msdatasfrom$trans)) < length(unique(msdata$trans))
+  
+  if (cond_subset_trans) {
+    # Prepare original levels and re-coded ones
+    recoded_levels <- levels(factor(as.numeric(msdatasfrom$trans)))
+    orig_levels <- as.numeric(c0$xlevels$`strata(trans)`)
+    names(orig_levels) <- recoded_levels
+    
+    # Match in the msf0 object accordingly
+    msf0$Haz$trans <- orig_levels[match(as.character(msf0$Haz$trans), names(orig_levels))]
+    msf0$varHaz$trans1 <- orig_levels[match(as.character(msf0$varHaz$trans1), names(orig_levels))]
+    msf0$varHaz$trans2 <- orig_levels[match(as.character(msf0$varHaz$trans2), names(orig_levels))]
+  }
+  
+  # The warning is just for not being able to calculate variance at landmark time,
+  # see probtrans.R, line 172
+  pt0 <- suppressWarnings(probtrans(msf0, predt=s, method=method)[from])
   if (length(from) == 1)
     return(pt0[[1]])
   else {
