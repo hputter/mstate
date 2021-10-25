@@ -60,6 +60,22 @@ LMAJ <- function(msdata, s, from, method=c("aalen", "greenwood"))
   if (any(is.na(match(from, 1:K)))) stop("from should be subset of 1:K with K number of states")
   xss <- xsect(msdata, s)
   infrom <- xss$id[xss$state %in% from]
+  
+  if (length(infrom) == 0) {
+    msdata_from <- msdata[msdata$from == from, ]
+    if (nrow(msdata_from) == 0) {
+      stop(paste0("No transitions are made from state ", from, "!"))
+    } else {
+      first_trans_from <- round(min(msdata_from$Tstart), 4)
+      stop_mssg <- paste0(
+        "At landmark time s = ", s, 
+        ", no transitions have yet been observed from state ", 
+        from, ". The first one occurs at t = ", first_trans_from, "."
+      )
+      stop(stop_mssg)
+    }
+  } 
+  
   msdatas <- cutLMms(msdata, LM=s)
   msdatasfrom <- msdatas[msdatas$id %in% infrom, ]
   msdatasfrom$trans <- factor(msdatasfrom$trans) # Feed to coxph factor (for easier matching)
