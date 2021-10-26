@@ -98,7 +98,7 @@ LMAJ <- function(msdata, s, from, method=c("aalen", "greenwood"))
   
   # The warning is just for not being able to calculate variance at landmark time,
   # see probtrans.R, line 172
-  pt0 <- suppressWarnings(probtrans(msf0, predt=s, method=method)[from])
+  pt0 <- probtrans(msf0, predt=s, method=method)[from]
   if (length(from) == 1)
     return(pt0[[1]])
   else {
