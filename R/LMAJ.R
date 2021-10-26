@@ -89,12 +89,11 @@ LMAJ <- function(msdata, s, from, method=c("aalen", "greenwood"))
     # Prepare original levels and re-coded ones
     recoded_levels <- levels(factor(as.numeric(msdatasfrom$trans)))
     orig_levels <- as.numeric(c0$xlevels$`strata(trans)`)
-    names(orig_levels) <- recoded_levels
-    
+
     # Match in the msf0 object accordingly
-    msf0$Haz$trans <- orig_levels[match(as.character(msf0$Haz$trans), names(orig_levels))]
-    msf0$varHaz$trans1 <- orig_levels[match(as.character(msf0$varHaz$trans1), names(orig_levels))]
-    msf0$varHaz$trans2 <- orig_levels[match(as.character(msf0$varHaz$trans2), names(orig_levels))]
+    msf0$Haz$trans <- orig_levels[match(as.character(msf0$Haz$trans), recoded_levels)]
+    msf0$varHaz$trans1 <- orig_levels[match(as.character(msf0$varHaz$trans1), recoded_levels)]
+    msf0$varHaz$trans2 <- orig_levels[match(as.character(msf0$varHaz$trans2), recoded_levels)]
   }
   
   # The warning is just for not being able to calculate variance at landmark time,
