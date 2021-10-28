@@ -17,6 +17,7 @@
 #' the transition probabilities P(X(t)=k | X(s) in \code{from}) with \code{s}
 #' and \code{from} the arguments of the function.
 #' @author Hein Putter \email{H.Putter@@lumc.nl}
+#' @author Edouard F. Bonneville \email{e.f.bonneville@@lumc.nl}
 #' @references H. Putter and C. Spitoni (2016). Estimators of transition
 #' probabilities in non-Markov multi-state models. Submitted.
 #' @keywords survival
