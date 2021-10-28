@@ -262,8 +262,7 @@ msprep <- function (time, status, data, trans, start, id, keep)
             if (nkeep > 1)
               keep <- keep[ord1,,drop=FALSE]
             if (nkeep == 1) {
-              ddcovs <- rep(keep, tbl)
-              ddcovs <- ddcovs[ord]
+              ddcovs <- rep(keep[ord1], tbl)
               ddcovs <- as.data.frame(ddcovs)
               names(ddcovs) <- keepname
             }
