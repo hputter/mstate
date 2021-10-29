@@ -17,6 +17,7 @@
 #' the transition probabilities P(X(t)=k | X(s) in \code{from}) with \code{s}
 #' and \code{from} the arguments of the function.
 #' @author Hein Putter \email{H.Putter@@lumc.nl}
+#' @author Edouard F. Bonneville \email{e.f.bonneville@@lumc.nl}
 #' @references H. Putter and C. Spitoni (2016). Estimators of transition
 #' probabilities in non-Markov multi-state models. Submitted.
 #' @keywords survival
@@ -60,10 +61,44 @@ LMAJ <- function(msdata, s, from, method=c("aalen", "greenwood"))
   if (any(is.na(match(from, 1:K)))) stop("from should be subset of 1:K with K number of states")
   xss <- xsect(msdata, s)
   infrom <- xss$id[xss$state %in% from]
+  
+  if (length(infrom) == 0) {
+    msdata_from <- msdata[msdata$from == from, ]
+    if (nrow(msdata_from) == 0) {
+      stop(paste0("No transitions are made from state ", from, "!"))
+    } else {
+      first_entering <- round(min(msdata_from$Tstart), 4)
+      stop_mssg <- paste0(
+        "At landmark time s = ", s, 
+        ", no individual has yet made it into state ", 
+        from, ". The first individual enters at t = ", first_entering, "."
+      )
+      stop(stop_mssg)
+    }
+  } 
+  
   msdatas <- cutLMms(msdata, LM=s)
   msdatasfrom <- msdatas[msdatas$id %in% infrom, ]
+  msdatasfrom$trans <- factor(msdatasfrom$trans) # Feed to coxph factor (for easier matching)
   c0 <- coxph(Surv(Tstart, Tstop, status) ~ strata(trans), data=msdatasfrom)
   msf0 <- msfit(c0, trans=tmat)
+  
+  # Check if only subset of transitions left
+  cond_subset_trans <- length(levels(msdatasfrom$trans)) < length(unique(msdata$trans))
+  
+  if (cond_subset_trans) {
+    # Prepare original levels and re-coded ones
+    recoded_levels <- levels(factor(as.numeric(msdatasfrom$trans)))
+    orig_levels <- as.numeric(c0$xlevels$`strata(trans)`)
+
+    # Match in the msf0 object accordingly
+    msf0$Haz$trans <- orig_levels[match(as.character(msf0$Haz$trans), recoded_levels)]
+    msf0$varHaz$trans1 <- orig_levels[match(as.character(msf0$varHaz$trans1), recoded_levels)]
+    msf0$varHaz$trans2 <- orig_levels[match(as.character(msf0$varHaz$trans2), recoded_levels)]
+  }
+  
+  # The warning is just for not being able to calculate variance at landmark time,
+  # see probtrans.R, line 172
   pt0 <- probtrans(msf0, predt=s, method=method)[from]
   if (length(from) == 1)
     return(pt0[[1]])
