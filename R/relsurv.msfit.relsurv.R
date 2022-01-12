@@ -436,7 +436,7 @@
       #                         ifelse(state=="pstate4", "HCT->NRM.e",
       #                                ifelse(state=="pstate5", "HCT->DaR.p", "HCT->DaR.e"))))
     }
-    ordering <- order(varHaz_new[,c("trans1", "trans2")])
+    ordering <- order(as.vector(as.matrix(varHaz_new[,c("trans1", "trans2")])))
     varHaz_new <- varHaz_new[ordering,,drop=FALSE]
     varHaz_new <- stats::na.omit(varHaz_new)
     rownames(varHaz_new) <- 1:nrow(varHaz_new)
