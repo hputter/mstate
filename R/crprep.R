@@ -150,6 +150,9 @@ crprep.default <-
 function(Tstop, status, data, trans=1, cens=0, Tstart=0, id, strata, 
          keep, shorten=TRUE, rm.na=TRUE, origin=0,
          prec.factor=1000, ...) {
+  
+  # Coerce data to data.frame if given (from tibble/data.table)
+  if (!missing(data)) data <- as.data.frame(data)
 
   ## Extract Tstop data if given by column name
   if (!(is.numeric(Tstop))) {
