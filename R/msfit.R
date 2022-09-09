@@ -408,7 +408,7 @@
         varHaz <- as.vector(t(matrix(surv$varHaz,ncol=nt))) # change row and column order
         
         hlp <- matrix(c(rep(1:n2,rep(n2,n2)),rep(1:n2,n2)),n2^2,2)
-        hlp <- hlp[hlp[,1]<=hlp[,2],]
+        hlp <- hlp[hlp[,1]<=hlp[,2], , drop=FALSE]
         varHaz <- data.frame(time=rep(untimes,n2*(n2+1)/2),varHaz=varHaz,
                              trans1=rep(hlp[,1],rep(nt,n2*(n2+1)/2)),
                              trans2=rep(hlp[,2],rep(nt,n2*(n2+1)/2)))
