@@ -343,33 +343,28 @@ make_labelled_plot <- function(df_steps,
 
 make_prob_confint <- function(prob, 
                               se, 
-                              conf.type = "log",
+                              conf.type = c("log", "plain", "none"),
                               conf.int = 0.95, 
-                              bound) {
+                              bound = c("low", "upp")) {
+  
+  conf.type <- match.arg(conf.type)
+  bound <- match.arg(bound)
+  
   # Get critical value
-  crit <- if (!is.null(conf.int)) {
-    qnorm((1 - conf.int) / 2, lower.tail = FALSE)
-  } else 0
+  crit <- ifelse(!is.null(conf.int), qnorm((1 - conf.int) / 2, lower.tail = FALSE), 0L)
+  direc <- ifelse(bound == "low", -1L, 1L)
+  
+  bound <- switch(
+    conf.type,
+    log = exp(log(prob) + direc * crit * se / prob),
+    plain = prob + direc * crit * se,
+    none = prob
+  )
 
-  if (conf.type == "log") {
-    low <- exp(log(prob) - crit * se / prob)
-    upp <-  exp(log(prob) + crit * se / prob)
-      
-  } else if (conf.type == "plain") {
-    low <- prob - crit * se
-    upp <- prob + crit * se
-    
-  } else {
-    low <- prob
-    upp <- prob
-  }
-  
-  # Check no vals above 1 or below zero
-  low <- ifelse(low < 0, 0, low)
-  upp <- ifelse(upp > 1, 1, upp)
-  
-  # Return upper of lower bound
-  if (bound == "upp") {
-    return(upp) 
-  } else return(low)
+  # Bound limits in [0, 1], and no CIs for estimates with no SEs
+  bound[bound < 0] <- 0
+  bound[bound > 1] <- 1
+  bound[se == 0] <- prob[se == 0]
+
+  return(bound)
 }
