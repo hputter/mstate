@@ -176,7 +176,7 @@
         res <- data.frame(res)
         names(res) <- c("id","Tstart","Tstop","duration","from","to","status","trans")
         attr(res, "trans") <- trans
-        class(res) <- "msdata"
+        class(res) <- c("msdata", "data.frame")
     }
     return(res)  
 }
