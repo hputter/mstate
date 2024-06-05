@@ -252,7 +252,7 @@
       if (length(labels)==1) {
         if (labels == "strata(trans)") { # no covariates, no call to C
           sf0 <- summary(survfit(object))
-          trans.new <- ifelse(is.null(sf0$strata), 1L, as.numeric(sf0$strata))
+          trans.new <- if (is.null(sf0$strata)) 1L else as.numeric(sf0$strata)
           norisk <- sf0$n.risk
           noevent <- sf0$n.event
           sf0 <- data.frame(time=sf0$time,Haz=-log(sf0$surv),norisk=norisk,
