@@ -67,5 +67,7 @@ probabilities in non-Markov multi-state models. Submitted.
 }
 \author{
 Hein Putter \email{H.Putter@lumc.nl}
+
+Edouard F. Bonneville \email{e.f.bonneville@lumc.nl}
 }
 \keyword{survival}

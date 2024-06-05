@@ -58,6 +58,6 @@ NeedsCompilation: yes
 Repository: CRAN
 Packaged: 2019-12-11 12:02:31 UTC; hputter
   Date/Publication: 2019-12-11 12:30:03 UTC
-RoxygenNote: 7.1.1
+RoxygenNote: 7.2.3
 BugReports: https://github.com/hputter/mstate/issues
 VignetteBuilder: knitr
