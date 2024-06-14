@@ -190,8 +190,11 @@
       sf0 <- summary(survfit(object))
       norisk <- sf0$n.risk
       noevent <- sf0$n.event
+      
+      # Allows two-state models (same fix as when vartype = "aalen")
+      trans.new <- if (is.null(sf0$strata)) 1L else as.numeric(sf0$strata)
       sf0 <- data.frame(time=sf0$time,Haz=-log(sf0$surv),norisk=norisk,
-                        noevent=noevent, trans=as.numeric(sf0$strata))
+                        noevent=noevent, trans=trans.new)
       allt <- sort(unique(c(sf0$time,lasty)))
       nt <- length(allt)
       K <- nrow(to.trans2(trans))
