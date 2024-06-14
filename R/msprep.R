@@ -392,8 +392,8 @@ msprepEngine <- function(time,status,id,starttime,startstate,trans,originalState
         }
     }
     if (length(to.remove)>0) {
-        time <- time[-to.remove,]
-        status <- status[-to.remove,]
+        time <- time[-to.remove, , drop = FALSE]
+        status <- status[-to.remove, , drop = FALSE]
         newtime <- newtime[-to.remove]          
         newstate <- newstate[-to.remove]
         id <- id[-to.remove]
