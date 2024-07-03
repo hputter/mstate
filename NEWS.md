@@ -1,3 +1,9 @@
+# Version 0.3.3 (2024-07-03)
+- Fixed issue with msprep() that occurred with very long vectors/mismatch between numeric id columns and integer id levels - thanks to @fumi-github for fixing #26 
+- Fixed issue #16 inside msfit (dimension of hlp) - thanks to @MetzgerSK
+- Fixed issue #27 with msfit() and vartype=="aalen", similar to an issue in previous version - thanks to @MetzgerSK
+- Other fixes: #31 (dimensions preserved when transitions made by only one individual), #30 (two-state model with vartype=="aalen" now works), #13 (proper output returned for mssample() when output='data'),a minor issue with vis.mirror.pt(), Cuminc() update (coerces data to data.frame, and removes defunct failcode argument)
+
 # Version 0.3.2 (2021-11-08)
 - Multi-state models can now be run accounting for population mortality,
   by adding relsurv functionality, see Manevski et al. (2021)

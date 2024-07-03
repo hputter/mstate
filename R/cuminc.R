@@ -84,7 +84,7 @@
                      na.status=c("remove","extra"))
 {
   # Coerce data to data.frame as in msprep()
-  if (missing(data)) stop("argument \"data\" missing") else data <- as.data.frame(data)
+  if (!missing(data)) data <- as.data.frame(data)
   
   ## time
   if (!is.vector(time)) stop("argument \"time\" not of correct type")

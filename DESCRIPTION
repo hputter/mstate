@@ -1,6 +1,6 @@
 Package: mstate
-Version: 0.3.2
-Date: 2021-11-08
+Version: 0.3.3
+Date: 2024-07-03
 Title: Data Preparation, Estimation and Prediction in Multi-State
         Models
 Authors@R: c(
@@ -52,8 +52,7 @@ Suggests:
 Description: Contains functions for data preparation, descriptives, hazard estimation and prediction with Aalen-Johansen or simulation in competing risks and multi-state models, see Putter, Fiocco, Geskus (2007) <doi:10.1002/sim.2712>.
 License: GPL (>= 2)
 Encoding: UTF-8
-URL:
-  https://www.lumc.nl/org/bds/research/medische-statistiek/survival-analysis/
+URL: https://github.com/hputter/mstate
 NeedsCompilation: yes
 Repository: CRAN
 Packaged: 2019-12-11 12:02:31 UTC; hputter

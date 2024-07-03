@@ -211,7 +211,7 @@
   # Check split.transitions argument value:
   if(missing(split.transitions)) stop("Please define split.transitions.")
   else{
-    if(class(split.transitions) == "numeric"){
+    if (inherits(split.transitions, "numeric")) { 
       if(!all(split.transitions %in% 1:max(trans, na.rm=TRUE))) stop("Invalid transitions used inside argument split.transitions.")
     }
     else stop("Argument split.transitions expects values of class numeric")
