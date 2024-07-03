@@ -100,14 +100,17 @@ vis.mirror.pt <- function(x,
     stop("Package ggplot2 needed for this function to work. Please install it.", call. = FALSE)
   }
   
-  # Check both have the right number of states
-  n_states <- 1 + sum(!is.na(x[[1]][["trans"]][from, ]))
-  if (missing(cols)) cols <- set_colours(n = n_states, type = "areas")
-  if (missing(ord)) ord <- seq_len(n_states)
+  # Check the number of states
+  tmat <- x[[1]][["trans"]]
+  state_names <- dimnames(tmat)[[1]]
+  n_states_plotted <- 1 + sum(!is.na(tmat[seq(from, nrow(tmat), by = 1), ]))
+  
+  if (missing(cols)) cols <- set_colours(n_states_plotted, type = "areas")
+  if (missing(ord)) ord <- seq_along(state_names) 
   
   # First build plot and inherit colours from left
-  p_left <- plot.probtrans(x[[1]], use.ggplot = TRUE, ord = ord, cols = cols)
-  p_right <- plot.probtrans(x[[2]], use.ggplot = TRUE, ord = ord, cols = cols)
+  p_left <- plot.probtrans(x[[1]], use.ggplot = TRUE, ord = ord, cols = cols, from = from)
+  p_right <- plot.probtrans(x[[2]], use.ggplot = TRUE, ord = ord, cols = cols, from = from)
   build_p1 <- ggplot2::ggplot_build(p_left)
 
   # Inherit also xlims for symmetry - edit here for xlim.
