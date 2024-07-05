@@ -56,7 +56,6 @@
 #' 
 #' de Wreede L, Fiocco M, Putter H (2009). The mstate package for estimation
 #' and prediction in non- and semi-parametric multi-state models. Submitted.
-#' \url{http://www.msbi.nl/multistate}.
 #' @keywords survival
 #' @examples
 #' 
