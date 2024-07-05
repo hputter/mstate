@@ -1,18 +1,19 @@
 citHeader("To cite mstate in publications use:")
 
-citEntry(entry = "Article",
-  title        = "{mstate}: An {R} Package for the Analysis of Competing Risks and Multi-State Models",
-  author       = personList(as.person("Liesbeth C. de Wreede"),
-                   as.person("Marta Fiocco"),
-                   as.person("Hein Putter")),
-  journal      = "Journal of Statistical Software",
-  year         = "2011",
-  volume       = "38",
-  number       = "7",
-  pages        = "1--30",
-  doi          = "10.18637/jss.v038.i07",
-  url          = "https://www.jstatsoft.org/v38/i07/",
-
+bibentry(
+  bibtype = "Article",
+  title = "{mstate}: An {R} Package for the Analysis of Competing Risks and Multi-State Models",
+  author = c(person("Liesbeth C.", "de Wreede"),
+             as.person("Marta Fiocco"),
+             as.person("Hein Putter")),
+  journal = "Journal of Statistical Software",
+  year = "2011",
+  volume = "38",
+  number = "7",
+  pages = "1--30",
+  doi = "10.18637/jss.v038.i07",
+  url = "https://www.jstatsoft.org/v38/i07/",
+  key = "mstate-JSS-2011"
   textVersion  =
   paste("Liesbeth C. de Wreede, Marta Fiocco, Hein Putter (2011).",
         "mstate: An R Package for the Analysis of Competing Risks and Multi-State Models.",
@@ -20,33 +21,36 @@ citEntry(entry = "Article",
         "URL https://www.jstatsoft.org/v38/i07/.")
 )
 
-citEntry(entry = "Article",
-  title        = "The {mstate} Package for Estimation and Prediction in Non- and Semi-Parametric Multi-State and Competing Risks Models",
-  author       = personList(as.person("Liesbeth C. de Wreede"),
-                   as.person("Marta Fiocco"),
-                   as.person("Hein Putter")),
-  journal      = "Computer Methods and Programs in Biomedicine",
-  year         = "2010",
-  volume       = "99",
-  pages        = "261--274",
+bibentry(
+  bibtype = "Article",
+  title = "The {mstate} Package for Estimation and Prediction in Non- and Semi-Parametric Multi-State and Competing Risks Models",
+  author = c(person("Liesbeth C.", "de Wreede"),
+             as.person("Marta Fiocco"),
+             as.person("Hein Putter")),
+  journal = "Computer Methods and Programs in Biomedicine",
+  year = "2010",
+  volume = "99",
+  pages = "261--274",
+  key = "mstate-compmethods-2010"
   textVersion =
   paste("Liesbeth C. de Wreede, Marta Fiocco, Hein Putter (2010)",
         "The {mstate} Package for Estimation and Prediction in Non- and Semi-Parametric Multi-State and Competing Risks Models.",
         "Computer Methods and Programs in Biomedicine, 99, 261-274.")
 )
 
-citEntry(entry = "Article",
-  title        = "Tutorial in Biostatistics: Competing Risks and Multi-State Models",
-  author       = personList(as.person("Hein Putter"),
-                   as.person("Ronald B. Geskus"),
-		   as.person("Marta Fiocco")),
-  journal      = "Statistics in Medicine",
-  year         = "2007",
-  number       = "26",
-  pages        = "2389--2430",
-
+bibentry(
+  bibtype = "Article",
+  title = "Tutorial in Biostatistics: Competing Risks and Multi-State Models",
+  author = c(as.person("Hein Putter"),
+             person("Ronald B.", "Geskus"),
+		         as.person("Marta Fiocco")),
+  journal = "Statistics in Medicine",
+  year = "2007",
+  number = "26",
+  pages = "2389--2430",
+  key = "mstate-tutorial-2007"
   textVersion =
   paste("Hein Putter, Marta Fiocco, and Ronald B. Geskus (2007)",
         "Tutorial in Biostatistics: Competing Risks and Multi-State Models.",
-  	"Statistics in Medicine, 26, 2389-2340.")
+        "Statistics in Medicine, 26, 2389-2340.")
 )
