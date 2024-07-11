@@ -6,7 +6,7 @@
 \title{Calculate nonparametric cumulative incidence functions and associated
 standard errors}
 \usage{
-Cuminc(time, status, data, group, na.status = c("remove", "extra"))
+Cuminc(time, status, data, group, na.status = c("remove", "extra"), ...)
 }
 \arguments{
 \item{time}{Either 1) a numeric vector containing the failure times or 2) a
@@ -27,6 +27,10 @@ level of \code{group}. If missing no groups are considered}
 indicating whether subjects with missing cause of failure should be removed
 or whether missing cause of failure should be treated as a separate cause of
 failure}
+
+\item{...}{Allows extra arguments for future extensions, but for now just
+used for backwards compatibility (e.g. allowing use of defunct \code{failcodes}
+argument in reverse dependencies).}
 }
 \value{
 An object of class \code{"Cuminc"}, which is a data frame containing

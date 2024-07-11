@@ -27,6 +27,9 @@
 #' indicating whether subjects with missing cause of failure should be removed
 #' or whether missing cause of failure should be treated as a separate cause of
 #' failure
+#' @param ... Allows extra arguments for future extensions, but for now just
+#' used for backwards compatibility (e.g. allowing use of defunct \code{failcodes}
+#' argument in reverse dependencies).
 #' 
 #' @return An object of class \code{"Cuminc"}, which is a data frame containing
 #' the estimated failure-free probabilities and cumulative incidences and their
@@ -80,7 +83,7 @@
 #' 
 #' @export 
 `Cuminc` <- function(time, status, data, group, 
-                     na.status=c("remove","extra"))
+                     na.status=c("remove","extra"), ...)
 {
   # Coerce data to data.frame as in msprep()
   if (!missing(data)) data <- as.data.frame(data)
