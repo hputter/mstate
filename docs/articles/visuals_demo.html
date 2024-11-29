@@ -4,602 +4,657 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <title>Visualising multi-state models using mstate • mstate</title>
-<!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script><!-- Bootstrap --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha256-bZLfwXAP04zRMK2BjiO8iu9pf4FbLqX6zitd+tIvLhE=" crossorigin="anonymous">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script><!-- bootstrap-toc --><link rel="stylesheet" href="../bootstrap-toc.css">
-<script src="../bootstrap-toc.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
-<!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- pkgdown --><link href="../pkgdown.css" rel="stylesheet">
-<script src="../pkgdown.js"></script><meta property="og:title" content="Visualising multi-state models using mstate">
-<meta property="og:description" content="mstate">
-<!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
-<script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
-<script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
-<![endif]-->
+<script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<link href="../deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet">
+<script src="../deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
+<link href="../deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet">
+<script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Visualising multi-state models using mstate">
 </head>
-<body data-spy="scroll" data-target="#toc">
-    <div class="container template-article">
-      <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
-  <div class="container">
-    <div class="navbar-header">
-      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false">
-        <span class="sr-only">Toggle navigation</span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-      </button>
-      <span class="navbar-brand">
-        <a class="navbar-link" href="../index.html">mstate</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.1</span>
-      </span>
-    </div>
+<body>
+    <a href="#main" class="visually-hidden-focusable">Skip to contents</a>
 
-    <div id="navbar" class="navbar-collapse collapse">
-      <ul class="nav navbar-nav">
-<li>
-  <a href="../index.html">
-    <span class="fas fa fas fa-home fa-lg"></span>
-     
-  </a>
-</li>
-<li>
-  <a href="../reference/index.html">Reference</a>
-</li>
-<li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-    Articles
-     
-    <span class="caret"></span>
-  </a>
-  <ul class="dropdown-menu" role="menu">
-<li>
-      <a href="../articles/visuals_demo.html">Visualising multi-state models using mstate</a>
-    </li>
+
+    <nav class="navbar navbar-expand-lg fixed-top bg-light" data-bs-theme="light" aria-label="Site navigation"><div class="container">
+
+    <a class="navbar-brand me-2" href="../index.html">mstate</a>
+
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.3</small>
+
+
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div id="navbar" class="collapse navbar-collapse ms-3">
+      <ul class="navbar-nav me-auto">
+<li class="nav-item"><a class="nav-link" href="../reference/index.html">Reference</a></li>
+<li class="active nav-item dropdown">
+  <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
+  <ul class="dropdown-menu" aria-labelledby="dropdown-articles">
+<li><a class="dropdown-item" href="../articles/visuals_demo.html">Visualising multi-state models using mstate</a></li>
   </ul>
 </li>
+<li class="nav-item"><a class="nav-link" href="../news/index.html">Changelog</a></li>
       </ul>
-<ul class="nav navbar-nav navbar-right">
-<li>
-  <a href="https://github.com/hputter/mstate/">
-    <span class="fab fa fab fa-github fa-lg"></span>
-     
-  </a>
-</li>
+<ul class="navbar-nav">
+<li class="nav-item"><form class="form-inline" role="search">
+ <input class="form-control" type="search" name="search-input" id="search-input" autocomplete="off" aria-label="Search site" placeholder="Search for" data-search-index="../search.json">
+</form></li>
+<li class="nav-item"><a class="external-link nav-link" href="https://github.com/hputter/mstate/" aria-label="GitHub"><span class="fa fab fa-github fa-lg"></span></a></li>
       </ul>
 </div>
-<!--/.nav-collapse -->
+
+
   </div>
-<!--/.container -->
-</div>
-<!--/.navbar -->
+</nav><div class="container template-article">
 
-      
 
-      </header><div class="row">
-  <div class="col-md-9 contents">
-    <div class="page-header toc-ignore">
-      <h1 data-toc-skip>Visualising multi-state models using mstate</h1>
-                        <h4 class="author">Edouard F. Bonneville</h4>
+
+
+<div class="row">
+  <main id="main" class="col-md-9"><div class="page-header">
+
+      <h1>Visualising multi-state models using mstate</h1>
+                        <h4 data-toc-skip class="author">Edouard F.
+Bonneville</h4>
             
-            <h4 class="date">17 december 2020</h4>
+            <h4 data-toc-skip class="date">29 November 2024</h4>
       
-      <small class="dont-index">Source: <a href="https://github.com/hputter/mstate/blob/master/vignettes/visuals_demo.Rmd"><code>vignettes/visuals_demo.Rmd</code></a></small>
-      <div class="hidden name"><code>visuals_demo.Rmd</code></div>
-
+      <small class="dont-index">Source: <a href="https://github.com/hputter/mstate/blob/HEAD/vignettes/visuals_demo.Rmd" class="external-link"><code>vignettes/visuals_demo.Rmd</code></a></small>
+      <div class="d-none name"><code>visuals_demo.Rmd</code></div>
     </div>
 
     
     
-<div id="preamble" class="section level1">
-<h1 class="hasAnchor">
-<a href="#preamble" class="anchor"></a>Preamble</h1>
-<p>The purpose of the present vignette is to demonstrate the visualisation capacities of <em>mstate</em>, using both base R graphics and the <em>ggplot2</em> package <span class="citation">(Wickham 2016)</span>. To do so, we will use the dataset used to illustrate competing risks analyses in Section 3 of the Tutorial by <span class="citation">Putter, Fiocco, and Geskus (2007)</span> . The dataset is available in <em>mstate</em> under the object name <code>aidssi</code>.</p>
-<p>We can begin by loading both the <em>mstate</em> and <em>ggplot2</em> libraries, and set a general theme for our plots:</p>
-<div class="sourceCode" id="cb1"><pre class="downlit">
-<span class="co"># Load libraries</span>
-<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="kw"><a href="https://www.lumc.nl/org/bds/research/medische-statistiek/survival-analysis">mstate</a></span>)
-<span class="co">#&gt; Loading required package: survival</span>
-<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="kw"><a href="http://ggplot2.tidyverse.org">ggplot2</a></span>)
-
-<span class="co"># Set general ggplot2 theme</span>
-<span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme_get.html">theme_set</a></span>(<span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html">theme_bw</a></span>(base_size = <span class="fl">14</span>))
-</pre></div>
-<p>We can then proceed to load the dataset, and prepare it for a competing risks analysis using <code><a href="../reference/msprep.html">msprep()</a></code>. The steps are described in more detail in the <a href="https://CRAN.R-project.org/package=mstate/vignettes/Tutorial.pdf">main vignette</a>.</p>
-<div class="sourceCode" id="cb2"><pre class="downlit">
-<span class="co"># Load data</span>
-<span class="fu"><a href="https://rdrr.io/r/utils/data.html">data</a></span>(<span class="st">"aidssi"</span>)
-<span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span>(<span class="kw">aidssi</span>)
-<span class="co">#&gt;   patnr   time status      cause ccr5</span>
-<span class="co">#&gt; 1     1  9.106      1       AIDS   WW</span>
-<span class="co">#&gt; 2     2 11.039      0 event-free   WM</span>
-<span class="co">#&gt; 3     3  2.234      1       AIDS   WW</span>
-<span class="co">#&gt; 4     4  9.878      2         SI   WM</span>
-<span class="co">#&gt; 5     5  3.819      1       AIDS   WW</span>
-<span class="co">#&gt; 6     6  6.801      1       AIDS   WW</span>
-
-<span class="co"># Shorter name</span>
-<span class="kw">si</span> <span class="op">&lt;-</span> <span class="kw">aidssi</span>
-
-<span class="co"># Prepare transition matrix</span>
-<span class="kw">tmat</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/transMat.html">trans.comprisk</a></span>(<span class="fl">2</span>, names = <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"event-free"</span>, <span class="st">"AIDS"</span>, <span class="st">"SI"</span>))
-<span class="kw">tmat</span>
-<span class="co">#&gt;             to</span>
-<span class="co">#&gt; from         event-free AIDS SI</span>
-<span class="co">#&gt;   event-free         NA    1  2</span>
-<span class="co">#&gt;   AIDS               NA   NA NA</span>
-<span class="co">#&gt;   SI                 NA   NA NA</span>
-
-<span class="co"># Run msprep</span>
-<span class="kw">si</span><span class="op">$</span><span class="kw">stat1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/numeric.html">as.numeric</a></span>(<span class="kw">si</span><span class="op">$</span><span class="kw">status</span> <span class="op">==</span> <span class="fl">1</span>)
-<span class="kw">si</span><span class="op">$</span><span class="kw">stat2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/numeric.html">as.numeric</a></span>(<span class="kw">si</span><span class="op">$</span><span class="kw">status</span> <span class="op">==</span> <span class="fl">2</span>)
-
-<span class="kw">silong</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/msprep.html">msprep</a></span>(
-  time = <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">NA</span>, <span class="st">"time"</span>, <span class="st">"time"</span>), 
-  status = <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">NA</span>, <span class="st">"stat1"</span>, <span class="st">"stat2"</span>), 
-  data = <span class="kw">si</span>, 
-  keep = <span class="st">"ccr5"</span>, 
-  trans = <span class="kw">tmat</span>
-)
-
-<span class="co"># Run cox model</span>
-<span class="kw">silong</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/expand.covs.html">expand.covs</a></span>(<span class="kw">silong</span>, <span class="st">"ccr5"</span>)
-
-<span class="kw">c1</span> <span class="op">&lt;-</span> <span class="fu">coxph</span>(<span class="fu">Surv</span>(<span class="kw">time</span>, <span class="kw">status</span>) <span class="op">~</span> <span class="kw">ccr5WM.1</span> <span class="op">+</span> <span class="kw">ccr5WM.2</span> <span class="op">+</span> <span class="fu">strata</span>(<span class="kw">trans</span>),
-            data = <span class="kw">silong</span>)
-</pre></div>
+<div class="section level2">
+<h2 id="preamble">Preamble<a class="anchor" aria-label="anchor" href="#preamble"></a>
+</h2>
+<p>The purpose of the present vignette is to demonstrate the
+visualisation capacities of <em>mstate</em>, using both base R graphics
+and the <em>ggplot2</em> package <span class="citation">(Wickham
+2016)</span>. To do so, we will use the dataset used to illustrate
+competing risks analyses in Section 3 of the Tutorial by <span class="citation">Putter, Fiocco, and Geskus (2007)</span> . The dataset
+is available in <em>mstate</em> under the object name
+<code>aidssi</code>.</p>
+<p>We can begin by loading both the <em>mstate</em> and <em>ggplot2</em>
+libraries, and set a general theme for our plots:</p>
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Load libraries</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/hputter/mstate" class="external-link">mstate</a></span><span class="op">)</span></span>
+<span><span class="co">#&gt; Loading required package: survival</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org" class="external-link">ggplot2</a></span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Set general ggplot2 theme</span></span>
+<span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme_get.html" class="external-link">theme_set</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html" class="external-link">theme_bw</a></span><span class="op">(</span>base_size <span class="op">=</span> <span class="fl">14</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<p>We can then proceed to load the dataset, and prepare it for a
+competing risks analysis using <code><a href="../reference/msprep.html">msprep()</a></code>. The steps are
+described in more detail in the <a href="https://CRAN.R-project.org/package=mstate/vignettes/Tutorial.pdf" class="external-link">main
+vignette</a>.</p>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Load data</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">"aidssi"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">aidssi</span><span class="op">)</span></span>
+<span><span class="co">#&gt;   patnr   time status      cause ccr5</span></span>
+<span><span class="co">#&gt; 1     1  9.106      1       AIDS   WW</span></span>
+<span><span class="co">#&gt; 2     2 11.039      0 event-free   WM</span></span>
+<span><span class="co">#&gt; 3     3  2.234      1       AIDS   WW</span></span>
+<span><span class="co">#&gt; 4     4  9.878      2         SI   WM</span></span>
+<span><span class="co">#&gt; 5     5  3.819      1       AIDS   WW</span></span>
+<span><span class="co">#&gt; 6     6  6.801      1       AIDS   WW</span></span>
+<span></span>
+<span><span class="co"># Shorter name</span></span>
+<span><span class="va">si</span> <span class="op">&lt;-</span> <span class="va">aidssi</span></span>
+<span></span>
+<span><span class="co"># Prepare transition matrix</span></span>
+<span><span class="va">tmat</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/transMat.html">trans.comprisk</a></span><span class="op">(</span><span class="fl">2</span>, names <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"event-free"</span>, <span class="st">"AIDS"</span>, <span class="st">"SI"</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">tmat</span></span>
+<span><span class="co">#&gt;             to</span></span>
+<span><span class="co">#&gt; from         event-free AIDS SI</span></span>
+<span><span class="co">#&gt;   event-free         NA    1  2</span></span>
+<span><span class="co">#&gt;   AIDS               NA   NA NA</span></span>
+<span><span class="co">#&gt;   SI                 NA   NA NA</span></span>
+<span></span>
+<span><span class="co"># Run msprep</span></span>
+<span><span class="va">si</span><span class="op">$</span><span class="va">stat1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/numeric.html" class="external-link">as.numeric</a></span><span class="op">(</span><span class="va">si</span><span class="op">$</span><span class="va">status</span> <span class="op">==</span> <span class="fl">1</span><span class="op">)</span></span>
+<span><span class="va">si</span><span class="op">$</span><span class="va">stat2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/numeric.html" class="external-link">as.numeric</a></span><span class="op">(</span><span class="va">si</span><span class="op">$</span><span class="va">status</span> <span class="op">==</span> <span class="fl">2</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">silong</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/msprep.html">msprep</a></span><span class="op">(</span></span>
+<span>  time <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="cn">NA</span>, <span class="st">"time"</span>, <span class="st">"time"</span><span class="op">)</span>, </span>
+<span>  status <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="cn">NA</span>, <span class="st">"stat1"</span>, <span class="st">"stat2"</span><span class="op">)</span>, </span>
+<span>  data <span class="op">=</span> <span class="va">si</span>, </span>
+<span>  keep <span class="op">=</span> <span class="st">"ccr5"</span>, </span>
+<span>  trans <span class="op">=</span> <span class="va">tmat</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Run cox model</span></span>
+<span><span class="va">silong</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/expand.covs.html">expand.covs</a></span><span class="op">(</span><span class="va">silong</span>, <span class="st">"ccr5"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">c1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/survival/man/coxph.html" class="external-link">coxph</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/survival/man/Surv.html" class="external-link">Surv</a></span><span class="op">(</span><span class="va">time</span>, <span class="va">status</span><span class="op">)</span> <span class="op">~</span> <span class="va">ccr5WM.1</span> <span class="op">+</span> <span class="va">ccr5WM.2</span> <span class="op">+</span> <span class="fu"><a href="https://rdrr.io/pkg/survival/man/strata.html" class="external-link">strata</a></span><span class="op">(</span><span class="va">trans</span><span class="op">)</span>,</span>
+<span>            data <span class="op">=</span> <span class="va">silong</span><span class="op">)</span></span></code></pre></div>
 </div>
-<div id="visualising-cumulative-baseline-hazards-using-plot-msfit" class="section level1">
-<h1 class="hasAnchor">
-<a href="#visualising-cumulative-baseline-hazards-using-plot-msfit" class="anchor"></a>Visualising cumulative baseline hazards using <code>plot.msfit()</code>
-</h1>
-<p>Using <code><a href="../reference/msfit.html">msfit()</a></code>, we can obtain patient-specific transition hazards. We look here at a patient with a CCR5 genotype “WW” (wild type allele on both chromosomes).</p>
-<div class="sourceCode" id="cb3"><pre class="downlit">
-<span class="co"># Data to predict</span>
-<span class="kw">WW</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span>(
-  ccr5WM.1 = <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">0</span>, <span class="fl">0</span>),
-  ccr5WM.2 = <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">0</span>, <span class="fl">0</span>), 
-  trans = <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">1</span>, <span class="fl">2</span>), 
-  strata = <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">1</span>, <span class="fl">2</span>)
-)
-
-<span class="co"># Make msfit object</span>
-<span class="kw">msf.WW</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/msfit.html">msfit</a></span>(
-  object = <span class="kw">c1</span>, 
-  newdata = <span class="kw">WW</span>, 
-  trans = <span class="kw">tmat</span>
-)
-</pre></div>
+<div class="section level2">
+<h2 id="visualising-cumulative-baseline-hazards-using-plot-msfit">Visualising cumulative baseline hazards using
+<code>plot.msfit()</code><a class="anchor" aria-label="anchor" href="#visualising-cumulative-baseline-hazards-using-plot-msfit"></a>
+</h2>
+<p>Using <code><a href="../reference/msfit.html">msfit()</a></code>, we can obtain patient-specific transition
+hazards. We look here at a patient with a CCR5 genotype “WW” (wild type
+allele on both chromosomes).</p>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Data to predict</span></span>
+<span><span class="va">WW</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span></span>
+<span>  ccr5WM.1 <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">0</span><span class="op">)</span>,</span>
+<span>  ccr5WM.2 <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">0</span><span class="op">)</span>, </span>
+<span>  trans <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span><span class="op">)</span>, </span>
+<span>  strata <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span><span class="op">)</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Make msfit object</span></span>
+<span><span class="va">msf.WW</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/msfit.html">msfit</a></span><span class="op">(</span></span>
+<span>  object <span class="op">=</span> <span class="va">c1</span>, </span>
+<span>  newdata <span class="op">=</span> <span class="va">WW</span>, </span>
+<span>  trans <span class="op">=</span> <span class="va">tmat</span></span>
+<span><span class="op">)</span></span></code></pre></div>
 <p>The cumulative baseline hazards can be plotted simply by using:</p>
-<div class="sourceCode" id="cb4"><pre class="downlit">
-<span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span>(<span class="kw">msf.WW</span>)
-</pre></div>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">msf.WW</span><span class="op">)</span></span></code></pre></div>
 <p><img src="visuals_demo_files/figure-html/msfitplot_base_1-1.png" width="672" style="display: block; margin: auto;"></p>
-<p>If we specify the argument <code>use.ggplot = TRUE</code>, the <code>plot</code> method will return a ggplot object.</p>
-<div class="sourceCode" id="cb5"><pre class="downlit">
-<span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span>(<span class="kw">msf.WW</span>, use.ggplot = <span class="fl">TRUE</span>)
-</pre></div>
+<p>If we specify the argument <code>use.ggplot = TRUE</code>, the
+<code>plot</code> method will return a ggplot object.</p>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">msf.WW</span>, use.ggplot <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
 <p><img src="visuals_demo_files/figure-html/msfitplot_ggplot2_1-1.png" width="672" style="display: block; margin: auto;"></p>
-<p>When using the argument <code>type = "separate"</code>, the base R plot will return a separate plot for each transition:</p>
-<div class="sourceCode" id="cb6"><pre class="downlit">
-<span class="fu"><a href="https://rdrr.io/r/graphics/par.html">par</a></span>(mfrow = <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">1</span>, <span class="fl">2</span>))
-<span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span>(<span class="kw">msf.WW</span>, type = <span class="st">"separate"</span>)
-</pre></div>
+<p>When using the argument <code>type = "separate"</code>, the base R
+plot will return a separate plot for each transition:</p>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/par.html" class="external-link">par</a></span><span class="op">(</span>mfrow <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">msf.WW</span>, type <span class="op">=</span> <span class="st">"separate"</span><span class="op">)</span></span></code></pre></div>
 <p><img src="visuals_demo_files/figure-html/msfitplot_base_2-1.png" width="672" style="display: block; margin: auto;"></p>
-<p>The <em>ggplot2</em> version will return a facetted plot, where the axis scales can either be kept “fixed”, or “free” using the <code>scale_type</code> argument. It is essentially the same argument as <code>scales</code> from the <code><a href="https://ggplot2.tidyverse.org/reference/facet_wrap.html">facet_wrap()</a></code> function of <em>ggplot2</em>, see <code><a href="https://ggplot2.tidyverse.org/reference/facet_wrap.html">?ggplot2::facet_wrap</a></code>.</p>
-<div class="sourceCode" id="cb7"><pre class="downlit">
-<span class="co"># Fixed scales</span>
-<span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span>(<span class="kw">msf.WW</span>, type = <span class="st">"separate"</span>, use.ggplot = <span class="fl">TRUE</span>, scale_type = <span class="st">"fixed"</span>)
-</pre></div>
+<p>The <em>ggplot2</em> version will return a facetted plot, where the
+axis scales can either be kept “fixed”, or “free” using the
+<code>scale_type</code> argument. It is essentially the same argument as
+<code>scales</code> from the <code><a href="https://ggplot2.tidyverse.org/reference/facet_wrap.html" class="external-link">facet_wrap()</a></code> function of
+<em>ggplot2</em>, see <code><a href="https://ggplot2.tidyverse.org/reference/facet_wrap.html" class="external-link">?ggplot2::facet_wrap</a></code>.</p>
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Fixed scales</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">msf.WW</span>, type <span class="op">=</span> <span class="st">"separate"</span>, use.ggplot <span class="op">=</span> <span class="cn">TRUE</span>, scale_type <span class="op">=</span> <span class="st">"fixed"</span><span class="op">)</span></span></code></pre></div>
 <p><img src="visuals_demo_files/figure-html/msfitplot_ggplot_2-1.png" width="672" style="display: block; margin: auto;"></p>
-<div class="sourceCode" id="cb8"><pre class="downlit">
-
-<span class="co"># Free scales</span>
-<span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span>(<span class="kw">msf.WW</span>, type = <span class="st">"separate"</span>, use.ggplot = <span class="fl">TRUE</span>, scale_type = <span class="st">"free"</span>, xlim = <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">0</span>, <span class="fl">15</span>))
-</pre></div>
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span></span>
+<span><span class="co"># Free scales</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">msf.WW</span>, type <span class="op">=</span> <span class="st">"separate"</span>, use.ggplot <span class="op">=</span> <span class="cn">TRUE</span>, scale_type <span class="op">=</span> <span class="st">"free"</span>, xlim <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">15</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <p><img src="visuals_demo_files/figure-html/msfitplot_ggplot_2-2.png" width="672" style="display: block; margin: auto;"></p>
-<p>The remaining arguments are standard plotting adjustments, which will work for both the <em>ggplot2</em> and base R version of the plots. For details, see <code><a href="../reference/plot.msfit.html">?mstate::plot.msfit</a></code>. Any further adjustments that are not available through the function arguments (such as plot title) can simply be added using standard <em>ggplot2</em> syntax using <code><a href="https://rdrr.io/r/base/Arithmetic.html">+</a></code>, or graphics functions such as <code><a href="https://rdrr.io/r/graphics/title.html">title()</a></code>. The following is a customised example:</p>
-<div class="sourceCode" id="cb9"><pre class="downlit">
-<span class="fu"><a href="https://rdrr.io/r/graphics/par.html">par</a></span>(mfrow = <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">1</span>, <span class="fl">1</span>))
-<span class="co"># A base R customised plot</span>
-<span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span>(
-  <span class="kw">msf.WW</span>, 
-  type = <span class="st">"single"</span>, 
-  cols = <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"blue"</span>, <span class="st">"black"</span>), <span class="co"># or numeric e.g. c(1, 2)</span>
-  xlim = <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">0</span>, <span class="fl">15</span>),
-  legend.pos = <span class="st">"top"</span>,
-  lty = <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"dashed"</span>, <span class="st">"solid"</span>),
-  use.ggplot = <span class="fl">FALSE</span>
-)
-<span class="fu"><a href="https://rdrr.io/r/graphics/title.html">title</a></span>(<span class="st">"Cumulative baseline hazards"</span>)
-</pre></div>
+<p>The remaining arguments are standard plotting adjustments, which will
+work for both the <em>ggplot2</em> and base R version of the plots. For
+details, see <code><a href="../reference/plot.msfit.html">?mstate::plot.msfit</a></code>. Any further adjustments
+that are not available through the function arguments (such as plot
+title) can simply be added using standard <em>ggplot2</em> syntax using
+<code>+</code>, or graphics functions such as <code><a href="https://rdrr.io/r/graphics/title.html" class="external-link">title()</a></code>. The
+following is a customised example:</p>
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/par.html" class="external-link">par</a></span><span class="op">(</span>mfrow <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">1</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co"># A base R customised plot</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span></span>
+<span>  <span class="va">msf.WW</span>, </span>
+<span>  type <span class="op">=</span> <span class="st">"single"</span>, </span>
+<span>  cols <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"blue"</span>, <span class="st">"black"</span><span class="op">)</span>, <span class="co"># or numeric e.g. c(1, 2)</span></span>
+<span>  xlim <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">15</span><span class="op">)</span>,</span>
+<span>  legend.pos <span class="op">=</span> <span class="st">"top"</span>,</span>
+<span>  lty <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"dashed"</span>, <span class="st">"solid"</span><span class="op">)</span>,</span>
+<span>  use.ggplot <span class="op">=</span> <span class="cn">FALSE</span></span>
+<span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/title.html" class="external-link">title</a></span><span class="op">(</span><span class="st">"Cumulative baseline hazards"</span><span class="op">)</span></span></code></pre></div>
 <p><img src="visuals_demo_files/figure-html/msfitplot_customs-1.png" width="672" style="display: block; margin: auto;"></p>
-<div class="sourceCode" id="cb10"><pre class="downlit">
-
-<span class="co"># A ggplot2 customised plot</span>
-<span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span>(
-  <span class="kw">msf.WW</span>, 
-  type = <span class="st">"single"</span>, 
-  cols = <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"blue"</span>, <span class="st">"black"</span>), <span class="co"># or numeric e.g. c(1, 2)</span>
-  xlim = <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">0</span>, <span class="fl">15</span>),
-  lty = <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"dashed"</span>, <span class="st">"solid"</span>),
-  legend.pos = <span class="st">"bottom"</span>,
-  use.ggplot = <span class="fl">TRUE</span>
-) <span class="op">+</span>
-  
-  <span class="co"># Add title and center</span>
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">ggtitle</a></span>(<span class="st">"Cumulative baseline hazards"</span>) <span class="op">+</span>
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html">theme</a></span>(plot.title = <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html">element_text</a></span>(hjust = <span class="fl">0.5</span>))
-</pre></div>
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span></span>
+<span><span class="co"># A ggplot2 customised plot</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span></span>
+<span>  <span class="va">msf.WW</span>, </span>
+<span>  type <span class="op">=</span> <span class="st">"single"</span>, </span>
+<span>  cols <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"blue"</span>, <span class="st">"black"</span><span class="op">)</span>, <span class="co"># or numeric e.g. c(1, 2)</span></span>
+<span>  xlim <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">15</span><span class="op">)</span>,</span>
+<span>  lty <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"dashed"</span>, <span class="st">"solid"</span><span class="op">)</span>,</span>
+<span>  legend.pos <span class="op">=</span> <span class="st">"bottom"</span>,</span>
+<span>  use.ggplot <span class="op">=</span> <span class="cn">TRUE</span></span>
+<span><span class="op">)</span> <span class="op">+</span></span>
+<span>  </span>
+<span>  <span class="co"># Add title and center</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">ggtitle</a></span><span class="op">(</span><span class="st">"Cumulative baseline hazards"</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html" class="external-link">theme</a></span><span class="op">(</span>plot.title <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">element_text</a></span><span class="op">(</span>hjust <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <p><img src="visuals_demo_files/figure-html/msfitplot_customs-2.png" width="672" style="display: block; margin: auto;"></p>
+<p>Available using <code>use.ggplot = TRUE</code> are the confidence
+intervals around the cumulative hazards, which can be obtained by
+specifying <code>conf.type</code> of type “plain” or “log”, for example
+in single plot:</p>
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span></span>
+<span>  <span class="va">msf.WW</span>, </span>
+<span>  type <span class="op">=</span> <span class="st">"single"</span>, </span>
+<span>  use.ggplot <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  conf.type <span class="op">=</span> <span class="st">"log"</span>, </span>
+<span>  conf.int <span class="op">=</span> <span class="fl">0.95</span></span>
+<span><span class="op">)</span></span></code></pre></div>
+<p><img src="visuals_demo_files/figure-html/msfitplot_confint1-1.png" width="672" style="display: block; margin: auto;"></p>
+<p>Or else, in a facetted plot:</p>
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span></span>
+<span>  <span class="va">msf.WW</span>, </span>
+<span>  type <span class="op">=</span> <span class="st">"separate"</span>, </span>
+<span>  use.ggplot <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  conf.type <span class="op">=</span> <span class="st">"log"</span>, </span>
+<span>  conf.int <span class="op">=</span> <span class="fl">0.95</span>,</span>
+<span>  scale_type <span class="op">=</span> <span class="st">"free_y"</span></span>
+<span><span class="op">)</span></span></code></pre></div>
+<p><img src="visuals_demo_files/figure-html/msfitplot_confint2-1.png" width="672" style="display: block; margin: auto;"></p>
 </div>
-<div id="visualising-transition-probabilities-using-plot-probtrans" class="section level1">
-<h1 class="hasAnchor">
-<a href="#visualising-transition-probabilities-using-plot-probtrans" class="anchor"></a>Visualising transition probabilities using <code>plot.probtrans()</code>
-</h1>
-<p>The transition hazards obtained in the previous section can be used to obtain patient-specific transition probabilities using <code><a href="../reference/probtrans.html">probtrans()</a></code>. Here, we would like to predict from the beginning of follow-up (<code>predt = 0</code>).</p>
-<div class="sourceCode" id="cb11"><pre class="downlit">
-<span class="co"># Run probtrans</span>
-<span class="kw">pt.WW</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/probtrans.html">probtrans</a></span>(<span class="kw">msf.WW</span>, predt = <span class="fl">0</span>)
-
-<span class="co"># Example predict at different times</span>
-<span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span>(<span class="kw">pt.WW</span>, times = <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">1</span>, <span class="fl">5</span>, <span class="fl">10</span>))
-<span class="co">#&gt; </span>
-<span class="co">#&gt; Prediction from state 1 :</span>
-<span class="co">#&gt;   times   pstate1   pstate2    pstate3         se1        se2         se3</span>
-<span class="co">#&gt; 1     1 0.9805172 0.0000000 0.01948279 0.007899257 0.00000000 0.007899257</span>
-<span class="co">#&gt; 2     5 0.6887491 0.1471596 0.16409130 0.028250825 0.02189893 0.022200323</span>
-<span class="co">#&gt; 3    10 0.2772999 0.3870165 0.33568358 0.030015241 0.03202897 0.030204083</span>
-<span class="co">#&gt;      lower1    lower2      lower3    upper1    upper2     upper3</span>
-<span class="co">#&gt; 1 0.9651565 0.0000000 0.008801028 0.9961223 0.0000000 0.04312897</span>
-<span class="co">#&gt; 2 0.6355458 0.1099311 0.125870614 0.7464063 0.1969956 0.21391771</span>
-<span class="co">#&gt; 3 0.2242925 0.3290677 0.281410843 0.3428346 0.4551702 0.40042333</span>
-</pre></div>
-<p>The <code>plot</code> method for <code>probtrans</code> objects allows to visualise the transition probabilities in various ways, using both functionality from base R graphics and <em>ggplot2</em>.</p>
-<div id="filledstacked-plots" class="section level2">
-<h2 class="hasAnchor">
-<a href="#filledstacked-plots" class="anchor"></a>Filled/stacked plots</h2>
-<p>The default is a so-called “filled” plot, where the transition probabilities are represented by coloured areas. The <code>from</code> argument allows the user to choose the state to predict from (default is 1, the first state).</p>
-<div class="sourceCode" id="cb12"><pre class="downlit">
-<span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span>(<span class="kw">pt.WW</span>, from = <span class="fl">1</span>)
-</pre></div>
+<div class="section level2">
+<h2 id="visualising-transition-probabilities-using-plot-probtrans">Visualising transition probabilities using
+<code>plot.probtrans()</code><a class="anchor" aria-label="anchor" href="#visualising-transition-probabilities-using-plot-probtrans"></a>
+</h2>
+<p>The transition hazards obtained in the previous section can be used
+to obtain patient-specific transition probabilities using
+<code><a href="../reference/probtrans.html">probtrans()</a></code>. Here, we would like to predict from the
+beginning of follow-up (<code>predt = 0</code>).</p>
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Run probtrans</span></span>
+<span><span class="va">pt.WW</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/probtrans.html">probtrans</a></span><span class="op">(</span><span class="va">msf.WW</span>, predt <span class="op">=</span> <span class="fl">0</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Example predict at different times</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">pt.WW</span>, times <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">5</span>, <span class="fl">10</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Prediction from state 1 :</span></span>
+<span><span class="co">#&gt;   times   pstate1   pstate2    pstate3         se1        se2         se3</span></span>
+<span><span class="co">#&gt; 1     1 0.9805172 0.0000000 0.01948279 0.007899257 0.00000000 0.007899257</span></span>
+<span><span class="co">#&gt; 2     5 0.6887491 0.1471596 0.16409130 0.028250825 0.02189893 0.022200323</span></span>
+<span><span class="co">#&gt; 3    10 0.2772999 0.3870165 0.33568358 0.030015241 0.03202897 0.030204083</span></span>
+<span><span class="co">#&gt;      lower1    lower2      lower3    upper1    upper2     upper3</span></span>
+<span><span class="co">#&gt; 1 0.9651565 0.0000000 0.008801028 0.9961223 0.0000000 0.04312897</span></span>
+<span><span class="co">#&gt; 2 0.6355458 0.1099311 0.125870614 0.7464063 0.1969956 0.21391771</span></span>
+<span><span class="co">#&gt; 3 0.2242925 0.3290677 0.281410843 0.3428346 0.4551702 0.40042333</span></span></code></pre></div>
+<p>The <code>plot</code> method for <code>probtrans</code> objects
+allows to visualise the transition probabilities in various ways, using
+both functionality from base R graphics and <em>ggplot2</em>.</p>
+<div class="section level3">
+<h3 id="filledstacked-plots">Filled/stacked plots<a class="anchor" aria-label="anchor" href="#filledstacked-plots"></a>
+</h3>
+<p>The default is a so-called “filled” plot, where the transition
+probabilities are represented by coloured areas. The <code>from</code>
+argument allows the user to choose the state to predict from (default is
+1, the first state).</p>
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">pt.WW</span>, from <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span></code></pre></div>
 <p><img src="visuals_demo_files/figure-html/plot_pt_filled1-1.png" width="672" style="display: block; margin: auto;"></p>
-<p>Again, the <code>use.ggplot = TRUE</code> argument can be used to return a ggplot object instead:</p>
-<div class="sourceCode" id="cb13"><pre class="downlit">
-<span class="co"># from = 1 implied</span>
-<span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span>(<span class="kw">pt.WW</span>, use.ggplot = <span class="fl">TRUE</span>)
-</pre></div>
+<p>Again, the <code>use.ggplot = TRUE</code> argument can be used to
+return a ggplot object instead:</p>
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># from = 1 implied</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">pt.WW</span>, use.ggplot <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
 <p><img src="visuals_demo_files/figure-html/plot_pt_filled2-1.png" width="672" style="display: block; margin: auto;"></p>
-<p>Note that the <em>ggplot2</em> version of the plot places the state labels in a legend rather than labels in the plot itself. If we prefer the latter, we can specify <code>label = annotate</code> instead - and change the size of the labels with cex.</p>
-<div class="sourceCode" id="cb14"><pre class="downlit">
-<span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span>(<span class="kw">pt.WW</span>, use.ggplot = <span class="fl">TRUE</span>, label = <span class="st">"annotate"</span>, cex = <span class="fl">6</span>)   
-</pre></div>
+<p>Note that the <em>ggplot2</em> version of the plot places the state
+labels in a legend rather than labels in the plot itself. If we prefer
+the latter, we can specify <code>label = annotate</code> instead - and
+change the size of the labels with cex.</p>
+<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">pt.WW</span>, use.ggplot <span class="op">=</span> <span class="cn">TRUE</span>, label <span class="op">=</span> <span class="st">"annotate"</span>, cex <span class="op">=</span> <span class="fl">6</span><span class="op">)</span>   </span></code></pre></div>
 <p><img src="visuals_demo_files/figure-html/plot_pt_filled3-1.png" width="672" style="display: block; margin: auto;"></p>
-<p>More generally, we can also adjust the stacking order using the <code>ord</code> argument, which takes a numeric vector equal to the number of states, in the desired stacking order (bottom to top).</p>
-<div class="sourceCode" id="cb15"><pre class="downlit">
-<span class="co"># Check state order again from transition matrix</span>
-<span class="kw">tmat</span>
-<span class="co">#&gt;             to</span>
-<span class="co">#&gt; from         event-free AIDS SI</span>
-<span class="co">#&gt;   event-free         NA    1  2</span>
-<span class="co">#&gt;   AIDS               NA   NA NA</span>
-<span class="co">#&gt;   SI                 NA   NA NA</span>
-
-<span class="co"># Plot aids (state 2), then event-free (state 1), and SI on top (state 3)</span>
-<span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span>(<span class="kw">pt.WW</span>, use.ggplot = <span class="fl">TRUE</span>, ord = <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">2</span>, <span class="fl">1</span>, <span class="fl">3</span>))   
-</pre></div>
+<p>More generally, we can also adjust the stacking order using the
+<code>ord</code> argument, which takes a numeric vector equal to the
+number of states, in the desired stacking order (bottom to top).</p>
+<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Check state order again from transition matrix</span></span>
+<span><span class="va">tmat</span></span>
+<span><span class="co">#&gt;             to</span></span>
+<span><span class="co">#&gt; from         event-free AIDS SI</span></span>
+<span><span class="co">#&gt;   event-free         NA    1  2</span></span>
+<span><span class="co">#&gt;   AIDS               NA   NA NA</span></span>
+<span><span class="co">#&gt;   SI                 NA   NA NA</span></span>
+<span></span>
+<span><span class="co"># Plot aids (state 2), then event-free (state 1), and SI on top (state 3)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">pt.WW</span>, use.ggplot <span class="op">=</span> <span class="cn">TRUE</span>, ord <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2</span>, <span class="fl">1</span>, <span class="fl">3</span><span class="op">)</span><span class="op">)</span>   </span></code></pre></div>
 <p><img src="visuals_demo_files/figure-html/plot_pt_filled4-1.png" width="672" style="display: block; margin: auto;"></p>
-<p>You can also choose to forgo the colour, and specify <code>type = "stacked"</code> instead:</p>
-<div class="sourceCode" id="cb16"><pre class="downlit">
-<span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span>(<span class="kw">pt.WW</span>, use.ggplot = <span class="fl">TRUE</span>, type = <span class="st">"stacked"</span>)   
-</pre></div>
+<p>You can also choose to forgo the colour, and specify
+<code>type = "stacked"</code> instead:</p>
+<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">pt.WW</span>, use.ggplot <span class="op">=</span> <span class="cn">TRUE</span>, type <span class="op">=</span> <span class="st">"stacked"</span><span class="op">)</span>   </span></code></pre></div>
 <p><img src="visuals_demo_files/figure-html/plot_pt_stacked-1.png" width="672" style="display: block; margin: auto;"></p>
 </div>
-<div id="single-and-separate-plots-confidence-intervals" class="section level2">
-<h2 class="hasAnchor">
-<a href="#single-and-separate-plots-confidence-intervals" class="anchor"></a>Single and separate plots, confidence intervals</h2>
-<p>Instead of visualising the probabilities using stacked areas, we can go the traditional route and use a single line per state. Confidence intervals can then be added.</p>
-<p>By specifying <code>type = "separate"</code>, the base R plot will return a separate plot for all three states.</p>
-<div class="sourceCode" id="cb17"><pre class="downlit">
-<span class="fu"><a href="https://rdrr.io/r/graphics/par.html">par</a></span>(mfrow = <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">1</span>, <span class="fl">3</span>))
-<span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span>(<span class="kw">pt.WW</span>, type = <span class="st">"separate"</span>)   
-</pre></div>
+<div class="section level3">
+<h3 id="single-and-separate-plots-confidence-intervals">Single and separate plots, confidence intervals<a class="anchor" aria-label="anchor" href="#single-and-separate-plots-confidence-intervals"></a>
+</h3>
+<p>Instead of visualising the probabilities using stacked areas, we can
+go the traditional route and use a single line per state. Confidence
+intervals can then be added.</p>
+<p>By specifying <code>type = "separate"</code>, the base R plot will
+return a separate plot for all three states.</p>
+<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/par.html" class="external-link">par</a></span><span class="op">(</span>mfrow <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">3</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">pt.WW</span>, type <span class="op">=</span> <span class="st">"separate"</span><span class="op">)</span>   </span></code></pre></div>
 <p><img src="visuals_demo_files/figure-html/plot_pt_separate1-1.png" width="672" style="display: block; margin: auto;"></p>
-<p>The <em>ggplot2</em> version will return a facetted plot, with one state per facet. It also accommodates confidence intervals, which are either of type “log” (default) or “plain”.</p>
-<div class="sourceCode" id="cb18"><pre class="downlit">
-<span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span>(
-  <span class="kw">pt.WW</span>, 
-  use.ggplot = <span class="fl">TRUE</span>, 
-  type = <span class="st">"separate"</span>,
-  conf.int = <span class="fl">0.95</span>, <span class="co"># 95% level</span>
-  conf.type = <span class="st">"log"</span>
-)   
-</pre></div>
+<p>The <em>ggplot2</em> version will return a facetted plot, with one
+state per facet. It also accommodates confidence intervals, which are
+either of type “log” (default) or “plain”.</p>
+<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span></span>
+<span>  <span class="va">pt.WW</span>, </span>
+<span>  use.ggplot <span class="op">=</span> <span class="cn">TRUE</span>, </span>
+<span>  type <span class="op">=</span> <span class="st">"separate"</span>,</span>
+<span>  conf.int <span class="op">=</span> <span class="fl">0.95</span>, <span class="co"># 95% level</span></span>
+<span>  conf.type <span class="op">=</span> <span class="st">"log"</span></span>
+<span><span class="op">)</span>   </span></code></pre></div>
 <p><img src="visuals_demo_files/figure-html/plot_pt_separate2-1.png" width="672" style="display: block; margin: auto;"></p>
-<p>These confidence intervals can be omitted using <code>conf.type = "none"</code>.</p>
-<p>What if we wanted all of these in one plot? For that, we can use the <code>type = single</code> option:</p>
-<div class="sourceCode" id="cb19"><pre class="downlit">
-<span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span>(
-  <span class="kw">pt.WW</span>, 
-  use.ggplot = <span class="fl">TRUE</span>, 
-  type = <span class="st">"single"</span>,
-  conf.int = <span class="fl">0.95</span>, <span class="co"># 95% level</span>
-  conf.type = <span class="st">"log"</span>
-)   
-</pre></div>
+<p>These confidence intervals can be omitted using
+<code>conf.type = "none"</code>.</p>
+<p>What if we wanted all of these in one plot? For that, we can use the
+<code>type = single</code> option:</p>
+<div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span></span>
+<span>  <span class="va">pt.WW</span>, </span>
+<span>  use.ggplot <span class="op">=</span> <span class="cn">TRUE</span>, </span>
+<span>  type <span class="op">=</span> <span class="st">"single"</span>,</span>
+<span>  conf.int <span class="op">=</span> <span class="fl">0.95</span>, <span class="co"># 95% level</span></span>
+<span>  conf.type <span class="op">=</span> <span class="st">"log"</span></span>
+<span><span class="op">)</span>   </span></code></pre></div>
 <p><img src="visuals_demo_files/figure-html/plot_pt_single1-1.png" width="672" style="display: block; margin: auto;"></p>
 <p>As before, the confidence intervals can be omitted.</p>
-<div class="sourceCode" id="cb20"><pre class="downlit">
-<span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span>(
-  <span class="kw">pt.WW</span>, 
-  use.ggplot = <span class="fl">TRUE</span>, 
-  type = <span class="st">"single"</span>,
-  conf.type = <span class="st">"none"</span>,
-  lty = <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">1</span>, <span class="fl">2</span>, <span class="fl">3</span>), <span class="co"># change the linetype</span>
-  lwd = <span class="fl">1.5</span>, 
-)   
-</pre></div>
+<div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span></span>
+<span>  <span class="va">pt.WW</span>, </span>
+<span>  use.ggplot <span class="op">=</span> <span class="cn">TRUE</span>, </span>
+<span>  type <span class="op">=</span> <span class="st">"single"</span>,</span>
+<span>  conf.type <span class="op">=</span> <span class="st">"none"</span>,</span>
+<span>  lty <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span>, <span class="fl">3</span><span class="op">)</span>, <span class="co"># change the linetype</span></span>
+<span>  lwd <span class="op">=</span> <span class="fl">1.5</span>, </span>
+<span><span class="op">)</span>   </span></code></pre></div>
 <p><img src="visuals_demo_files/figure-html/plot_pt_single2-1.png" width="672" style="display: block; margin: auto;"></p>
-<p>If the multi-state model is large, we may be only interested in plotting the probabilities for a subset of states together. This subset will not sum up to 1, so the stacked/filled plots are not appropriate. There is no set function to do this, but it can be done by extracting the data from a <code><a href="../reference/plot.probtrans.html">plot.probtrans()</a></code>-based ggplot object as follows:</p>
-<div class="sourceCode" id="cb21"><pre class="downlit">
-<span class="co"># Run plot and extract data using $data</span>
-<span class="kw">dat_plot</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span>(x = <span class="kw">pt.WW</span>, use.ggplot = <span class="fl">TRUE</span>, type = <span class="st">"single"</span>)<span class="op">$</span><span class="kw">data</span>
-  
-<span class="co"># Begin new plot - Exclude or select states to be plotted</span>
-<span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span>(data = <span class="kw">dat_plot</span>[<span class="kw">state</span> != <span class="st">"event-free"</span>, ], <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span>(
-  x = <span class="kw">time</span>, 
-  y = <span class="kw">prob</span>, 
-  ymin = <span class="kw">CI_low</span>, 
-  ymax = <span class="kw">CI_upp</span>,
-  group = <span class="kw">state</span>,
-  linetype = <span class="kw">state</span>,
-  col = <span class="kw">state</span>
-)) <span class="op">+</span>
-  
-  <span class="co"># Add CI and lines; change fill = NA to remove CIs</span>
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_ribbon.html">geom_ribbon</a></span>(col = <span class="fl">NA</span>, fill = <span class="st">"gray"</span>, alpha = <span class="fl">0.5</span>) <span class="op">+</span>
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html">geom_line</a></span>() <span class="op">+</span>
-  
-  <span class="co"># Remaining details</span>
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span>(x = <span class="st">"Time"</span>, y = <span class="st">"Cumulative Incidence"</span>) <span class="op">+</span>
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/coord_cartesian.html">coord_cartesian</a></span>(ylim = <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">0</span>, <span class="fl">1</span>), xlim = <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">0</span>, <span class="fl">14</span>), expand = <span class="fl">0</span>)
-</pre></div>
+<p>If the multi-state model is large, we may be only interested in
+plotting the probabilities for a subset of states together. This subset
+will not sum up to 1, so the stacked/filled plots are not appropriate.
+There is no set function to do this, but it can be done by extracting
+the data from a <code><a href="../reference/plot.probtrans.html">plot.probtrans()</a></code>-based ggplot object as
+follows:</p>
+<div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Run plot and extract data using $data</span></span>
+<span><span class="va">dat_plot</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">pt.WW</span>, use.ggplot <span class="op">=</span> <span class="cn">TRUE</span>, type <span class="op">=</span> <span class="st">"single"</span><span class="op">)</span><span class="op">$</span><span class="va">data</span></span>
+<span>  </span>
+<span><span class="co"># Begin new plot - Exclude or select states to be plotted</span></span>
+<span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">dat_plot</span><span class="op">[</span><span class="va">state</span> <span class="op">!=</span> <span class="st">"event-free"</span>, <span class="op">]</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span></span>
+<span>  x <span class="op">=</span> <span class="va">time</span>, </span>
+<span>  y <span class="op">=</span> <span class="va">prob</span>, </span>
+<span>  ymin <span class="op">=</span> <span class="va">CI_low</span>, </span>
+<span>  ymax <span class="op">=</span> <span class="va">CI_upp</span>,</span>
+<span>  group <span class="op">=</span> <span class="va">state</span>,</span>
+<span>  linetype <span class="op">=</span> <span class="va">state</span>,</span>
+<span>  col <span class="op">=</span> <span class="va">state</span></span>
+<span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  </span>
+<span>  <span class="co"># Add CI and lines; change fill = NA to remove CIs</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_ribbon.html" class="external-link">geom_ribbon</a></span><span class="op">(</span>col <span class="op">=</span> <span class="cn">NA</span>, fill <span class="op">=</span> <span class="st">"gray"</span>, alpha <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html" class="external-link">geom_line</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  </span>
+<span>  <span class="co"># Remaining details</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">labs</a></span><span class="op">(</span>x <span class="op">=</span> <span class="st">"Time"</span>, y <span class="op">=</span> <span class="st">"Cumulative Incidence"</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/coord_cartesian.html" class="external-link">coord_cartesian</a></span><span class="op">(</span>ylim <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1</span><span class="op">)</span>, xlim <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">14</span><span class="op">)</span>, expand <span class="op">=</span> <span class="fl">0</span><span class="op">)</span></span></code></pre></div>
 <p><img src="visuals_demo_files/figure-html/plot_pt_single3-1.png" width="672" style="display: block; margin: auto;"></p>
-<p>If interest lies in plotting the probability of a <em>single</em> state, the procedure above can be used, or the <code><a href="../reference/vis.multiple.pt.html">vis.multiple.pt()</a></code> function presented further could be used directly.</p>
+<p>If interest lies in plotting the probability of a <em>single</em>
+state, the procedure above can be used, or the
+<code><a href="../reference/vis.multiple.pt.html">vis.multiple.pt()</a></code> function presented further could be used
+directly.</p>
 </div>
 </div>
-<div id="plotting-non-parametric-cumulative-incidence-functions" class="section level1">
-<h1 class="hasAnchor">
-<a href="#plotting-non-parametric-cumulative-incidence-functions" class="anchor"></a>Plotting non-parametric cumulative incidence functions</h1>
-<p>The <code><a href="../reference/Cuminc.html">Cuminc()</a></code> function in <em>mstate</em> produces (for competing risks data) the non-parametric Aalen-Johansen estimates of the cumulative incidence functions. This is the same as is obtained in the <em>cmrpsk</em> package with the function <code>cuminc()</code>.</p>
-<p>In <em>mstate</em>, an object of class “Cuminc” can also be plotted as follows:</p>
-<div class="sourceCode" id="cb22"><pre class="downlit">
-<span class="kw">cum_incid</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/Cuminc.html">Cuminc</a></span>(
-  time = <span class="st">"time"</span>,
-  status = <span class="st">"status"</span>,
-  data = <span class="kw">si</span>
-)
-
-<span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span>(
-  x = <span class="kw">cum_incid</span>,
-  use.ggplot = <span class="fl">TRUE</span>,
-  conf.type = <span class="st">"none"</span>,
-  lty = <span class="fl">1</span><span class="op">:</span><span class="fl">2</span>,
-  conf.int = <span class="fl">0.95</span>,
-)
-</pre></div>
+<div class="section level2">
+<h2 id="plotting-non-parametric-cumulative-incidence-functions">Plotting non-parametric cumulative incidence functions<a class="anchor" aria-label="anchor" href="#plotting-non-parametric-cumulative-incidence-functions"></a>
+</h2>
+<p>The <code><a href="../reference/Cuminc.html">Cuminc()</a></code> function in <em>mstate</em> produces (for
+competing risks data) the non-parametric Aalen-Johansen estimates of the
+cumulative incidence functions. This is the same as is obtained in the
+<em>cmrpsk</em> package with the function <code>cuminc()</code>.</p>
+<p>In <em>mstate</em>, an object of class “Cuminc” can also be plotted
+as follows:</p>
+<div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">cum_incid</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/Cuminc.html">Cuminc</a></span><span class="op">(</span></span>
+<span>  time <span class="op">=</span> <span class="st">"time"</span>,</span>
+<span>  status <span class="op">=</span> <span class="st">"status"</span>,</span>
+<span>  data <span class="op">=</span> <span class="va">si</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span></span>
+<span>  x <span class="op">=</span> <span class="va">cum_incid</span>,</span>
+<span>  use.ggplot <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  conf.type <span class="op">=</span> <span class="st">"log"</span>,</span>
+<span>  lty <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">2</span>,</span>
+<span>  conf.int <span class="op">=</span> <span class="fl">0.95</span>,</span>
+<span><span class="op">)</span></span></code></pre></div>
 <p><img src="visuals_demo_files/figure-html/plot.Cuminc1-1.png" width="672" style="display: block; margin: auto;"></p>
 <p>In the case where this a grouping variable:</p>
-<div class="sourceCode" id="cb23"><pre class="downlit">
-<span class="kw">cum_incid_grp</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/Cuminc.html">Cuminc</a></span>(
-  time = <span class="st">"time"</span>,
-  status = <span class="st">"status"</span>,
-  group = <span class="st">"ccr5"</span>,
-  data = <span class="kw">si</span>
-)
-
-<span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span>(
-  x = <span class="kw">cum_incid_grp</span>,
-  use.ggplot = <span class="fl">TRUE</span>,
-  conf.type = <span class="st">"none"</span>,
-  lty = <span class="fl">1</span><span class="op">:</span><span class="fl">4</span>, 
-  facet = <span class="fl">FALSE</span>
-)
-</pre></div>
+<div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">cum_incid_grp</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/Cuminc.html">Cuminc</a></span><span class="op">(</span></span>
+<span>  time <span class="op">=</span> <span class="st">"time"</span>,</span>
+<span>  status <span class="op">=</span> <span class="st">"status"</span>,</span>
+<span>  group <span class="op">=</span> <span class="st">"ccr5"</span>,</span>
+<span>  data <span class="op">=</span> <span class="va">si</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span></span>
+<span>  x <span class="op">=</span> <span class="va">cum_incid_grp</span>,</span>
+<span>  use.ggplot <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  conf.type <span class="op">=</span> <span class="st">"none"</span>,</span>
+<span>  lty <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">4</span>, </span>
+<span>  facet <span class="op">=</span> <span class="cn">FALSE</span></span>
+<span><span class="op">)</span></span></code></pre></div>
 <p><img src="visuals_demo_files/figure-html/plot.cuminc_x-1.png" width="672" style="display: block; margin: auto;"></p>
-<div class="sourceCode" id="cb24"><pre class="downlit">
-
-<span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span>(
-  x = <span class="kw">cum_incid_grp</span>,
-  use.ggplot = <span class="fl">TRUE</span>,
-  conf.type = <span class="st">"none"</span>,
-  lty = <span class="fl">1</span><span class="op">:</span><span class="fl">4</span>, 
-  facet = <span class="fl">TRUE</span>
-)
-</pre></div>
+<div class="sourceCode" id="cb26"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span></span>
+<span>  x <span class="op">=</span> <span class="va">cum_incid_grp</span>,</span>
+<span>  use.ggplot <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  conf.type <span class="op">=</span> <span class="st">"none"</span>,</span>
+<span>  lty <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">4</span>, </span>
+<span>  facet <span class="op">=</span> <span class="cn">TRUE</span></span>
+<span><span class="op">)</span></span></code></pre></div>
 <p><img src="visuals_demo_files/figure-html/plot.cuminc_x-2.png" width="672" style="display: block; margin: auto;"></p>
 </div>
-<div id="visualising-multiple-probtrans-objects" class="section level1">
-<h1 class="hasAnchor">
-<a href="#visualising-multiple-probtrans-objects" class="anchor"></a>Visualising multiple probtrans objects</h1>
-<p>We may also be interested in comparing the predicted probabilities for <em>multiple</em> reference patients. First, we need to create as many msfit/probtrans objects as there are reference patients of interest:</p>
-<div class="sourceCode" id="cb25"><pre class="downlit">
-<span class="co"># 1. Prepare patient data - both CCR5 genotypes</span>
-<span class="kw">WW</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span>(
-  ccr5WM.1 = <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">0</span>, <span class="fl">0</span>), 
-  ccr5WM.2 = <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">0</span>, <span class="fl">0</span>), 
-  trans = <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">1</span>, <span class="fl">2</span>), 
-  strata = <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">1</span>, <span class="fl">2</span>)
-)
-
-<span class="kw">WM</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span>(
-  ccr5WM.1 = <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">1</span>, <span class="fl">0</span>), 
-  ccr5WM.2 = <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">0</span>, <span class="fl">1</span>),
-  trans = <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">1</span>, <span class="fl">2</span>), 
-  strata = <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">1</span>, <span class="fl">2</span>)
-)
-
-<span class="co"># 2. Make msfit objects</span>
-<span class="kw">msf.WW</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/msfit.html">msfit</a></span>(<span class="kw">c1</span>, <span class="kw">WW</span>, trans = <span class="kw">tmat</span>)
-<span class="kw">msf.WM</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/msfit.html">msfit</a></span>(<span class="kw">c1</span>, <span class="kw">WM</span>, trans = <span class="kw">tmat</span>)
-
-<span class="co"># 3. Make probtrans objects</span>
-<span class="kw">pt.WW</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/probtrans.html">probtrans</a></span>(<span class="kw">msf.WW</span>, predt = <span class="fl">0</span>)
-<span class="kw">pt.WM</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/probtrans.html">probtrans</a></span>(<span class="kw">msf.WM</span>, predt = <span class="fl">0</span>)
-</pre></div>
-<p>Afterwards, we can supply the probtrans objects in a list into the <code><a href="../reference/vis.multiple.pt.html">vis.multiple.pt()</a></code> function. This will visualise the probability of being in state number <code>to</code> over time, given the reference patient was in state number <code>from</code> at the <code>predt</code> time supplied in <code><a href="../reference/probtrans.html">probtrans()</a></code>.</p>
-<p>The example below visualises the probability of being in state AIDS, given event-free at time 0. The two lines/associated confidence intervals correspond to the reference patients - both with a different CCR5 genotype (“WW” or “WM”).</p>
-<div class="sourceCode" id="cb26"><pre class="downlit">
-<span class="fu"><a href="../reference/vis.multiple.pt.html">vis.multiple.pt</a></span>(
-  x = <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span>(<span class="kw">pt.WW</span>, <span class="kw">pt.WM</span>), 
-  from = <span class="fl">1</span>,
-  to = <span class="fl">2</span>, 
-  conf.type = <span class="st">"log"</span>,
-  cols = <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">1</span>, <span class="fl">2</span>),
-  labels = <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"Pat WW"</span>, <span class="st">"Pat WM"</span>),
-  legend.title = <span class="st">"Ref patients"</span>
-)
-</pre></div>
+<div class="section level2">
+<h2 id="visualising-multiple-probtrans-objects">Visualising multiple probtrans objects<a class="anchor" aria-label="anchor" href="#visualising-multiple-probtrans-objects"></a>
+</h2>
+<p>We may also be interested in comparing the predicted probabilities
+for <em>multiple</em> reference patients. First, we need to create as
+many msfit/probtrans objects as there are reference patients of
+interest:</p>
+<div class="sourceCode" id="cb27"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># 1. Prepare patient data - both CCR5 genotypes</span></span>
+<span><span class="va">WW</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span></span>
+<span>  ccr5WM.1 <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">0</span><span class="op">)</span>, </span>
+<span>  ccr5WM.2 <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">0</span><span class="op">)</span>, </span>
+<span>  trans <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span><span class="op">)</span>, </span>
+<span>  strata <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span><span class="op">)</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">WM</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span></span>
+<span>  ccr5WM.1 <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">0</span><span class="op">)</span>, </span>
+<span>  ccr5WM.2 <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1</span><span class="op">)</span>,</span>
+<span>  trans <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span><span class="op">)</span>, </span>
+<span>  strata <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span><span class="op">)</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># 2. Make msfit objects</span></span>
+<span><span class="va">msf.WW</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/msfit.html">msfit</a></span><span class="op">(</span><span class="va">c1</span>, <span class="va">WW</span>, trans <span class="op">=</span> <span class="va">tmat</span><span class="op">)</span></span>
+<span><span class="va">msf.WM</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/msfit.html">msfit</a></span><span class="op">(</span><span class="va">c1</span>, <span class="va">WM</span>, trans <span class="op">=</span> <span class="va">tmat</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># 3. Make probtrans objects</span></span>
+<span><span class="va">pt.WW</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/probtrans.html">probtrans</a></span><span class="op">(</span><span class="va">msf.WW</span>, predt <span class="op">=</span> <span class="fl">0</span><span class="op">)</span></span>
+<span><span class="va">pt.WM</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/probtrans.html">probtrans</a></span><span class="op">(</span><span class="va">msf.WM</span>, predt <span class="op">=</span> <span class="fl">0</span><span class="op">)</span></span></code></pre></div>
+<p>Afterwards, we can supply the probtrans objects in a list into the
+<code><a href="../reference/vis.multiple.pt.html">vis.multiple.pt()</a></code> function. This will visualise the
+probability of being in state number <code>to</code> over time, given
+the reference patient was in state number <code>from</code> at the
+<code>predt</code> time supplied in <code><a href="../reference/probtrans.html">probtrans()</a></code>.</p>
+<p>The example below visualises the probability of being in state AIDS,
+given event-free at time 0. The two lines/associated confidence
+intervals correspond to the reference patients - both with a different
+CCR5 genotype (“WW” or “WM”).</p>
+<div class="sourceCode" id="cb28"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/vis.multiple.pt.html">vis.multiple.pt</a></span><span class="op">(</span></span>
+<span>  x <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="va">pt.WW</span>, <span class="va">pt.WM</span><span class="op">)</span>, </span>
+<span>  from <span class="op">=</span> <span class="fl">1</span>,</span>
+<span>  to <span class="op">=</span> <span class="fl">2</span>, </span>
+<span>  conf.type <span class="op">=</span> <span class="st">"log"</span>,</span>
+<span>  cols <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span><span class="op">)</span>,</span>
+<span>  labels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Pat WW"</span>, <span class="st">"Pat WM"</span><span class="op">)</span>,</span>
+<span>  legend.title <span class="op">=</span> <span class="st">"Ref patients"</span></span>
+<span><span class="op">)</span></span></code></pre></div>
 <p><img src="visuals_demo_files/figure-html/vis_multiple_plot-1.png" width="672" style="display: block; margin: auto;"></p>
-<p>This function could just as well be used for a single probtrans object:</p>
-<div class="sourceCode" id="cb27"><pre class="downlit">
-<span class="fu"><a href="../reference/vis.multiple.pt.html">vis.multiple.pt</a></span>(
-  x = <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span>(<span class="kw">pt.WW</span>), 
-  from = <span class="fl">1</span>,
-  to = <span class="fl">2</span>, 
-  conf.type = <span class="st">"log"</span>,
-  cols = <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">1</span>, <span class="fl">2</span>),
-  labels = <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"Pat WW"</span>, <span class="st">"Pat WM"</span>),
-  legend.title = <span class="st">"Ref patients"</span>
-)
-</pre></div>
+<p>This function could just as well be used for a single probtrans
+object:</p>
+<div class="sourceCode" id="cb29"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/vis.multiple.pt.html">vis.multiple.pt</a></span><span class="op">(</span></span>
+<span>  x <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="va">pt.WW</span><span class="op">)</span>, </span>
+<span>  from <span class="op">=</span> <span class="fl">1</span>,</span>
+<span>  to <span class="op">=</span> <span class="fl">2</span>, </span>
+<span>  conf.type <span class="op">=</span> <span class="st">"log"</span>,</span>
+<span>  cols <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span><span class="op">)</span>,</span>
+<span>  labels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Pat WW"</span>, <span class="st">"Pat WM"</span><span class="op">)</span>,</span>
+<span>  legend.title <span class="op">=</span> <span class="st">"Ref patients"</span></span>
+<span><span class="op">)</span></span></code></pre></div>
 <p><img src="visuals_demo_files/figure-html/vis_multiple_plot2-1.png" width="672" style="display: block; margin: auto;"></p>
 <p>Note this function is only available in the ggplot format.</p>
-<div id="a-mirrored-plot" class="section level2">
-<h2 class="hasAnchor">
-<a href="#a-mirrored-plot" class="anchor"></a>A mirrored plot</h2>
-<p>Multiple probtrans objects can also be compared by means of a mirrored plot. The idea is to compare the probabilities of being in (all) states between two references patients at a particular horizon. In addition to reference patients, different subsets of the data could equally be compared.</p>
-<div class="sourceCode" id="cb28"><pre class="downlit">
-<span class="fu"><a href="../reference/vis.mirror.pt.html">vis.mirror.pt</a></span>(
-  x = <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span>(<span class="kw">pt.WW</span>, <span class="kw">pt.WM</span>),
-  titles = <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"WW"</span>, <span class="st">"WM"</span>),
-  horizon = <span class="fl">10</span>
-)
-</pre></div>
+<div class="section level3">
+<h3 id="a-mirrored-plot">A mirrored plot<a class="anchor" aria-label="anchor" href="#a-mirrored-plot"></a>
+</h3>
+<p>Multiple probtrans objects can also be compared by means of a
+mirrored plot. The idea is to compare the probabilities of being in
+(all) states between two references patients at a particular horizon. In
+addition to reference patients, different subsets of the data could
+equally be compared.</p>
+<div class="sourceCode" id="cb30"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/vis.mirror.pt.html">vis.mirror.pt</a></span><span class="op">(</span></span>
+<span>  x <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="va">pt.WW</span>, <span class="va">pt.WM</span><span class="op">)</span>,</span>
+<span>  titles <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"WW"</span>, <span class="st">"WM"</span><span class="op">)</span>,</span>
+<span>  horizon <span class="op">=</span> <span class="fl">10</span></span>
+<span><span class="op">)</span></span></code></pre></div>
 <p><img src="visuals_demo_files/figure-html/mirror1-1.png" width="672" style="display: block; margin: auto;"></p>
-<p>Omitting the <code>horizon</code> argument will default to plotting both sides with their respective maximum follow-up time, so it may be asymmetric. We thus recomment to always use the <code>horizon</code> argument.</p>
-<p>If for example time is in years, and follow-up is extremely short, you may want to override the breaks on the x-axis. This can be done using the <code>breaks_x_left</code> and <code>breaks_x_right</code> arguments.</p>
-<div class="sourceCode" id="cb29"><pre class="downlit">
-<span class="fu"><a href="../reference/vis.mirror.pt.html">vis.mirror.pt</a></span>(
-  x = <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span>(<span class="kw">pt.WW</span>, <span class="kw">pt.WM</span>),
-  titles = <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"WW"</span>, <span class="st">"WM"</span>),
-  size_titles = <span class="fl">8</span>,
-  horizon = <span class="fl">3</span>,
-  breaks_x_left = <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">0</span>, <span class="fl">1</span>, <span class="fl">2</span>, <span class="fl">3</span>),
-  breaks_x_right = <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">0</span>, <span class="fl">1</span>, <span class="fl">2</span>),
-  ord = <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">3</span>, <span class="fl">2</span>, <span class="fl">1</span>)
-)
-</pre></div>
+<p>Omitting the <code>horizon</code> argument will default to plotting
+both sides with their respective maximum follow-up time, so it may be
+asymmetric. We thus recommend to always use the <code>horizon</code>
+argument.</p>
+<p>If for example time is in years, and follow-up is extremely short,
+you may want to override the breaks on the x-axis. This can be done
+using the <code>breaks_x_left</code> and <code>breaks_x_right</code>
+arguments.</p>
+<div class="sourceCode" id="cb31"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/vis.mirror.pt.html">vis.mirror.pt</a></span><span class="op">(</span></span>
+<span>  x <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="va">pt.WW</span>, <span class="va">pt.WM</span><span class="op">)</span>,</span>
+<span>  titles <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"WW"</span>, <span class="st">"WM"</span><span class="op">)</span>,</span>
+<span>  size_titles <span class="op">=</span> <span class="fl">8</span>,</span>
+<span>  horizon <span class="op">=</span> <span class="fl">5</span>,</span>
+<span>  breaks_x_left <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1</span>, <span class="fl">2</span>, <span class="fl">3</span>, <span class="fl">4</span>, <span class="fl">5</span><span class="op">)</span>,</span>
+<span>  breaks_x_right <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1</span>, <span class="fl">2</span>, <span class="fl">3</span>, <span class="fl">4</span><span class="op">)</span>,</span>
+<span>  ord <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">3</span>, <span class="fl">2</span>, <span class="fl">1</span><span class="op">)</span></span>
+<span><span class="op">)</span></span></code></pre></div>
 <p><img src="visuals_demo_files/figure-html/mirror2-1.png" width="672" style="display: block; margin: auto;"></p>
 </div>
 </div>
-<div id="saving-outputs" class="section level1">
-<h1 class="hasAnchor">
-<a href="#saving-outputs" class="anchor"></a>Saving outputs</h1>
-<p>Any plots made with <em>mstate</em> using the <code>use.ggplot = TRUE</code> will return a ggplot object, which can be saved to a desired format by using <code><a href="https://ggplot2.tidyverse.org/reference/ggsave.html">ggplot2::ggsave()</a></code>. Please refer to the <a href="https://ggplot2.tidyverse.org/reference/ggsave.html#saving-images-without-ggsave-">article</a> written by the <em>ggplot2</em> team on using <code><a href="https://ggplot2.tidyverse.org/reference/ggsave.html">ggplot2::ggsave()</a></code>.</p>
-<div class="sourceCode" id="cb30"><pre class="downlit">
-<span class="co"># Saving a ggplot2 plot</span>
-<span class="kw">p</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span>(<span class="kw">pt.WW</span>, use.ggplot = <span class="fl">TRUE</span>)
-<span class="kw">ggplot2</span>::<span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggsave.html">ggsave</a></span>(<span class="st">"my_ggplot2_plot.png"</span>)
-
-<span class="co"># Standard graphics plot</span>
-<span class="fu"><a href="https://rdrr.io/r/grDevices/png.html">png</a></span>(<span class="st">"my_standard_plot.png"</span>)
-<span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span>(<span class="kw">pt.WW</span>, use.ggplot = <span class="fl">FALSE</span>)
-<span class="fu"><a href="https://rdrr.io/r/grDevices/dev.html">dev.off</a></span>()
-</pre></div>
+<div class="section level2">
+<h2 id="saving-outputs">Saving outputs<a class="anchor" aria-label="anchor" href="#saving-outputs"></a>
+</h2>
+<p>Any plots made with <em>mstate</em> using the
+<code>use.ggplot = TRUE</code> will return a ggplot object, which can be
+saved to a desired format by using <code><a href="https://ggplot2.tidyverse.org/reference/ggsave.html" class="external-link">ggplot2::ggsave()</a></code>.
+Please refer to the <a href="https://ggplot2.tidyverse.org/reference/ggsave.html#saving-images-without-ggsave-" class="external-link">article</a>
+written by the <em>ggplot2</em> team on using
+<code><a href="https://ggplot2.tidyverse.org/reference/ggsave.html" class="external-link">ggplot2::ggsave()</a></code>.</p>
+<div class="sourceCode" id="cb32"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Saving a ggplot2 plot</span></span>
+<span><span class="va">p</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">pt.WW</span>, use.ggplot <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span><span class="fu">ggplot2</span><span class="fu">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggsave.html" class="external-link">ggsave</a></span><span class="op">(</span><span class="st">"my_ggplot2_plot.png"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Standard graphics plot</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/grDevices/png.html" class="external-link">png</a></span><span class="op">(</span><span class="st">"my_standard_plot.png"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">pt.WW</span>, use.ggplot <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/grDevices/dev.html" class="external-link">dev.off</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 </div>
-<div id="reproducibility" class="section level1">
-<h1 class="hasAnchor">
-<a href="#reproducibility" class="anchor"></a>Reproducibility</h1>
-<details><p><summary>Reproducibility receipt</summary></p>
-<div class="sourceCode" id="cb31"><pre class="downlit">
-<span class="co"># Date/time</span>
-<span class="fu"><a href="https://rdrr.io/r/base/Sys.time.html">Sys.time</a></span>()
-<span class="co">#&gt; [1] "2020-12-17 11:36:24 CET"</span>
-
-<span class="co"># Environment</span>
-<span class="fu"><a href="https://rdrr.io/r/utils/sessionInfo.html">sessionInfo</a></span>()
-<span class="co">#&gt; R version 4.0.3 (2020-10-10)</span>
-<span class="co">#&gt; Platform: x86_64-w64-mingw32/x64 (64-bit)</span>
-<span class="co">#&gt; Running under: Windows 10 x64 (build 17134)</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; Matrix products: default</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; locale:</span>
-<span class="co">#&gt; [1] LC_COLLATE=Dutch_Netherlands.1252  LC_CTYPE=Dutch_Netherlands.1252   </span>
-<span class="co">#&gt; [3] LC_MONETARY=Dutch_Netherlands.1252 LC_NUMERIC=C                      </span>
-<span class="co">#&gt; [5] LC_TIME=Dutch_Netherlands.1252    </span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; attached base packages:</span>
-<span class="co">#&gt; [1] stats     graphics  grDevices utils     datasets  methods   base     </span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; other attached packages:</span>
-<span class="co">#&gt; [1] ggplot2_3.3.1   mstate_0.3.1    survival_3.1-12</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; loaded via a namespace (and not attached):</span>
-<span class="co">#&gt;  [1] Rcpp_1.0.4.6       compiler_4.0.3     pillar_1.4.4       RColorBrewer_1.1-2</span>
-<span class="co">#&gt;  [5] viridis_0.5.1      tools_4.0.3        digest_0.6.25      viridisLite_0.3.0 </span>
-<span class="co">#&gt;  [9] evaluate_0.14      memoise_1.1.0      lifecycle_0.2.0    tibble_3.0.1      </span>
-<span class="co">#&gt; [13] gtable_0.3.0       lattice_0.20-41    pkgconfig_2.0.3    rlang_0.4.6       </span>
-<span class="co">#&gt; [17] Matrix_1.2-18      rstudioapi_0.11    yaml_2.2.1         pkgdown_1.6.1     </span>
-<span class="co">#&gt; [21] xfun_0.17          gridExtra_2.3      withr_2.2.0        dplyr_1.0.0       </span>
-<span class="co">#&gt; [25] stringr_1.4.0      knitr_1.29         generics_0.0.2     vctrs_0.3.1       </span>
-<span class="co">#&gt; [29] desc_1.2.0         fs_1.4.1           systemfonts_0.2.3  tidyselect_1.1.0  </span>
-<span class="co">#&gt; [33] rprojroot_1.3-2    grid_4.0.3         glue_1.4.1         data.table_1.12.8 </span>
-<span class="co">#&gt; [37] R6_2.4.1           rmarkdown_2.2      farver_2.0.3       purrr_0.3.4       </span>
-<span class="co">#&gt; [41] magrittr_1.5       backports_1.1.7    scales_1.1.1       htmltools_0.4.0   </span>
-<span class="co">#&gt; [45] ellipsis_0.3.1     splines_4.0.3      assertthat_0.2.1   colorspace_1.4-1  </span>
-<span class="co">#&gt; [49] labeling_0.3       ragg_0.3.1         stringi_1.4.6      munsell_0.5.0     </span>
-<span class="co">#&gt; [53] crayon_1.3.4</span>
-</pre></div>
+<div class="section level2">
+<h2 id="reproducibility">Reproducibility<a class="anchor" aria-label="anchor" href="#reproducibility"></a>
+</h2>
+<details><summary>
+Reproducibility receipt
+</summary><div class="sourceCode" id="cb33"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Date/time</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/Sys.time.html" class="external-link">Sys.time</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] "2024-11-29 16:41:38 GMT"</span></span>
+<span></span>
+<span><span class="co"># Environment</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/sessionInfo.html" class="external-link">sessionInfo</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="co">#&gt; R version 4.4.2 (2024-10-31)</span></span>
+<span><span class="co">#&gt; Platform: aarch64-apple-darwin20</span></span>
+<span><span class="co">#&gt; Running under: macOS Sequoia 15.1.1</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Matrix products: default</span></span>
+<span><span class="co">#&gt; BLAS:   /Library/Frameworks/R.framework/Versions/4.4-arm64/Resources/lib/libRblas.0.dylib </span></span>
+<span><span class="co">#&gt; LAPACK: /Library/Frameworks/R.framework/Versions/4.4-arm64/Resources/lib/libRlapack.dylib;  LAPACK version 3.12.0</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; locale:</span></span>
+<span><span class="co">#&gt; [1] en_US.UTF-8/en_US.UTF-8/en_US.UTF-8/C/en_US.UTF-8/en_US.UTF-8</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; time zone: Europe/London</span></span>
+<span><span class="co">#&gt; tzcode source: internal</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; attached base packages:</span></span>
+<span><span class="co">#&gt; [1] stats     graphics  grDevices utils     datasets  methods   base     </span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; other attached packages:</span></span>
+<span><span class="co">#&gt; [1] ggplot2_3.5.1  mstate_0.3.3   survival_3.7-0</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; loaded via a namespace (and not attached):</span></span>
+<span><span class="co">#&gt;  [1] Matrix_1.7-1       gtable_0.3.6       jsonlite_1.8.9     dplyr_1.1.4       </span></span>
+<span><span class="co">#&gt;  [5] compiler_4.4.2     tidyselect_1.2.1   jquerylib_0.1.4    splines_4.4.2     </span></span>
+<span><span class="co">#&gt;  [9] systemfonts_1.1.0  scales_1.3.0       textshaping_0.4.0  yaml_2.3.10       </span></span>
+<span><span class="co">#&gt; [13] fastmap_1.2.0      lattice_0.22-6     R6_2.5.1           labeling_0.4.3    </span></span>
+<span><span class="co">#&gt; [17] generics_0.1.3     knitr_1.49         htmlwidgets_1.6.4  tibble_3.2.1      </span></span>
+<span><span class="co">#&gt; [21] desc_1.4.3         munsell_0.5.1      RColorBrewer_1.1-3 bslib_0.8.0       </span></span>
+<span><span class="co">#&gt; [25] pillar_1.9.0       rlang_1.1.4        utf8_1.2.4         cachem_1.1.0      </span></span>
+<span><span class="co">#&gt; [29] xfun_0.49          fs_1.6.5           sass_0.4.9         viridisLite_0.4.2 </span></span>
+<span><span class="co">#&gt; [33] cli_3.6.3          withr_3.0.2        pkgdown_2.1.1      magrittr_2.0.3    </span></span>
+<span><span class="co">#&gt; [37] digest_0.6.37      grid_4.4.2         rstudioapi_0.17.1  lifecycle_1.0.4   </span></span>
+<span><span class="co">#&gt; [41] vctrs_0.6.5        evaluate_1.0.1     glue_1.8.0         data.table_1.16.2 </span></span>
+<span><span class="co">#&gt; [45] farver_2.1.2       ragg_1.3.3         fansi_1.0.6        colorspace_2.1-1  </span></span>
+<span><span class="co">#&gt; [49] rmarkdown_2.29     pkgconfig_2.0.3    tools_4.4.2        htmltools_0.5.8.1</span></span></code></pre></div>
 </details>
 </div>
-<div id="references" class="section level1 unnumbered">
-<h1 class="hasAnchor">
-<a href="#references" class="anchor"></a>References</h1>
-<div id="refs" class="references">
-<div id="ref-Tut">
-<p>Putter, H., M. Fiocco, and R. B. Geskus. 2007. “Tutorial in Biostatistics: Competing Risks and Multi-State Models.” <em>Statist Med</em> 26: 2389–2430.</p>
+<div class="section level2 unnumbered">
+<h2 class="unnumbered" id="references">References<a class="anchor" aria-label="anchor" href="#references"></a>
+</h2>
+<div id="refs" class="references csl-bib-body hanging-indent" entry-spacing="0">
+<div id="ref-Tut" class="csl-entry">
+Putter, H., M. Fiocco, and R. B. Geskus. 2007. <span>“Tutorial in
+Biostatistics: Competing Risks and Multi-State Models.”</span>
+<em>Statist Med</em> 26: 2389–2430.
 </div>
-<div id="ref-ggplot">
-<p>Wickham, Hadley. 2016. <em>Ggplot2: Elegant Graphics for Data Analysis</em>. Springer-Verlag New York. <a href="https://ggplot2.tidyverse.org">https://ggplot2.tidyverse.org</a>.</p>
+<div id="ref-ggplot" class="csl-entry">
+Wickham, Hadley. 2016. <em>Ggplot2: Elegant Graphics for Data
+Analysis</em>. Springer-Verlag New York. <a href="https://ggplot2.tidyverse.org" class="external-link">https://ggplot2.tidyverse.org</a>.
 </div>
 </div>
 </div>
-  </div>
-
-  <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
-
-        <nav id="toc" data-toggle="toc"><h2 data-toc-skip>Contents</h2>
-    </nav>
-</div>
-
+  </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
+    </nav></aside>
 </div>
 
 
 
-      <footer><div class="copyright">
-  <p>Developed by Hein Putter, Liesbeth C. de Wreede, Marta Fiocco.</p>
+    <footer><div class="pkgdown-footer-left">
+  <p>Developed by Hein Putter, Liesbeth C. de Wreede, Marta Fiocco, Edouard F. Bonneville.</p>
 </div>
 
-<div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
+<div class="pkgdown-footer-right">
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.1.</p>
 </div>
 
-      </footer>
+    </footer>
 </div>
 
-  
+
+
 
 
   </body>

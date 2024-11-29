@@ -20,7 +20,7 @@ knitr::opts_chunk$set(
 )
 ```
 
-# Preamble
+## Preamble
 
 The purpose of the present vignette is to demonstrate the visualisation capacities of *mstate*, using both base R graphics and the *ggplot2* package [@ggplot]. To do so, we will use the dataset used to illustrate competing risks analyses in Section 3 of the Tutorial by @Tut . The dataset is available in *mstate* under the object name `aidssi`.
 
@@ -68,7 +68,7 @@ c1 <- coxph(Surv(time, status) ~ ccr5WM.1 + ccr5WM.2 + strata(trans),
             data = silong)
 ```
 
-# Visualising cumulative baseline hazards using `plot.msfit()`
+## Visualising cumulative baseline hazards using `plot.msfit()`
 
 Using `msfit()`, we can obtain patient-specific transition hazards. We look here at a patient with a CCR5 genotype "WW" (wild type allele on both chromosomes).
 
@@ -175,7 +175,7 @@ plot(
 )
 ```
 
-# Visualising transition probabilities using `plot.probtrans()`
+## Visualising transition probabilities using `plot.probtrans()`
 
 The transition hazards obtained in the previous section can be used to obtain patient-specific transition probabilities using `probtrans()`. Here, we would like to predict from the beginning of follow-up (`predt = 0`).
 
@@ -189,7 +189,7 @@ summary(pt.WW, times = c(1, 5, 10))
 
 The `plot` method for `probtrans` objects allows to visualise the transition probabilities in various ways, using both functionality from base R graphics and *ggplot2*.
 
-## Filled/stacked plots
+### Filled/stacked plots
 
 The default is a so-called "filled" plot, where the transition probabilities are represented by coloured areas. The `from` argument allows the user to choose the state to predict from (default is 1, the first state).
 
@@ -226,7 +226,7 @@ You can also choose to forgo the colour, and specify `type = "stacked"` instead:
 plot(pt.WW, use.ggplot = TRUE, type = "stacked")   
 ```
 
-## Single and separate plots, confidence intervals
+### Single and separate plots, confidence intervals
 
 Instead of visualising the probabilities using stacked areas, we can go the traditional route and use a single line per state. Confidence intervals can then be added.
 
@@ -304,7 +304,7 @@ ggplot(data = dat_plot[state != "event-free", ], aes(
 
 If interest lies in plotting the probability of a *single* state, the procedure above can be used, or the `vis.multiple.pt()` function presented further could be used directly.
 
-# Plotting non-parametric cumulative incidence functions
+## Plotting non-parametric cumulative incidence functions
 
 The `Cuminc()` function in *mstate* produces (for competing risks data) the non-parametric Aalen-Johansen estimates of the cumulative incidence functions. This is the same as is obtained in the *cmrpsk* package with the function `cuminc()`.
 
@@ -355,7 +355,7 @@ plot(
 
 
 
-# Visualising multiple probtrans objects
+## Visualising multiple probtrans objects
 
 We may also be interested in comparing the predicted probabilities for *multiple* reference patients. First, we need to create as many msfit/probtrans objects as there are reference patients of interest:
 
@@ -416,7 +416,7 @@ vis.multiple.pt(
 
 Note this function is only available in the ggplot format.
 
-## A mirrored plot
+### A mirrored plot
 
 Multiple probtrans objects can also be compared by means of a mirrored plot. The idea is to compare the probabilities of being in (all) states between two references patients at a particular horizon. In addition to reference patients, different subsets of the data could equally be compared.
 
@@ -444,7 +444,7 @@ vis.mirror.pt(
 )
 ```
 
-# Saving outputs
+## Saving outputs
 
 Any plots made with *mstate* using the `use.ggplot = TRUE` will return a ggplot object, which can be saved to a desired format by using `ggplot2::ggsave()`. 
 Please refer to the [article](https://ggplot2.tidyverse.org/reference/ggsave.html#saving-images-without-ggsave-) written by the *ggplot2* team on using `ggplot2::ggsave()`. 
@@ -460,7 +460,7 @@ plot(pt.WW, use.ggplot = FALSE)
 dev.off()
 ```
 
-# Reproducibility
+## Reproducibility
 
 <details><summary>Reproducibility receipt</summary>
 
@@ -474,5 +474,5 @@ sessionInfo()
 
 </details>
 
-# References
+## References
 
