@@ -50,8 +50,8 @@
 #' of functions applied to overall trace}
 #' @author Andrew Titman \email{a.titman@@lancaster.ac.uk}, transported to
 #' mstate by Hein Putter \email{H.Putter@@lumc.nl}
-#' @references Titman AC, Putter H (2020). General tests of the Markov property
-#' in multi-state models. \emph{Biostatistics} To appear.
+#' @references Titman AC, Putter, H (2022). General tests of the Markov property 
+#' in multi-state models. \emph{Biostatistics}, \bold{23}(2), 380-396.
 #' @keywords univar
 #' @examples
 #' 

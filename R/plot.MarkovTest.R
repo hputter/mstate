@@ -106,9 +106,21 @@ plot.MarkovTest <- function(x, y, what=c("states", "overall"), idx=NULL, quantil
         col <- c(rep(8, nB), col)
       }
     }
-    # print(dim(dfr))
-    if (missing(states)) dfr$qualstate <- factor(dfr$qualstate)
-    else dfr$qualstate <- factor(dfr$qualstate, levels=qualset, labels=states[qualset])
+    
+    # For a specific selection of qualifying states: subset dfr
+    if (!missing(states)) {
+      check_qualset <- !(states %in% qualset)
+      if (any(check_qualset)) {
+        qualset_mssg <- paste0(
+          "State ", states[check_qualset], 
+          " is not a qualifying state for transition ", x$transition, "."
+        )
+        stop(qualset_mssg)
+      }
+      dfr <- dfr[dfr$qualstate %in% states, ]
+      dfr$qualstate <- factor(dfr$qualstate, levels = states)
+    } else dfr$qualstate <- factor(dfr$qualstate, levels = qualset)
+
     xyplot(zbar ~ time | qualstate, data=dfr, groups=ct, lwd=lwd, type="l", col=col, lty=lty,
            xlab=xlab, ylab=ylab, main=main)
   }

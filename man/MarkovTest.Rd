@@ -129,8 +129,8 @@ MT <- MarkovTest(prothr, id = "id",
 
 }
 \references{
-Titman AC, Putter H (2020). General tests of the Markov property
-in multi-state models. \emph{Biostatistics} To appear.
+Titman AC, Putter, H (2022). General tests of the Markov property 
+in multi-state models. \emph{Biostatistics}, \bold{23}(2), 380-396.
 }
 \author{
 Andrew Titman \email{a.titman@lancaster.ac.uk}, transported to
