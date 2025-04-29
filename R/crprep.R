@@ -338,7 +338,7 @@ function(Tstop, status, data, trans=1, cens=0, Tstart=0, id, strata,
       data.weight <- create.wData.omega(Tstart, Tstop, status, num.id, 1, failcode, cens)
       tmp.time <- data.weight$Tstop
       data.weight$weight.cens <- summary(surv.cens, times=tmp.time)$surv
-      if(calc.trunc) data.weight$weight.trunc] <- summary(surv.trunc, times=-tmp.time)$surv
+      if(calc.trunc) data.weight$weight.trunc <- summary(surv.trunc, times=-tmp.time)$surv
     } else {
       data.weight <- vector("list",len.strat)
       if(is.na(strat[len.strat])) {
