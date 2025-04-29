@@ -315,12 +315,14 @@ function(Tstop, status, data, trans=1, cens=0, Tstart=0, id, strata,
 
   ## Start calculations
   prec <- .Machine$double.eps*prec.factor
+  Tstop.tie <- ifelse(status==cens, Tstop+prec, Tstop)
+  Tstart.tie <- ifelse(Tstart==0, Tstart, Tstart +2* prec)
 
   ## Calculate product-limit time-to-censoring distribution, "event" not included in case of ties
-  surv.cens <- survival::survfit(Surv(Tstart,Tstop+ifelse(status==cens,prec,0),status==cens)~strata.num)
+  surv.cens <- survival::survfit(Surv(Tstart.tie, Tstop.tie, status == cens) ~ strata.num, timefix=FALSE)
 
   ## Calculate time to entry (left truncation) distribution at t-, use 2*prec in order to exclude censorings at same time
-  if(calc.trunc) surv.trunc <- survival::survfit(Surv(-Tstop,-(Tstart+2*prec),rep(1,n))~strata.num)
+  if(calc.trunc) surv.trunc <- survival::survfit(Surv(-Tstop, -Tstart.tie, rep(1, n)) ~ strata.num, timefix=FALSE)
   ## trunc.dist <- summary(surv.trunc)
   ## trunc.dist$time <- rev(-trunc.dist$time)-prec
   ## trunc.dist$surv <- c(rev(trunc.dist$surv)[-1],1)
@@ -335,7 +337,7 @@ function(Tstop, status, data, trans=1, cens=0, Tstart=0, id, strata,
     if(len.strat==1){ # no strata
       data.weight <- create.wData.omega(Tstart, Tstop, status, num.id, 1, failcode, cens)
       tmp.time <- data.weight$Tstop
-      data.weight$weight.cens <- summary(surv.cens, times=tmp.time-prec)$surv
+      data.weight$weight.cens <- summary(surv.cens, times=tmp.time)$surv
       if(calc.trunc) data.weight$weight.trunc] <- summary(surv.trunc, times=-tmp.time)$surv
     } else {
       data.weight <- vector("list",len.strat)
@@ -348,7 +350,7 @@ function(Tstop, status, data, trans=1, cens=0, Tstart=0, id, strata,
         tmp.sel <- !is.na(strata.num) & strata.num==tmp.strat
         data.weight[[tmp.strat]] <- create.wData.omega(Tstart[tmp.sel], Tstop[tmp.sel], status[tmp.sel], num.id[tmp.sel], tmp.strat, failcode, cens)
         tmp.time <- data.weight[[tmp.strat]]$Tstop
-        data.weight[[tmp.strat]]$weight.cens <- summary(surv.cens[tmp.strat], times=tmp.time-prec)$surv
+        data.weight[[tmp.strat]]$weight.cens <- summary(surv.cens[tmp.strat], times=tmp.time)$surv
         if(calc.trunc) data.weight[[tmp.strat]]$weight.trunc <- summary(surv.trunc[tmp.strat], times=-tmp.time)$surv
       }
       data.weight <- do.call("rbind", data.weight)
