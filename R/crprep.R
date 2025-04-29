@@ -1,10 +1,10 @@
 #' Function to create weighted data set for competing risks analyses
-#' 
+#'
 #' This function converts a dataset that is in short format (one subject per
 #' line) into a counting process format with time-varying weights that correct
 #' for right censored and left truncated data. With this data set, analyses
 #' based on the subdistribution hazard can be performed.
-#' 
+#'
 #' For each event type as specified via \code{trans}, individuals with a
 #' competing event remain in the risk set with weights that are determined by
 #' the product-limit forms of the time-to-censoring and time-to-entry
@@ -12,21 +12,21 @@
 #' such individuals are split into several rows. Censoring weights are always
 #' computed. Truncation weights are computed only if \code{Tstart} is
 #' specified.
-#' 
+#'
 #' If several event types are specified at once, regression analyses using the
 #' stacked format data set can be performed (see Putter et al. 2007 and Chapter
 #' 4 in Geskus 2016). The data set can also be used for a regression on the
 #' cause-specific hazard by restricting to the subset \code{subset=count==0}.
-#' 
+#'
 #' Missing values are allowed in \code{Tstop}, \code{status}, \code{Tstart},
 #' \code{strata} and \code{keep}. Rows for which \code{Tstart} or \code{Tstart}
 #' is missing are deleted.
-#' 
+#'
 #' There are two ways to supply the data. If given "by value" (option 1), the
 #' actual data vectors are used. If given "by name" (option 2), the column
 #' names are specified, which are read from the data set in \code{data}. In
 #' general, the second option is preferred.
-#' 
+#'
 #' If data are given by value, the following holds for the naming of the
 #' columns in the output data set. If \code{keep}, \code{strata} or \code{id}
 #' is a vector from a (sub)-list, e.g. obj$name2$name1, then the column name is
@@ -36,11 +36,11 @@
 #' a named matrix, the same names are used for the covariate columns in the
 #' output data set. If keep is a matrix without names, then the covariate
 #' columns are given the names "V1" until "Vk".
-#' 
+#'
 #' The current function does not allow to create a weighted data set in which
 #' the censoring and/or truncation mechanisms depend on covariates via a
 #' regression model.
-#' 
+#'
 #' @aliases crprep crprep.default
 #' @param Tstop Either 1) a vector containing the time at which the follow-up
 #' is ended, or 2) a character string indicating the column name in \code{data}
@@ -77,8 +77,8 @@
 #' Censoring and truncation times are shifted by prec.factor*precision if event
 #' times and censoring/truncation times are equal.
 #' @param \dots Further arguments to be passed to or from other methods. They
-#' are ignored in this function. 
-#' 
+#' are ignored in this function.
+#'
 #' @return A data frame in long (counting process) format containing the
 #' covariates (replicated per subject). The following column names are used:
 #' \item{Tstart}{start dates of dataset} \item{Tstop}{stop dates of dataset}
@@ -87,31 +87,31 @@
 #' \item{weight.trunc}{weights due to truncation mechanism (if present)}
 #' \item{count}{row number within subject and event type under consideration}
 #' \item{failcode}{event type under consideration}
-#' 
+#'
 #' The first column is the subject identifier. If the argument "id" is missing,
 #' it has values 1:n and is named "id". Otherwise the information is taken from
 #' the \code{id} argument.
-#' 
+#'
 #' Variables as specified in \code{strata} and/or \code{keep} are included as
 #' well (see Details).
 #' @author Ronald Geskus
 #' @references Geskus RB (2011). Cause-Specific Cumulative Incidence Estimation
 #' and the Fine and Gray Model Under Both Left Truncation and Right Censoring.
 #' \emph{Biometrics} \bold{67}, 39--49.
-#' 
+#'
 #' Geskus, Ronald B. (2016). \emph{Data Analysis with Competing Risks and
 #' Intermediate States.} CRC Press, Boca Raton.
-#' 
+#'
 #' Putter H, Fiocco M, Geskus RB (2007). Tutorial in biostatistics: Competing
 #' risks and multi-state models. \emph{Statistics in Medicine} \bold{26},
 #' 2389--2430.
 #' @keywords datagen survival
 #' @examples
-#' 
+#'
 #' data(aidssi)
 #' aidssi.w <- crprep("time", "cause", data=aidssi, trans=c("AIDS","SI"),
 #'                    cens="event-free", id="patnr", keep="ccr5")
-#' 
+#'
 #' # calculate cause-specific cumulative incidence, no truncation,
 #' # compare with Cuminc (also from mstate)
 #' ci <- Cuminc(aidssi$time, aidssi$status)
@@ -123,14 +123,14 @@
 #'               weight=weight.cens, subset=failcode=="SI")
 #' plot(sf, fun="event", mark.time=FALSE)
 #' lines(CI.2~time,data=ci,type="s",col="red")
-#' 
+#'
 #' # Fine and Gray regression for cause 1
 #' cw <- coxph(Surv(Tstart,Tstop,status=="AIDS")~ccr5, data=aidssi.w,
 #'       weight=weight.cens, subset=failcode=="AIDS")
 #' cw
 #' # This can be checked with the results of crr (cmprsk)
 #' # crr(ftime=aidssi$time, fstatus=aidssi$status, cov1=as.numeric(aidssi$ccr5))
-#' 
+#'
 #' # Gray's log-rank test
 #' aidssi.wCCR <- crprep("time", "cause", data=aidssi, trans=c("AIDS","SI"),
 #'                       cens="event-free", id="patnr", strata="ccr5")
@@ -144,13 +144,13 @@
 #' # This can be compared with the results of cuminc (cmprsk)
 #' # with(aidssi, cuminc(time, status, group=ccr5)$Tests)
 #' # Note: results are not exactly the same
-#' 
+#'
 #' @export
 crprep.default <-
-function(Tstop, status, data, trans=1, cens=0, Tstart=0, id, strata, 
+function(Tstop, status, data, trans=1, cens=0, Tstart=0, id, strata,
          keep, shorten=TRUE, rm.na=TRUE, origin=0,
          prec.factor=1000, ...) {
-  
+
   # Coerce data to data.frame if given (from tibble/data.table)
   if (!missing(data)) data <- as.data.frame(data)
 
@@ -303,7 +303,7 @@ function(Tstop, status, data, trans=1, cens=0, Tstart=0, id, strata,
         if(is.null(keep.name)) keep.name <- paste("V",1:nkeep,sep="")
       }
       if (nrow(keep) != nn)
-        stop("length Tstop and number of rows in keep are differents")
+        stop("length Tstop and number of rows in keep are different")
       if (nkeep == 1)
         keep <- keep[, 1]
     }
@@ -335,8 +335,8 @@ function(Tstop, status, data, trans=1, cens=0, Tstart=0, id, strata,
     if(len.strat==1){ # no strata
       data.weight <- create.wData.omega(Tstart, Tstop, status, num.id, 1, failcode, cens)
       tmp.time <- data.weight$Tstop
-      data.weight$weight.cens[order(tmp.time)] <- summary(surv.cens, times=tmp.time-prec)$surv
-      if(calc.trunc) data.weight$weight.trunc[order(-tmp.time)] <- summary(surv.trunc, times=-tmp.time)$surv
+      data.weight$weight.cens <- summary(surv.cens, times=tmp.time-prec)$surv
+      if(calc.trunc) data.weight$weight.trunc] <- summary(surv.trunc, times=-tmp.time)$surv
     } else {
       data.weight <- vector("list",len.strat)
       if(is.na(strat[len.strat])) {
@@ -348,8 +348,8 @@ function(Tstop, status, data, trans=1, cens=0, Tstart=0, id, strata,
         tmp.sel <- !is.na(strata.num) & strata.num==tmp.strat
         data.weight[[tmp.strat]] <- create.wData.omega(Tstart[tmp.sel], Tstop[tmp.sel], status[tmp.sel], num.id[tmp.sel], tmp.strat, failcode, cens)
         tmp.time <- data.weight[[tmp.strat]]$Tstop
-        data.weight[[tmp.strat]]$weight.cens[order(tmp.time)] <- summary(surv.cens[tmp.strat], times=tmp.time-prec)$surv
-        if(calc.trunc) data.weight[[tmp.strat]]$weight.trunc[order(-tmp.time)] <- summary(surv.trunc[tmp.strat], times=-tmp.time)$surv
+        data.weight[[tmp.strat]]$weight.cens <- summary(surv.cens[tmp.strat], times=tmp.time-prec)$surv
+        if(calc.trunc) data.weight[[tmp.strat]]$weight.trunc <- summary(surv.trunc[tmp.strat], times=-tmp.time)$surv
       }
       data.weight <- do.call("rbind", data.weight)
     }
@@ -488,5 +488,5 @@ function(Tstop, status, data, trans=1, cens=0, Tstart=0, id, strata,
 }
 
 #' @inheritParams crprep.default
-#' @export 
+#' @export
 crprep <- function(Tstop, ...) UseMethod("crprep")
