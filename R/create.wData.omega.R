@@ -9,7 +9,7 @@ function(Tstart, Tstop, status, id, stratum, failcode, cens){
   ## Number of rows in dataset with weights
   Nw[sel.compet] <-  apply(outer(Tstop[sel.compet],event.times,"<"), 1, sum)+1
   data.weight <- data.frame(id=rep(id,Nw), Tstart=NA, Tstop=NA, status=rep(status,Nw),
-                            strata=rep(stratum,sum(Nw)))
+                            strata=rep(stratum,Nw))
   data.weight$Tstart <- unlist(lapply(1:n, FUN=function(x,tms,N) {
                                                if (N[x]==1) {
                                                 Tstart[x]

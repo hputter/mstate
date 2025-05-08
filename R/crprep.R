@@ -334,13 +334,13 @@ function(Tstop, status, data, trans=1, cens=0, Tstart=0, id, strata,
   len.strat <- length(strat)
   ## Start weight calculation per event type
   for(failcode in trans) {
+    data.weight <- create.wData.omega(Tstart, Tstop, status, num.id, strata.num, failcode, cens)
     if(len.strat==1){ # no strata
-      data.weight <- create.wData.omega(Tstart, Tstop, status, num.id, 1, failcode, cens)
       tmp.time <- data.weight$Tstop
       data.weight$weight.cens <- summary(surv.cens, times=tmp.time)$surv
       if(calc.trunc) data.weight$weight.trunc <- summary(surv.trunc, times=-tmp.time)$surv
     } else {
-      data.weight <- vector("list",len.strat)
+      data.weight <- split(data.weight,data.weight$strata)
       if(is.na(strat[len.strat])) {
         tmp.sel <- is.na(strata.num)
         data.weight[[len.strat]] <- data.frame(id=num.id[tmp.sel], Tstart=Tstart[tmp.sel], Tstop=Tstop[tmp.sel], status=status[tmp.sel], strata=NA,  weight.cens=NA)
@@ -348,7 +348,6 @@ function(Tstop, status, data, trans=1, cens=0, Tstart=0, id, strata,
       }
       for(tmp.strat in 1:(len.strat-is.na(strat[len.strat]))){
         tmp.sel <- !is.na(strata.num) & strata.num==tmp.strat
-        data.weight[[tmp.strat]] <- create.wData.omega(Tstart[tmp.sel], Tstop[tmp.sel], status[tmp.sel], num.id[tmp.sel], tmp.strat, failcode, cens)
         tmp.time <- data.weight[[tmp.strat]]$Tstop
         data.weight[[tmp.strat]]$weight.cens <- summary(surv.cens[tmp.strat], times=tmp.time)$surv
         if(calc.trunc) data.weight[[tmp.strat]]$weight.trunc <- summary(surv.trunc[tmp.strat], times=-tmp.time)$surv
