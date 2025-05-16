@@ -7,6 +7,7 @@
 .datatable.aware = TRUE
 
 # Start function
+#' @keywords internal
 ggplot.probtrans <- function(x,
                              from = 1,
                              type = "filled", 

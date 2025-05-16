@@ -3,7 +3,7 @@
 ##         using geom_ribbons    ##
 ##*******************************##
 
-
+#' @keywords internal
 ggplot.msfit <- function(x,
                          type = "single", # or "separate"
                          xlab = "Time", 
