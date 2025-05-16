@@ -35,7 +35,7 @@ Authors@R: c(
     role = "ctb"
   )
   ) 
-Depends:
+Depends: 
   survival (>= 3.1)
 Imports: 
   rlang,
@@ -43,20 +43,21 @@ Imports:
   lattice,
   RColorBrewer,
   viridisLite
-Suggests:
-  cmprsk,
-  ggplot2,
-  knitr,
-  rmarkdown,
-  relsurv (>= 2.2-5)
+Suggests: 
+    cmprsk,
+    ggplot2,
+    knitr,
+    rmarkdown,
+    relsurv (>= 2.2-5), 
+    tinytest
 Description: Contains functions for data preparation, descriptives, hazard estimation and prediction with Aalen-Johansen or simulation in competing risks and multi-state models, see Putter, Fiocco, Geskus (2007) <doi:10.1002/sim.2712>.
 License: GPL (>= 2)
 Encoding: UTF-8
 URL: https://github.com/hputter/mstate
 NeedsCompilation: yes
 Repository: CRAN
-Packaged: 2019-12-11 12:02:31 UTC; hputter
-  Date/Publication: 2019-12-11 12:30:03 UTC
-RoxygenNote: 7.2.3
+Packaged: 2019-12-11 12:02:31 UTC; hputter Date/Publication: 2019-12-11 12:30:03 UTC
+RoxygenNote: 7.3.2
 BugReports: https://github.com/hputter/mstate/issues
 VignetteBuilder: knitr
+Config/testthat/edition: 3

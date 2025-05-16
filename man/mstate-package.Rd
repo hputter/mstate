@@ -27,6 +27,14 @@ de Wreede LC, Fiocco M, and Putter H (2011). mstate: An R Package for the
 Analysis of Competing Risks and Multi-State Models. \emph{Journal of
 Statistical Software}, Volume 38, Issue 7.
 }
+\seealso{
+Useful links:
+\itemize{
+  \item \url{https://github.com/hputter/mstate}
+  \item Report bugs at \url{https://github.com/hputter/mstate/issues}
+}
+
+}
 \author{
 Liesbeth de Wreede, Marta Fiocco, Hein Putter. Maintainer: Hein
 Putter <H.Putter@lumc.nl>
