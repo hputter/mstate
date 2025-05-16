@@ -2,7 +2,7 @@
 #' 
 #' Plot method for an object of class \code{"msfit.subjects"}. It plots the estimated
 #' cumulative transition intensities in the multi-state model for a single subject.
-#' Wrapper for \code{\link[plot.msfit]{plot.msfit}}.
+#' Wrapper for \code{\link{plot.msfit}}.
 #' 
 #' @param x Object of class \code{"msfit.subjects"}, containing estimated transition intensity matrices
 #' for all transitions in a multi-state model for (multiple) subjects

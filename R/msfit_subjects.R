@@ -2,14 +2,14 @@
 #' 
 #' This function computes subject-specific or overall cumulative transition
 #' hazards for each of the possible transitions in the multi-state model.
-#' Contrary to \code{\link[msfit]{msfit}}, this function allows to 
+#' Contrary to \code{\link{msfit}}, this function allows to 
 #' calculate hazards for multiple subjects at once, but does not allow
 #' to calculate (co)variances (yet).
 #' 
 #' @details
 #' The data frame needs to have one row for each transition in the multi-state
 #' model, per subject: (n_subjects x n_transitions) rows in total.
-#' Contrary to \code{\link[msfit]{msfit}}, it is not necessary to 
+#' Contrary to \code{\link{msfit}}, it is not necessary to 
 #' manually specify the \code{strata} variable,
 #' as long as the strata can be determined from the data using the formula 
 #' used in \code{object}. For details refer to de Wreede, Fiocco & Putter (2010). 

@@ -27,7 +27,7 @@ states. This is also the default}
 specified times, even if there are no subjects left at the end of the
 specified times. This is only valid if the times argument is present}
 
-\item{\dots}{Further arguments to \code{\link[summary.probtrans]{summary.probtrans}}}
+\item{\dots}{Further arguments to \code{\link{summary.probtrans}}}
 }
 \value{
 Function \code{summary.probtrans} returns an object of class
@@ -38,7 +38,7 @@ transition probabilities at the specified (or all) time points. The
 \description{
 Summary method for an object of class 'probtrans.subjects'. It prints a selection of
 the estimated transition probabilities. Wrapper for 
-\code{\link[summary.probtrans]{summary.probtrans}}.
+\code{\link{summary.probtrans}}.
 }
 \examples{
 # First run the example of probtrans
@@ -77,8 +77,7 @@ x
 
 }
 \seealso{
-\code{\link[mstate:summary.probtrans]{summary.probtrans}}, 
-\code{\link{predict_tp}}
+\code{\link[mstate:summary.probtrans]{summary.probtrans}}
 }
 \author{
 Hein Putter and Daniel Gomon

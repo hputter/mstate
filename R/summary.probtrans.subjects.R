@@ -2,7 +2,7 @@
 #' 
 #' Summary method for an object of class 'probtrans.subjects'. It prints a selection of
 #' the estimated transition probabilities. Wrapper for 
-#' \code{\link[summary.probtrans]{summary.probtrans}}.
+#' \code{\link{summary.probtrans}}.
 #' 
 #' @aliases summary.probtrans.subjects
 #' @param object Object of class 'probtrans.subjects', containing estimated transition
@@ -19,7 +19,7 @@
 #' @param extend logical value: if \code{TRUE}, prints information for all
 #' specified times, even if there are no subjects left at the end of the
 #' specified times. This is only valid if the times argument is present
-#' @param \dots Further arguments to \code{\link[summary.probtrans]{summary.probtrans}}
+#' @param \dots Further arguments to \code{\link{summary.probtrans}}
 #' 
 #' 
 #' @import mstate
@@ -29,8 +29,7 @@
 #' transition probabilities at the specified (or all) time points. The
 #' \code{print} method of a \code{summary.probtrans} doesn't return a value.
 #' @author Hein Putter and Daniel Gomon
-#' @seealso \code{\link[mstate:summary.probtrans]{summary.probtrans}}, 
-#' \code{\link{predict_tp}}
+#' @seealso \code{\link[mstate:summary.probtrans]{summary.probtrans}}
 #' @keywords print
 #' @examples
 #' # First run the example of probtrans

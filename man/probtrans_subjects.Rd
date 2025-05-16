@@ -23,7 +23,7 @@ indicating whether prediction is forward or for a fixed horizon}
 \value{
 An object of class \code{"probtrans.subjects"}.
 This is a list of length n (number of subjects in \code{object$ids}), with each list element
-an object of class \code{\link[probtrans]{probtrans}} for the associated 
+an object of class \code{\link{probtrans}} for the associated 
 subject. List elements can be accessed using \code{[[x]]}, with \code{x} 
 ranging from 1 to n. Additionally, each list element 
 has an element \code{$id}, representing the subject id and the output object 
