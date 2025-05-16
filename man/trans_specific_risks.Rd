@@ -12,15 +12,15 @@ fit of the multi-state model, must contain a 'strata()' term.}
 
 \item{newdata}{A \code{data.frame} containing K rows per
 subject in the data, with K the number of transitions possible in the model.
-The rows pertaining to a single subject must be ordered according to the 
-transition numbers in \code{trans}.
 The following named columns must be present:
 \describe{
-  \item{\code{id}:}{Unique identifier of the subject, must be numeric or character;}
+  \item{\code{id}:}{Unique identifier of the subject this row relates to, must be numeric or character;}
+  \item{\code{trans}:}{Transition number in the \code{'transMat'} \code{trans} 
+  this row relates to;}
   \item{\code{"variables"}:}{The subject-specific covariates (appearing in the \code{coxph} formula),
   ordered according to transition number in \code{trans}.}
 } Note that newdata must contain a column containing the variable which was 
-used to determine the stratum of a transition in \code{object}.}
+used to determine the stratum of a transition in \code{object} (usually this is 'trans').}
 
 \item{trans}{Transition matrix describing the states and transitions in the
 multi-state model. See \code{trans} in \code{\link{msprep}} for more

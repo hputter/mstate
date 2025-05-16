@@ -50,16 +50,14 @@ newdata <- data.frame(id=rep(1:3, each = 3),x1.1=c(0,0,0,1,0,1,0,1,0),
 msf_subj <- msfit_subjects(cx,newdata,trans=tmat)
 # standard plot for subject 1
 plot(msf_subj,id = 1)
+# standard plot for subject 2
+plot(msf_subj,id = 2)
 # specifying line width, color, and legend
 plot(msf_subj,id = 1,lwd=2,col=c("darkgreen","darkblue","darkred"),legend=c("1->2","1->3","2->3"))
-# separate plots
+# separate plots for each transition
 par(mfrow=c(2,2))
 plot(msf_subj, id = 1, type="separate",lwd=2)
 par(mfrow=c(1,1))
-
-# ggplot version - see vignette for details
-library(ggplot2)
-plot(msf_subj1, id = 2, use.ggplot = TRUE)
 
 }
 \seealso{
