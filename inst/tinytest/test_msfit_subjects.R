@@ -29,5 +29,20 @@ expect_equal(msf1, msf_from_subjects1)
 
 
 
+# Check whether using something else than "trans" in strata() determination also works
 
+
+#Fit cox model with strata determined by transition to state
+cx2 <- coxph(Surv(Tstart,Tstop,status)~x1.1+x2.2+strata(to),
+             data=tglong,method="breslow")
+
+#Create newdata which does have the "from" column.
+#strata column is necessary for "msfit"
+newdata2 <- data.frame(trans=1:3,x1.1=c(0,0,0),x2.2=c(0,1,0),strata=c(1, 2, 2), to = c(2, 3, 3))
+
+msf2 <- msfit(cx2,newdata2,trans=tmat, variance = FALSE)
+msf_subjects2 <- suppressWarnings(msfit_subjects(cx2, newdata2, trans = tmat))
+msf_from_subjects2 <- msfit_subjects_to_msfit(msf_subjects2, id = 1)
+
+expect_equal(msf2, msf_from_subjects2)
 

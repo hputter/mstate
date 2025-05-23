@@ -179,7 +179,7 @@ msfit_subjects <- function(object, newdata, trans){
   #List with $intensity_matrices and $unique_times
   #Automatically determines strata used in the coxmodel from the formula.
   #Checks to see if the named column in the cox "object" is present in newdata as well
-  baseline_intensities <- baseline_intensities_from_coxmod(object, trans)
+  baseline_intensities <- baseline_intensities_from_coxmod(object, trans, newdata)
   
   #---------Step 2: Subject specific risks-------------#
   
@@ -288,13 +288,27 @@ msfit_subjects_to_msfit <- function(object, id){
 #' @keywords internal
 
 
-baseline_intensities_from_coxmod <- function(object, tmat){
+baseline_intensities_from_coxmod <- function(object, tmat, newdata){
   #Extract baseline intensities from a cox model
   #Before running this function, check whether the cox model has been fit 
   #for a MSM (contains strata & no interaction/tt terms)
   
   #object must be a coxph model with strata
   #tmat must be a transition matrix
+  
+  #Add strata to the subject observations
+  #Check how the strata were created
+  Terms <- terms(object)
+  stangle <- untangle.specials(Terms, 'strata')
+  #stangle$vars is now the formula for strata creation
+  #Random (first) subject to determine strata column
+  first_subject_id <- newdata[1, "id"]
+  first_subject <- newdata[newdata[, "id"] == first_subject_id,]
+  
+  #Determine strata column
+  strata_column <- model.frame(as.formula(paste0(stangle$vars, " ~ 1")), 
+                               data = first_subject)
+  
   #Create a baseline subject, which has 0 variables everywhere!
   #We need strata here, as we want the baseline hazard for each strata separately
   ttmat <- to.trans2(tmat)[, c(2, 3, 1)]
@@ -306,13 +320,8 @@ baseline_intensities_from_coxmod <- function(object, tmat){
                                                      names(object$coefficients))))
   baseline_subject <- as.data.frame(baseline_subject)
   baseline_subject[1:ncol(ttmat), 1:nrow(ttmat)] <- ttmat
-  #Add strata to the subject observations
-  #Check how the strata were created
-  Terms <- terms(object)
-  stangle <- untangle.specials(Terms, 'strata')
-  #stangle$vars is now the formula for strata creation
-  strata_column <- model.frame(as.formula(paste0(stangle$vars, " ~ 1")), 
-                               data = baseline_subject)
+  
+  #Add strata column to the baseline subject
   baseline_subject <- cbind(baseline_subject, strata_column)
   
   #Use msfit once to obtain baseline hazards
@@ -320,8 +329,7 @@ baseline_intensities_from_coxmod <- function(object, tmat){
   
   #Now extract the intensities into matrix form
   baseline_intensities <- get_intensity_matrices(msfit_baseline)
-  
-  
+
   
   out <- baseline_intensities
   return(out)
