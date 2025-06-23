@@ -107,7 +107,7 @@ Analysis of Competing Risks and Multi-State Models. \emph{Journal of
 Statistical Software}, Volume 38, Issue 7.
 }
 \seealso{
-\code{\link{plot.msfit}}, \code{\link{msfit_subjects_to_msfit}}
+\code{\link{plot.msfit.subjects}}, \code{\link{msfit_subjects_to_msfit}}
 }
 \author{
 Daniel Gomon

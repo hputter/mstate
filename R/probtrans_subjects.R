@@ -5,10 +5,8 @@
 #' 
 #' For details refer to de Wreede, Fiocco & Putter (2010).
 #' 
-#' @param object \link{msfit} object containing estimated cumulative hazards
-#' for each of the transitions in the multi-state model and, if standard errors
-#' are requested, (co)variances of these cumulative hazards for each pair of
-#' transitions
+#' @param object \link[=msfit_subjects]{msfit.subjects} object containing estimated cumulative hazards
+#' for each of the transitions in the multi-state model
 #' @param predt A positive number indicating the prediction time. This is
 #' either the time at which the prediction is made (if \code{direction}=
 #' \code{"forward"}) or the time for which the prediction is to be made (if

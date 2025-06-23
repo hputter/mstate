@@ -57,7 +57,7 @@
 #' 
 #' @author Daniel Gomon
 #' 
-#' @seealso \code{\link{plot.msfit}}, \code{\link{msfit_subjects_to_msfit}}
+#' @seealso \code{\link{plot.msfit.subjects}}, \code{\link{msfit_subjects_to_msfit}}
 #' 
 #' @references Putter H, Fiocco M, Geskus RB (2007). Tutorial in biostatistics:
 #' Competing risks and multi-state models. \emph{Statistics in Medicine}

@@ -7,10 +7,8 @@
 probtrans_subjects(object, predt, direction = c("forward", "fixedhorizon"))
 }
 \arguments{
-\item{object}{\link{msfit} object containing estimated cumulative hazards
-for each of the transitions in the multi-state model and, if standard errors
-are requested, (co)variances of these cumulative hazards for each pair of
-transitions}
+\item{object}{\link[=msfit_subjects]{msfit.subjects} object containing estimated cumulative hazards
+for each of the transitions in the multi-state model}
 
 \item{predt}{A positive number indicating the prediction time. This is
 either the time at which the prediction is made (if \code{direction}=
