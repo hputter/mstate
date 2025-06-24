@@ -268,7 +268,6 @@ NULL
 #' 
 #' @name mstate-package
 #' @aliases mstate-package mstate
-#' @docType package
 #' @author Liesbeth de Wreede, Marta Fiocco, Hein Putter. Maintainer: Hein
 #' Putter <H.Putter@@lumc.nl>
 #' @references Putter H, Fiocco M, Geskus RB (2007). Tutorial in biostatistics:
@@ -284,7 +283,7 @@ NULL
 #' Analysis of Competing Risks and Multi-State Models. \emph{Journal of
 #' Statistical Software}, Volume 38, Issue 7.
 #' @keywords package
-NULL
+"_PACKAGE"
 
 
 

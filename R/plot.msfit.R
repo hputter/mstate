@@ -35,6 +35,8 @@
 #' function details of \code{plot.probtrans} for details
 #' @param \dots Further arguments to plot
 #' 
+#' @method plot msfit
+#' 
 #' @return No return value
 #' 
 #' @author Hein Putter \email{H.Putter@@lumc.nl}

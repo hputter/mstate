@@ -44,7 +44,7 @@ prep_Cuminc_df <- function(x,
   return(df_steps[!is.na(time)])
 } 
 
-
+#' @keywords internal
 ggplot.Cuminc <- function(x,
                           xlab = "Time",
                           ylab = "Probability",
