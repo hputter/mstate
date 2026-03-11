@@ -112,7 +112,7 @@ ggplot.Cuminc <- function(x,
       col = NA, 
       alpha = 0.5
     ) + 
-    ggplot2::geom_line(size = 1) +
+    ggplot2::geom_line(linewidth = 1) +
     ggplot2::coord_cartesian(xlim = xlim, ylim = ylim, expand = 0) +
     ggplot2::scale_linetype_manual(values = lty, labels = legend) +
     ggplot2::scale_color_manual(values = cols, labels = legend) +

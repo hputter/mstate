@@ -8,6 +8,8 @@ vignette: >
   %\VignetteIndexEntry{Visualising multi-state models using mstate}
   %\VignetteEncoding{UTF-8}
   %\VignetteEngine{knitr::rmarkdown}
+editor_options: 
+  chunk_output_type: console
 ---
 
 ```{r, include = FALSE}

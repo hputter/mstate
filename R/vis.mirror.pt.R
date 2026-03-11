@@ -178,7 +178,7 @@ vis.mirror.pt <- function(x,
       xend = max_t,
       y = ylim[1], 
       yend = ylim[2], 
-      size = 2
+      linewidth = 2
     ) +
     ggplot2::scale_x_continuous(xlab, breaks = breakos, labels = labos) +
     ggplot2::ylab(ylab) +

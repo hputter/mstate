@@ -91,7 +91,7 @@ ggplot.msfit <- function(x,
         col = NA,
         na.rm = TRUE
       ) +
-      ggplot2::geom_line(size = lwd) +
+      ggplot2::geom_line(linewidth = lwd) +
       ggplot2::ylab(ylab) +
       ggplot2::theme(legend.position = legend.pos) +
       ggplot2::coord_cartesian(expand = 0, xlim = xlim, ylim = ylim)
@@ -114,7 +114,7 @@ ggplot.msfit <- function(x,
         col = NA,
         na.rm = TRUE
       ) +
-      ggplot2::geom_line(size = lwd) +
+      ggplot2::geom_line(linewidth = lwd) +
       ggplot2::ylab(ylab) +
       ggplot2::coord_cartesian(expand = 0, xlim = xlim) +
       ggplot2::facet_wrap(. ~ trans_name, scales = scale_type) +

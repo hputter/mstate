@@ -98,7 +98,7 @@ ggplot.probtrans <- function(x,
           fill = .data$state
         )
       ) +
-        ggplot2::geom_ribbon(col = "black", size = lwd, na.rm = TRUE) + # for rel surv
+        ggplot2::geom_ribbon(col = "black", linewidth = lwd, na.rm = TRUE) + # for rel surv
         ggplot2::guides(fill = ggplot2::guide_legend("State", reverse = TRUE)) + 
         ggplot2::theme(legend.position = legend.pos) +
         ggplot2::coord_cartesian(xlim = xlim, ylim = ylim, expand = 0)  +
@@ -150,7 +150,7 @@ ggplot.probtrans <- function(x,
     }
     
     p <- p +
-      ggplot2::geom_line(size = lwd) + # colour boundaries
+      ggplot2::geom_line(linewidth = lwd) + # colour boundaries
       ggplot2::guides(col = ggplot2::guide_legend("State", reverse = TRUE)) +
       ggplot2::theme(legend.position = legend.pos) +
       ggplot2::coord_cartesian(xlim = xlim, ylim = ylim, expand = 0) +
@@ -189,7 +189,7 @@ ggplot.probtrans <- function(x,
     }
     
     p <- p +
-      ggplot2::geom_line(size = lwd, na.rm = TRUE) +
+      ggplot2::geom_line(linewidth = lwd, na.rm = TRUE) +
       ggplot2::facet_wrap(. ~ state) +
       ggplot2::guides(col = ggplot2::guide_legend("State", reverse = TRUE)) +
       ggplot2::coord_cartesian(xlim = xlim, ylim = ylim, expand = 0) +
@@ -329,7 +329,7 @@ make_labelled_plot <- function(df_steps,
   ) + 
     ggplot2::geom_ribbon(
       ggplot2::aes(ymin = .data$low, ymax = .data$upp, fill = .data$state),
-      col = "black", size = lwd
+      col = "black", linewidth = lwd
     ) +
     ggplot2::geom_text(
       ggplot2::aes(label = .data$label, x = .data$time), 

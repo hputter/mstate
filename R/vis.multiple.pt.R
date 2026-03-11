@@ -160,7 +160,7 @@ vis.multiple.pt <- function(x,
   }
   
   p <- p + 
-    ggplot2::geom_line(ggplot2::aes(col = .data$PT), size = lwd) +
+    ggplot2::geom_line(ggplot2::aes(col = .data$PT), linewidth = lwd) +
     ggplot2::scale_colour_manual(values = cols) +
     ggplot2::coord_cartesian(xlim = xlim, ylim = ylim, expand = 0) +
     ggplot2::labs(x = xlab, y = ylab) +
